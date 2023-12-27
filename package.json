@@ -14,6 +14,8 @@
     "@types/three": "^0.160.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "rune-games-cli": "^7.2.0",
+    "rune-games-sdk": "^4.16.16",
     "three": "^0.160.0"
   },
   "devDependencies": {
