@@ -1,13 +1,14 @@
 // the game world, including the cake, syrup, players, and items
 import { Canvas } from '@react-three/fiber';
-import Player from './objects/player';
+// import Player from './objects/player';
+import PlayerDylan from './objects/playerTestDylan';
 
 export default function Game() {
 
     return (
-        <Canvas>
+        <Canvas style={{ width: "100%" }}>
             <ambientLight />
-            <Player />
+            <PlayerDylan />
         </Canvas>
     )
 }
