@@ -13,11 +13,17 @@ export interface Player {
     number: number  // the index of the array in the game state logic
 }
 
-export type IngredientType = "eggs" | "milk" | "butter" | "sugar" | "flour"
+export type IngredientType = "eggs" | "milk" | "butter" | "sugar" | "flour";
+export type WorkStationType = "oven";
 
 export interface Ingredient {
     position: Position,
     type: IngredientType,
+}
+
+export interface WorkStation {
+    position: Position,
+    type: WorkStationType
 }
 
 /**
@@ -27,7 +33,7 @@ export interface CakeLayer {
     recipe: {
         [key in IngredientType]?: number
     },
-    color: string,
+    color?: string,
 }
 
 export interface Syrup {
@@ -40,10 +46,13 @@ export interface Syrup {
  */
 export interface GameState {
     ingredients: Ingredient[],  // where and what ingredients are on the field
-    players: Player[],          // information about each player, each index is the player number
+    players: Record<string, Player>,          // information about each player, each index is the player number
     cake: CakeLayer[],          // what has already been built
     syrup: Syrup,               // syrup hazard information
     currentRecipe: CakeLayer,   // what is currently being built
     score: number,              // score
     highScore: number,          // best score of the session
+    lastIngredientSpawnTime: number,    // the last time an ingredient spawned
+    ingredientSpawnInterval: number,    // how long between ingredient spawn times
+    currentCakeLayer: CakeLayer,        // what the current layer looks like
 }
