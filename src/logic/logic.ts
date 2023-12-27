@@ -12,8 +12,7 @@ rune.initLogic({
 
         for (const [index, playerId] of allPlayerIds.entries()) {
             // create a new player
-            players[playerId] =
-            {
+            players[playerId] = {
                 id: playerId,
                 position: {
                     x: 0,
@@ -22,7 +21,6 @@ rune.initLogic({
                 },
                 number: index
             }
-
         }
 
         // create the game state
