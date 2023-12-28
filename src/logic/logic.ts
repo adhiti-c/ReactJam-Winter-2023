@@ -1,9 +1,8 @@
 // where the central rune multiplayer game logic lives
-import rune from "rune-games-sdk";
-import { GameState, Player, Position } from "./types";
+import { GameState, Player, Position, GameActions } from "./types";
 import { defaultIngredientSpawnInterval, defaultSyrupVelocity } from "./logicConfig";
 
-rune.initLogic({
+Rune.initLogic({
     minPlayers: 2,
     maxPlayers: 2,
     setup: (allPlayerIds) => {
@@ -57,9 +56,10 @@ rune.initLogic({
     },
     update: ({ game }) => {
         // spawn ingredient every so often
-        if (rune.gameTime() - game.lastIngredientSpawnTime > game.ingredientSpawnInterval) {
+        if (Rune.gameTime() - game.lastIngredientSpawnTime > game.ingredientSpawnInterval) {
             // spawn an ingredient
             console.log("ingredient spawned");
         }
+        console.log("update")
     }
 })

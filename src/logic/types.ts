@@ -1,4 +1,8 @@
+import { PlayerId, RuneClient } from "rune-games-sdk"
 
+declare global {
+    const Rune: RuneClient<GameState, GameActions>
+}
 
 export interface Position {
     x: number,
@@ -8,7 +12,7 @@ export interface Position {
 }
 
 export interface Player {
-    id: string,     // the rune id
+    id: PlayerId,     // the rune id
     position: Position,
     number: number  // the index of the array in the game state logic
 }
@@ -55,4 +59,9 @@ export interface GameState {
     lastIngredientSpawnTime: number,    // the last time an ingredient spawned
     ingredientSpawnInterval: number,    // how long between ingredient spawn times
     currentCakeLayer: CakeLayer,        // what the current layer looks like
+}
+
+
+export type GameActions = {
+    playerMove: (position: Position) => void
 }

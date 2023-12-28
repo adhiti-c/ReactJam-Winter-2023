@@ -2,6 +2,7 @@
 import { Canvas } from '@react-three/fiber';
 // import Player from './objects/player';
 import PlayerDylan from './objects/playerTestDylan';
+import { useEffect } from 'react';
 
 export default function Game() {
 

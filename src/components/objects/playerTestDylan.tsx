@@ -34,7 +34,7 @@ export default function PlayerDylan() {
             newPos.y = newPos.y + moveSpeed;
             console.log("UP")
         }
-        setPosition(new Vector3(newPos.x, newPos.y, newPos.z));
+        setPosition(newPos);
     })
 
     return (

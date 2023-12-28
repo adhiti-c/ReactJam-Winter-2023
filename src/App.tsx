@@ -1,11 +1,23 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react"
+import reactLogo from "./assets/rune.svg"
+import viteLogo from "/vite.svg"
+import "./App.css"
+import { GameState } from "./logic.ts"
 import Game from './components/game'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [game, setGame] = useState<GameState>()
+  useEffect(() => {
+    Rune.initClient({
+      onChange: ({ game }) => {
+        setGame(game)
+      },
+    })
+  }, [])
+
+  if (!game) {
+    return <div>Loading...</div>
+  }
 
   return (
     <>
@@ -13,21 +25,22 @@ function App() {
         <a href="https://vitejs.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
         </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
+        <a href="https://developers.rune.ai" target="_blank">
+          <img src={reactLogo} className="logo rune" alt="Rune logo" />
         </a>
       </div>
-      <h1>Vite + React</h1>
+      <h1>Vite + Rune</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+        <button onClick={() => Rune.actions.increment({ amount: 1 })}>
+          count is {game.count}
         </button>
         <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
+          Edit <code>src/App.tsx</code> or <code>src/logic.ts</code> and save to
+          test HMR
         </p>
       </div>
       <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
+        Click on the Vite and Rune logos to learn more
       </p>
       <Game />
     </>
