@@ -1,5 +1,5 @@
 // contains player object and player logic
-import React, { useState, KeyboardEvent } from "react";
+import React, { useState, KeyboardEvent, useRef } from "react";
 
 export default function Player() {
   return (
@@ -8,16 +8,19 @@ export default function Player() {
 }
 
 //Player Movement
-function PlayerMove() {
+const PlayerMove: React.FC = () => {
     const [position, setPosition] = useState([0, 0, 0]);
     const moveSpeed = 0.1;
+    const windowSize = useRef([window.innerWidth, window.innerHeight]);
 
-    const handleMove = (e: React.KeyboardEvent):void => {
+    const handleMove = (e: KeyboardEvent):void => {
       const newPosition = [...position];
       if (e.key === "a") {
         newPosition[0] -= moveSpeed;
         newPosition[2] += moveSpeed;
         console.log("left", e.key);
+        console.log(windowSize.current[0]);
+        console.log(position[0]);
       } else if (e.key === "d") {
         newPosition[0] += moveSpeed;
         newPosition[2] -= moveSpeed;
@@ -36,16 +39,15 @@ function PlayerMove() {
   
     // Attach keydown event listener when the component mounts
     React.useEffect(() => {
-        const handleKeyDown = (e: KeyboardEvent) => {
-            handleMove(e);
-          };
-
-        document.addEventListener("keydown", handleKeyDown);
-  
+      const keydownHandler = (event: Event): void => {
+        handleMove(event as unknown as KeyboardEvent<Element>);
+      };
+      
+      document.addEventListener("keydown", keydownHandler);
       // Clean up the event listener when the component unmounts
-        return () => {
-            document.removeEventListener("keydown", handleKeyDown);
-        };
+      return () => {
+        document.removeEventListener("keydown", keydownHandler);
+      };
     }, [position]);
     
 
