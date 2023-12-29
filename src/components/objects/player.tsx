@@ -2,13 +2,17 @@
 import React, { useState, KeyboardEvent, useRef } from "react";
 
 export default function Player() {
+  const pos = PlayerMove();
   return (
-    <PlayerMove/>
+    <mesh position={[pos[0], pos[1], pos[2]]}>
+      <boxGeometry />
+      <meshStandardMaterial />
+    </mesh>
   )
 }
 
 //Player Movement
-const PlayerMove: React.FC = () => {
+function PlayerMove() {
     const [position, setPosition] = useState([0, 0, 0]);
     const moveSpeed = 0.1;
     const windowSize = useRef([window.innerWidth, window.innerHeight]);
@@ -24,6 +28,7 @@ const PlayerMove: React.FC = () => {
       } else if (e.key === "d") {
         newPosition[0] += moveSpeed;
         newPosition[2] -= moveSpeed;
+        console.log("right", position[0]);
         console.log("right", e.key);
       } else if (e.key === "w") {
         newPosition[0] -= moveSpeed;
@@ -52,9 +57,6 @@ const PlayerMove: React.FC = () => {
     
 
     return (
-        <mesh position={[position[0], position[1], position[2]]}>
-          <boxGeometry />
-          <meshStandardMaterial />
-        </mesh>
+        position
     )
 }
