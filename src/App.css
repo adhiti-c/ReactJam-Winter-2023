@@ -27,3 +27,7 @@
 .read-the-docs {
   color: #888;
 }
+
+.time-left {
+  position: absolute;
+}
