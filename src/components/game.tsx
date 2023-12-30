@@ -24,7 +24,7 @@ export default function Game() {
     return (
         <>
             <div className="time-left">
-                Time Left: {game.timeLeft}
+                Time Left: {`${(game.timeLeft / 1000).toFixed(3)}s`}
             </div>
             <Canvas camera={{ position: [camera_pos[0], camera_pos[1], camera_pos[2]] }}>
                 <Player controllable={true} />
