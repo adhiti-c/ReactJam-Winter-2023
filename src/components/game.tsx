@@ -2,19 +2,9 @@
 import { Canvas } from '@react-three/fiber';
 import Player from './objects/player';
 import Camera from './objects/camera'
-import { useEffect, useState } from 'react';
 import { GameState } from "../logic_v2/types"
 
-export default function Game() {
-
-    const [game, setGame] = useState<GameState>()
-    useEffect(() => {
-        Rune.initClient({
-            onChange: ({ game, yourPlayerId }) => {
-                setGame(game)
-            },
-        })
-    }, [])
+export default function Game({ game }: { game: GameState | undefined }) {
 
     const camera_pos = Camera();
 
