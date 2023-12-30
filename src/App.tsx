@@ -1,23 +1,8 @@
 import './App.css'
-import { GameState } from "./logic.ts"
 import Game from './components/game'
-import { useEffect, useState } from "react"
+
 
 function App() {
-
-  const [game, setGame] = useState<GameState>()
-  useEffect(() => {
-    Rune.initClient({
-      onChange: ({ game }) => {
-        setGame(game)
-      },
-    })
-  }, [])
-
-  if (!game) {
-    return <div>Loading...</div>
-  }
-
   return (
     <div style={{ width: "100vw", height: "100vh" }}>
       <Game />

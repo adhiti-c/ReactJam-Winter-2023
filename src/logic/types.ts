@@ -1,8 +1,8 @@
 import { PlayerId, RuneClient } from "rune-games-sdk"
 
-declare global {
-    const Rune: RuneClient<GameState, GameActions>
-}
+// declare global {
+//     const Rune: RuneClient<GameState, GameActions>
+// }
 
 export interface Position {
     x: number,
