@@ -49,6 +49,7 @@ export interface GameState {
 
 type GameActions = {
     // increment: (params: { amount: number }) => void
+    placeIngredient: (params: { ingredient: IngredientType | Flavor }) => void;
 }
 
 declare global {

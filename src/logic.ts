@@ -1,3 +1,4 @@
+import { ContextWithGameState } from "rune-games-sdk";
 import { StartTimeLeftMilliseconds } from "./logic_v2/logicConfig";
 import { Player, GameState } from "./logic_v2/types";
 
@@ -34,9 +35,33 @@ Rune.initLogic({
 
   },
   actions: {
-    // increment: ({ amount }, { game }) => {
-    //   game.count += amount
-    // },
+    placeIngredient({ ingredient }, { allPlayerIds, game, playerId }) {
+      // make sure the player has not already placed
+      if (game.players[playerId].hasPlaced) {
+        throw Rune.invalidAction()
+      } else {
+        game.players[playerId].hasPlaced = true;
+      }
+
+      // add the ingredient to the current recipe
+
+      // set the player's placed status to be true
+      // if every players have placed, process the build
+      if (Object.values(game.players).every(player => player.hasPlaced)) {
+        // check if game.currentCakeLayer matches game.currentRecipe
+
+        // if it does:
+        // if the goal had a flavor, switch that flavor out of the player’s hand
+        // if the goal was the same as the current recipe hint, increment the count up
+        // if count exceeded, generate a new not-created recipe and make that the new goal
+        // else, move to next goal by grabbing another recipe
+
+
+        // if it does not match
+        // enforce a penalty
+      }
+      // ???
+    },
   },
   update: ({ game }) => {
     // check if the time is gone
