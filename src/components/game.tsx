@@ -11,11 +11,35 @@ export default function Game({ game }: { game: GameState | undefined }) {
     if (!game) {
         return <div>Loading...</div>
     }
+
+    // add or remove the timer depending on the game state
+    let gameTimerHTML;
+
+    switch (game.phase) {
+        case "tutorial":
+            gameTimerHTML =
+                <div className="time-left">
+                    Tutorial
+                </div>
+            break;
+        case "playing":
+            gameTimerHTML =
+                <div className="time-left">
+                    Time Left: {`${(game.timeLeft / 1000).toFixed(3)}s`}
+                </div>
+            break;
+        case "loss":
+            gameTimerHTML =
+                <div className="time-left">
+                    Game Over
+                </div>
+            break;
+    }
+
     return (
         <>
-            <div className="time-left">
-                Time Left: {`${(game.timeLeft / 1000).toFixed(3)}s`}
-            </div>
+            {gameTimerHTML}
+
             <Canvas camera={{ position: [camera_pos[0], camera_pos[1], camera_pos[2]] }}>
                 <Player controllable={true} />
                 {/* render all other players */}

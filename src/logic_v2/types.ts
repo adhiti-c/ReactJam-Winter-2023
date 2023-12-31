@@ -35,7 +35,10 @@ export interface GameState {
     score: number,              // score
     // currentRecipe: Cake,   // what is currently being built
     // currentCakeLayer: Partial<Cake>,        // what the current layer looks like
-    // recipeHint: Cake,           // hint as to how to build the current layer
+    // recipeHint: { // hint as to how to build the current layer
+    //     cake: Cake, // recipe for layer
+    //     repeat: number // number of times baked
+    // },
 }
 
 type GameActions = {
