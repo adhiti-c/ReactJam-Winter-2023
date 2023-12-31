@@ -1,7 +1,12 @@
 import type { PlayerId, RuneClient } from "rune-games-sdk/multiplayer"
 import { IngredientType, Flavor } from "./cakeTypes";
 
+/**
+ * the current phase of the game
+ */
 export type GamePhase = "tutorial" | "playing" | "loss";
+
+export type Feedback = "waiting" | "success" | "failure"
 
 export interface Player {
     id: PlayerId,
@@ -30,6 +35,7 @@ export interface GameState {
     lastCountdown: number,                  // to track time at last countdown in milliseconds
     timeLeft: number,                       // amount of time left in milliseconds
     phase: GamePhase,                       // the current phase of the game
+    feedback: Feedback,                     // the feedback aka whether the build failed or was successful, or if it's in progress
     players: Record<string, Player>,        // information about each player
     cake: Cake[],          // what has already been built
     score: number,              // score

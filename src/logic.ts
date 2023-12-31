@@ -24,6 +24,7 @@ Rune.initLogic({
       players: players,
       cake: [],
       score: 0,
+      feedback: "waiting",
       // currentRecipe: {
       //   // basic cake base
       // },
