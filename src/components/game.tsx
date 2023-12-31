@@ -6,7 +6,6 @@ import Camera from './objects/camera';
 import { GameState } from "../logic_v2/types";
 import Platform from './objects/platform';
 import React, { useState, KeyboardEvent, useRef, Suspense} from "react";
-import Logo from "../assets/rune.svg?react";
 
 export default function Game({ game }: { game: GameState | undefined }) {
 
@@ -47,10 +46,9 @@ export default function Game({ game }: { game: GameState | undefined }) {
             <Canvas camera={{ position: [camera_pos[0], camera_pos[1], camera_pos[2]] }}>
                 {/*<Player controllable={true} /> */}
                 <Platform/> 
-                <Logo/>
                 {/* render all other players */}
-                <ambientLight args={[0xff0000]} intensity={0.5} />
-                <directionalLight position={[0, 20, 10]} intensity={0.5} />
+                <ambientLight args={[0x000000]} />
+                <directionalLight position={[10, 10, 10]} />
             </Canvas>
         </>
     )
