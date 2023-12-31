@@ -11,7 +11,8 @@ Rune.initLogic({
     for (const playerId of allPlayerIds) {
       players[playerId] = {
         id: playerId,
-        inventory: [null]
+        inventory: [null],
+        hasPlaced: false
       }
     }
 
@@ -19,7 +20,7 @@ Rune.initLogic({
     const game: GameState = {
       lastCountdown: 0,
       timeLeft: StartTimeLeftMilliseconds,
-      countingDown: true,
+      phase: "playing",
       players: players,
       cake: [],
       score: 0,
@@ -37,13 +38,23 @@ Rune.initLogic({
     // },
   },
   update: ({ game }) => {
-    // if we counting down, count down every second
-    const timeDiff = Rune.gameTime() - game.lastCountdown;
-    if (game.countingDown && timeDiff >= 1) {
-      // decrement the time left seen by the players by 1 millisecond
-      game.timeLeft = game.timeLeft - timeDiff;
-      // save the last time the countdown ran in the game state
-      game.lastCountdown = Rune.gameTime();
+    // check if the time is gone
+    if (game.timeLeft < 0) {
+      // set the phase to be loss
+      game.phase = "loss";
+      game.timeLeft = 0;
+      // Rune.gameOver(); // TODO: implement this later
+    } else {
+      if (game.phase === "playing") {
+        const timeDiff = Rune.gameTime() - game.lastCountdown;
+        // if we counting down, count down every second
+        if (timeDiff >= 1) {
+          // decrement the time left seen by the players by 1 millisecond
+          game.timeLeft = game.timeLeft - timeDiff;
+          // save the last time the countdown ran in the game state
+          game.lastCountdown = Rune.gameTime();
+        }
+      }
     }
   },
   updatesPerSecond: 30

@@ -1,14 +1,12 @@
 import type { PlayerId, RuneClient } from "rune-games-sdk/multiplayer"
+import { IngredientType, Flavor } from "./cakeTypes";
 
-/**
- * an atomic ingredient that combines to make a cake component
- */
-export type IngredientType = "eggs" | "butter" | "sugar" | "flour";
-export type Flavor = "strawberry" | "chocolate"
+export type GamePhase = "tutorial" | "playing" | "loss";
 
 export interface Player {
     id: PlayerId,
     inventory: (IngredientType | null)[];
+    hasPlaced: boolean,
 }
 
 /**
@@ -18,7 +16,7 @@ export interface Cake {
     // a cake consists of a cake base, frosting, and an extra ingredient as flavor
     base: CakeComponent,
     frosting: CakeComponent,
-    flavor: Flavor,
+    flavor: Flavor | null,
 }
 
 /**
@@ -31,7 +29,7 @@ export interface CakeComponent {
 export interface GameState {
     lastCountdown: number,                  // to track time at last countdown in milliseconds
     timeLeft: number,                       // amount of time left in milliseconds
-    countingDown: boolean,
+    phase: GamePhase,                       // the current phase of the game
     players: Record<string, Player>,        // information about each player
     cake: Cake[],          // what has already been built
     score: number,              // score
