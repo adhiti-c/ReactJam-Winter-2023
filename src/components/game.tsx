@@ -1,8 +1,11 @@
 // the game world, including the cake, syrup, players, and items
+/// <reference types="vite-plugin-svgr/client" />
 import { Canvas } from '@react-three/fiber';
 import Player from './objects/player';
-import Camera from './objects/camera'
-import { GameState } from "../logic_v2/types"
+import Camera from './objects/camera';
+import { GameState } from "../logic_v2/types";
+import Platform from './objects/platform';
+import React, { useState, KeyboardEvent, useRef, Suspense} from "react";
 
 export default function Game({ game }: { game: GameState | undefined }) {
 
@@ -41,10 +44,11 @@ export default function Game({ game }: { game: GameState | undefined }) {
             {gameTimerHTML}
 
             <Canvas camera={{ position: [camera_pos[0], camera_pos[1], camera_pos[2]] }}>
-                <Player controllable={true} />
+                {/*<Player controllable={true} /> */}
+                <Platform/> 
                 {/* render all other players */}
-                <ambientLight args={[0xff0000]} intensity={0.5} />
-                <directionalLight position={[0, 20, 10]} intensity={0.5} />
+                <ambientLight args={[0x000000]} />
+                <directionalLight position={[10, 10, 10]} />
             </Canvas>
         </>
     )

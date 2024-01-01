@@ -4,7 +4,7 @@ import React, { useState, KeyboardEvent, useRef } from "react";
 
 //Player Movement
 export default function Camera() {
-    const [position_c, setPosition] = useState([2, 2, 2]);
+    const [position_c, setPosition] = useState([1, 0, 1]);
     const moveSpeed = 0.1;
     const windowSize = useRef([window.innerWidth, window.innerHeight]);
 
