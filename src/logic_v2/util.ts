@@ -30,3 +30,11 @@ export function checkArrayDeepEquality(arr1: any[], arr2: any[]): boolean {
     }
     return util.isDeepStrictEqual(arr1, arr2);
 }
+
+export function chooseRandomIndexOfArray(array: any[]): number {
+    if (array.length === 0) {
+        throw new Error('Array is empty');
+    }
+
+    return Math.floor(Math.random() * array.length);
+}
