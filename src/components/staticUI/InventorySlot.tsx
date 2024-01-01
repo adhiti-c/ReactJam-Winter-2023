@@ -1,7 +1,6 @@
 
 function InventorySlot({ icon, onClick }: { icon: string, onClick: Function }) {
   const handleClick = () => {
-    // Call the onClick function passed as a prop that can be called in <Resourceitems />
     if (onClick) {
       onClick();
     }
