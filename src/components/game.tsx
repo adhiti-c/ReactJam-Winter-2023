@@ -6,7 +6,7 @@ import Camera from './objects/camera';
 import { GameState } from "../logic_v2/types";
 import Platform from './objects/platform';
 import React, { useState, KeyboardEvent, useRef, Suspense } from "react";
-import { PlacableIngredient } from '../logic_v2/cakeTypes';
+import { AllInventory, PlacableIngredient } from '../logic_v2/cakeTypes';
 
 export default function Game({ game }: { game: GameState | undefined }) {
 
@@ -52,29 +52,31 @@ export default function Game({ game }: { game: GameState | undefined }) {
                     <div>
                         Next Up: {game.goals.current}
                     </div>
-                    <div>
+                    {/* <div>
                         {game.hint.name} recipe: {JSON.stringify(game.hint.recipe)}
-                    </div>
+                    </div> */}
                     <div>
                         Score: {game.score}
+                    </div>
+                    <div>
+                        Feedback: {game.feedback}
                     </div>
                     {/* show all the cake layers */}
                     <div>
                         {layers}
                     </div>
-                    {/* TODO: tie this below button action into the real game logic */}
-                    <button onClick={(e) => {
-                        e.preventDefault();
-                        placeIngredient("eggs")
-                    }}>
-                        eggs
-                    </button>
-                    <button onClick={(e) => {
-                        e.preventDefault();
-                        placeIngredient("flour")
-                    }}>
-                        flour
-                    </button>
+                    {/* TODO: tie this below button action into the real game logic, this is basically the inventory */}
+                    {AllInventory.map((ingredient) => {
+                        return (
+                            <button onClick={(e) => {
+                                e.preventDefault();
+                                placeIngredient(ingredient)
+                            }}>
+                                {ingredient}
+                            </button>
+                        )
+                    })
+                    }
                 </div>
             break;
         case "loss":

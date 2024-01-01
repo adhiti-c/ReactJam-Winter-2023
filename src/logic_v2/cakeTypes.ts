@@ -8,6 +8,9 @@ export type IngredientType = typeof Ingredients[number]
 
 
 export const Flavors = ["strawberry", "chocolate", "carrot"] as const;
+
+export const AllInventory = [...Ingredients, ...Flavors];
+
 /**
  * a flavor variation that is added to a completed cake base and frosting
  */

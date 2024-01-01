@@ -3,7 +3,16 @@
  * @param set1 
  * @param set2 
  */
-export function checkSetEquivalency(set1: Set<any>, set2: Set<any>): boolean {
+export function compareArraysAsSets(arr1: any[], arr2: any[]): boolean {
+    // check if same length
+    if (arr1.length != arr2.length) {
+        return false;
+    }
+    // turn both into sets
+    const set1 = new Set(arr1);
+    const set2 = new Set(arr2)
+
+    // compare sets now
     if (set1.size !== set2.size) {
         return false;
     }
@@ -24,7 +33,7 @@ export function checkSetEquivalency(set1: Set<any>, set2: Set<any>): boolean {
  * @param arr2 
  * @returns 
  */
-export function checkArrayDeepEquality(arr1: any[], arr2: any[]): boolean {
+export function compareArraysInOrder(arr1: any[], arr2: any[]): boolean {
     if (arr1.length !== arr2.length) {
         return false;
     }

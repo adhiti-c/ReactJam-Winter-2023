@@ -2,7 +2,7 @@ import type { PlayerId, RuneClient } from "rune-games-sdk/multiplayer"
 import { CakeLayerType, PlacableIngredient, GoalType, Recipe } from "./cakeTypes";
 
 /**
- * the current phase of the game
+ * the current phase of the game. loss = "complete loss" or the end of the game
  */
 export type GamePhase = "tutorial" | "playing" | "loss";
 
