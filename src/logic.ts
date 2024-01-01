@@ -1,4 +1,4 @@
-import { ContextWithGameState } from "rune-games-sdk";
+import { RecipeBook } from "./logic_v2/cakeTypes";
 import { StartTimeLeftMilliseconds } from "./logic_v2/logicConfig";
 import { Player, GameState } from "./logic_v2/types";
 
@@ -22,13 +22,17 @@ Rune.initLogic({
       lastCountdown: 0,
       timeLeft: StartTimeLeftMilliseconds,
       phase: "playing",
+      feedback: "waiting",
       players: players,
       cake: [],
       score: 0,
-      feedback: "waiting",
-      // currentRecipe: {
-      //   // basic cake base
-      // },
+      goal: "cake_base",
+      newLayer: [],
+      hint: {
+        recipe: RecipeBook.cake_base,
+        count: 0
+      },
+      recipesLearned: new Set()
     }
 
     return game;

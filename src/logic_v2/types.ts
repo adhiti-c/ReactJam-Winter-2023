@@ -1,5 +1,5 @@
 import type { PlayerId, RuneClient } from "rune-games-sdk/multiplayer"
-import { IngredientType, Flavor } from "./cakeTypes";
+import { CakeLayerType, PlacableIngredient, GoalType, Recipe } from "./cakeTypes";
 
 /**
  * the current phase of the game
@@ -10,25 +10,8 @@ export type Feedback = "waiting" | "success" | "failure"
 
 export interface Player {
     id: PlayerId,
-    inventory: (IngredientType | null)[];
+    inventory: (PlacableIngredient | null)[];
     hasPlaced: boolean,
-}
-
-/**
- * information about each cake layer
- */
-export interface Cake {
-    // a cake consists of a cake base, frosting, and an extra ingredient as flavor
-    base: CakeComponent,
-    frosting: CakeComponent,
-    flavor: Flavor | null,
-}
-
-/**
- * these components together will make a cake
- */
-export interface CakeComponent {
-    recipe: Set<IngredientType>,
 }
 
 export interface GameState {
@@ -36,20 +19,21 @@ export interface GameState {
     timeLeft: number,                       // amount of time left in milliseconds
     phase: GamePhase,                       // the current phase of the game
     feedback: Feedback,                     // the feedback aka whether the build failed or was successful, or if it's in progress
-    players: Record<string, Player>,        // information about each player
-    cake: Cake[],          // what has already been built
-    score: number,              // score
-    // currentRecipe: Cake,   // what is currently being built
-    // currentCakeLayer: Partial<Cake>,        // what the current layer looks like
-    // recipeHint: { // hint as to how to build the current layer
-    //     cake: Cake, // recipe for layer
-    //     repeat: number // number of times baked
-    // },
+    players: Record<PlayerId, Player>,      // information about each player. Keyed by player id with value of the player object
+    cake: CakeLayerType[],                  // what has already been built, essentially, what has been built before the current goal
+    score: number,                          // score/number of layers
+    goal: GoalType,                         // the current goal
+    newLayer: CakeLayerType[],              // what has been built while trying to achieve the current goal
+    hint: {                                 // hint as to how to build the newest learned GoalType
+        recipe: Recipe,                         // recipe for the GoalType
+        count: number                           // number of times baked
+    },
+    recipesLearned: Set<GoalType>           // set of goals encountered
 }
 
 type GameActions = {
     // increment: (params: { amount: number }) => void
-    placeIngredient: (params: { ingredient: IngredientType | Flavor }) => void;
+    placeIngredient: (params: { ingredient: PlacableIngredient }) => void;
 }
 
 declare global {
