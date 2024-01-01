@@ -77,19 +77,6 @@ export default function Game({ game }: { game: GameState | undefined }) {
                         />
                     ))}
                     
-
-                    <button onClick={(e) => {
-                        e.preventDefault();
-                        placeIngredient("eggs")
-                    }}>
-                        eggs
-                    </button>
-                    <button onClick={(e) => {
-                        e.preventDefault();
-                        placeIngredient("flour")
-                    }}>
-                        flour
-                    </button>
                 </div>
             break;
         case "loss":
