@@ -1,7 +1,7 @@
-import { RecipeBook } from "./logic_v2/cakeTypes";
-import { StartTimeLeftMilliseconds } from "./logic_v2/logicConfig";
+import { CakeLayerType, Goals, RecipeBook } from "./logic_v2/cakeTypes";
+import { StartTimeLeftMilliseconds, HintRepeatCount } from "./logic_v2/logicConfig";
 import { Player, GameState } from "./logic_v2/types";
-import { checkSetEquivalency, checkArrayDeepEquality } from "./logic_v2/util";
+import { checkSetEquivalency, checkArrayDeepEquality, chooseRandomIndexOfArray } from "./logic_v2/util";
 
 Rune.initLogic({
   minPlayers: 2,
@@ -18,6 +18,10 @@ Rune.initLogic({
       }
     }
 
+    const initialGoal: CakeLayerType = "cake_base";
+    const initialUnencountered = new Set(Goals)
+    initialUnencountered.delete(initialGoal);
+
     // create the game state
     const game: GameState = {
       lastCountdown: 0,
@@ -27,13 +31,23 @@ Rune.initLogic({
       players: players,
       cake: [],
       score: 0,
-      goal: "cake_base",
       newLayer: [],
       hint: {
-        recipe: RecipeBook.cake_base,
+        name: initialGoal,
+        recipe: RecipeBook[initialGoal],
         count: 0
       },
-      recipesLearned: new Set()
+      goals: {
+        current: initialGoal,
+        encountered: {
+          set: new Set([initialGoal]),
+          array: [initialGoal]
+        },
+        unencountered: {
+          set: initialUnencountered,
+          array: Array.from(initialUnencountered)
+        }
+      }
     }
 
     return game;
@@ -52,11 +66,11 @@ Rune.initLogic({
       game.newLayer.push(ingredient);
 
       // set the player's placed status to be true
-      // TODO: how do we process only 1 player input?
+      // TODO: how do we process only 1 player input? Aka, finishing the cake off
       // if every players have placed, process the build
       if (Object.values(game.players).every(player => player.hasPlaced)) {
         // check if game.newLayer matches game.goal
-        const currentGoal = game.goal;
+        const currentGoal = game.goals.current;
         // pull the recipe from the recipe book
         const goalRecipe = RecipeBook[currentGoal];
         let success: boolean;
@@ -72,10 +86,28 @@ Rune.initLogic({
         }
         // if it successfully matched:
         if (success) {
-          // if the goal had a flavor, switch that flavor out of the player’s hand
+          // if the goal had a flavor, switch the flavor out of the player’s hand
+          // TODO: handle player inventory changes
+
           // if the goal was the same as the current recipe hint, increment the count up
+          if (currentGoal === game.hint.name) {
+            game.hint.count = game.hint.count + 1;
+          }
+
+          // TODO: make sure it is possible to create the next goal based on the player's hand
           // if count exceeded, generate a new not-created recipe and make that the new goal
-          // else, move to next goal by grabbing another recipe
+          if (game.hint.count > HintRepeatCount) {
+            // generate a new non-created goal to make as the new goal
+            // FIXME: can we make this logic better without the special hard-coded case?
+            // special case: if the initial goal is the cake_base, make the players do frosting next
+
+            //
+          } else {
+            // else, move to next goal by grabbing another random recipe. It may be one already learned, or the current hint
+            const encounteredRecipes = game.goals.encountered;
+            const randomIndex = chooseRandomIndexOfArray(encounteredRecipes.array);
+            game.goals.current = encounteredRecipes.array[randomIndex];
+          }
         } else {
           // if it does not match
           // make sure that the thing that was built is part of the current recipe
