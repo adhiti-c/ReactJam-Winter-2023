@@ -1,12 +1,13 @@
 // the game world, including the cake, syrup, players, and items
 /// <reference types="vite-plugin-svgr/client" />
 import { Canvas } from '@react-three/fiber';
-import Player from './objects/player';
 import Camera from './objects/camera';
 import { GameState } from "../logic_v2/types";
 import Platform from './objects/platform';
-import React, { useState, KeyboardEvent, useRef, Suspense } from "react";
 import { AllInventory, PlacableIngredient } from '../logic_v2/cakeTypes';
+import Cake, {cakeDrop} from './objects/cake';
+import { Physics, RigidBody} from "@react-three/rapier";
+import {Suspense} from "react";
 
 export default function Game({ game }: { game: GameState | undefined }) {
 
@@ -70,7 +71,7 @@ export default function Game({ game }: { game: GameState | undefined }) {
                         return (
                             <button onClick={(e) => {
                                 e.preventDefault();
-                                placeIngredient(ingredient)
+                                placeIngredient(ingredient);
                             }}>
                                 {ingredient}
                             </button>
@@ -90,12 +91,20 @@ export default function Game({ game }: { game: GameState | undefined }) {
     return (
         <>
             {gameTimerHTML}
-            <Canvas camera={{ position: [camera_pos[0], camera_pos[1], camera_pos[2]] }}>
-                {/*<Player controllable={true} /> */}
-                <Platform />
-                {/* render all other players */}
-                <ambientLight args={[0x000000]} />
-                <directionalLight position={[10, 10, 10]} />
+            <Canvas camera={{ position: [camera_pos[0], camera_pos[1], camera_pos[2]] }}
+                    onClick={(e) => console.log('click')}>
+                    <Suspense>
+                        <Physics gravity={[0, -20, 0]}>
+                            <Cake texture= "eggs"/>
+                            <RigidBody type = "fixed">
+                                <Platform />
+                            </RigidBody>
+                            {/*<Player controllable={true} /> */}
+                            {/* render all other players */}
+                            <ambientLight args={[0x000000]} />
+                            <directionalLight position={[10, 10, 10]} />
+                        </Physics>
+                    </Suspense>
             </Canvas>
         </>
     )
