@@ -82,8 +82,11 @@ Rune.initLogic({
           // if it is, reset placement for players
           // enforce a penalty
         }
+      } else {
+        // a player still needs to place
+        // ??? what else do we need to do here? Do we need to do anything?
+        // do we set the player's status to be "waiting"?
       }
-      // ???
     },
   },
   update: ({ game }) => {
