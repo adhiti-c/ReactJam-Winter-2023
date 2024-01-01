@@ -35,7 +35,7 @@ export default function Game({ game }: { game: GameState | undefined }) {
     }
     layers += newLayers
     if (layers.length === 0) {
-        layers = "empty!"
+        layers = "empty cake!"
     }
 
     switch (game.phase) {
@@ -54,6 +54,9 @@ export default function Game({ game }: { game: GameState | undefined }) {
                     </div>
                     <div>
                         {game.hint.name} recipe: {JSON.stringify(game.hint.recipe)}
+                    </div>
+                    <div>
+                        Score: {game.score}
                     </div>
                     {/* show all the cake layers */}
                     <div>
