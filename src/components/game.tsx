@@ -7,6 +7,8 @@ import { GameState } from "../logic_v2/types";
 import Platform from './objects/platform';
 import React, { useState, KeyboardEvent, useRef, Suspense } from "react";
 import { PlacableIngredient } from '../logic_v2/cakeTypes';
+import InventorySlot from './staticUI/InventorySlot';
+import InventoryData from './staticUI/data/InventoryData';
 
 export default function Game({ game }: { game: GameState | undefined }) {
 
@@ -62,7 +64,20 @@ export default function Game({ game }: { game: GameState | undefined }) {
                     <div>
                         {layers}
                     </div>
-                    {/* TODO: tie this below button action into the real game logic */}
+                    {/* maps each ingredient to an inventoryslot */}
+                    {InventoryData.map((ingredients, index) => (
+                        <InventorySlot 
+                        key = {index}
+                        icon = {ingredients.icon}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            placeIngredient(ingredients.iconName)
+                        }}
+                        placeIngredient={placeIngredient}
+                        />
+                    ))}
+                    
+
                     <button onClick={(e) => {
                         e.preventDefault();
                         placeIngredient("eggs")
@@ -100,6 +115,9 @@ export default function Game({ game }: { game: GameState | undefined }) {
 }
 
 // call this function when you want to place an ingredient
+type PlacableIngredient = string;
+
 function placeIngredient(ingredient: PlacableIngredient) {
     Rune.actions.placeIngredient({ ingredient: ingredient })
 }
+
