@@ -124,7 +124,7 @@ Rune.initLogic({
               game.goals.current = unencounteredRecipes.array[randomIndex];
             }
 
-            let newGoal = game.goals.current;
+            const newGoal = game.goals.current;
 
             // reset the hint information and grab the new one
             game.hint.count = 0;
