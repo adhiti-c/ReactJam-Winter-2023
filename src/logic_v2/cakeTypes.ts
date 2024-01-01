@@ -9,15 +9,19 @@ export type IngredientType = typeof Ingredients[number]
 
 export const Flavors = ["strawberry", "chocolate", "carrot"] as const;
 
-export const AllInventory = [...Ingredients, ...Flavors];
 
 /**
  * a flavor variation that is added to a completed cake base and frosting
- */
+*/
 export type FlavorType = typeof Flavors[number];
 
 /**
- * Possible blocks that the player can put down. Effectively what lies in the player's inventory
+ * these are all the possible things a player can see in their inventory, in an array format. Mostly used in the frontend for the inventory
+ */
+export const AllInventory = [...Ingredients, ...Flavors];
+
+/**
+ * Possible blocks that the player can put down. Effectively what lies in the player's inventory also, but this time it's a type
  */
 export type PlacableIngredient = IngredientType | FlavorType
 
@@ -36,7 +40,7 @@ export type GoalType = typeof Goals[number]
 export type CakeLayerType = GoalType | PlacableIngredient;
 
 /**
- * this is an alias type for readability. This refers to what can go into 
+ * this is an alias type for readability. This refers to what you'd use to combine into the recipe
  */
 export type RecipeComponent = CakeLayerType
 
