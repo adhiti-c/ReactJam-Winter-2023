@@ -7,23 +7,17 @@ import { RoundedBox, useTexture } from '@react-three/drei';
 import { Physics, RigidBody} from "@react-three/rapier";
 import { Canvas, useLoader } from '@react-three/fiber'
 import Logo from "../assets/wheatBlockTest.svg";
+import { PlacableIngredient } from "../../logic_v2/cakeTypes";
 
-export default function Cake() {
-    const cube = useRef();
-    const colorMap = useTexture("/src/assets/wheatBlockTest.svg")
-    const [hover, setHover] = useState(false);
-    const drop = () =>{
-        
-    };
-    
+export default function Cake({texture}: {texture: PlacableIngredient}) {
+    var colorMap = undefined;
+    if (texture === "eggs"){
+        colorMap = useTexture("/src/assets/wheatBlockTest.svg")}
 
-    
     return(
         <RigidBody>
             <mesh>
-                <RoundedBox position={[0,2,0]} onPointerEnter={()=> setHover(true)} 
-                    onPointerLeave={()=> setHover(false)} 
-                    onClick={drop}
+                <RoundedBox position={[0,2.1,0]}
                     args={[.7, 0.3, 0.7]}>
                     <meshStandardMaterial map={colorMap}/>
                 </RoundedBox >
@@ -32,7 +26,8 @@ export default function Cake() {
     )
 }
 
-
-function CakeDrop() {
-
+export function cakeDrop() { 
+return(
+        <Cake texture="eggs"/>
+    )
 }
