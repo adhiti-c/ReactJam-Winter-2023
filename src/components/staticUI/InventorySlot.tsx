@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types';
 function InventorySlot({icon, onClick}) {
   const handleClick = () => {
-    // Call the onClick function passed as a prop that can be called in <Resourceitems />
     if (onClick) {
       onClick();
     }
