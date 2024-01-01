@@ -6,6 +6,7 @@ import Camera from './objects/camera';
 import { GameState } from "../logic_v2/types";
 import Platform from './objects/platform';
 import React, { useState, KeyboardEvent, useRef, Suspense } from "react";
+import { PlacableIngredient } from '../logic_v2/cakeTypes';
 
 export default function Game({ game }: { game: GameState | undefined }) {
 
@@ -61,15 +62,13 @@ export default function Game({ game }: { game: GameState | undefined }) {
                     {/* TODO: tie this below button action into the real game logic */}
                     <button onClick={(e) => {
                         e.preventDefault();
-                        console.log("eggs")
-                        Rune.actions.placeIngredient({ ingredient: "eggs" })
+                        placeIngredient("eggs")
                     }}>
                         eggs
                     </button>
                     <button onClick={(e) => {
                         e.preventDefault();
-                        console.log("flour")
-                        Rune.actions.placeIngredient({ ingredient: "flour" })
+                        placeIngredient("flour")
                     }}>
                         flour
                     </button>
@@ -95,4 +94,9 @@ export default function Game({ game }: { game: GameState | undefined }) {
             </Canvas>
         </>
     )
+}
+
+// call this function when you want to place an ingredient
+function placeIngredient(ingredient: PlacableIngredient) {
+    Rune.actions.placeIngredient({ ingredient: ingredient })
 }
