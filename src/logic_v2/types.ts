@@ -84,18 +84,12 @@ export interface GameState {
         /**
          *  set of goals whose hints the players have seen at least once. Includes the goals whose recipes the player should have memorized by now.
          */
-        encountered: {
-            set: Set<GoalType>,
-            array: GoalType[]
-        },
+        encountered: GoalType[],
 
         /**
          * set of goals whose hints the players have not seen at least once
          */
-        unencountered: {
-            set: Set<GoalType>,
-            array: GoalType[]
-        }
+        unencountered: GoalType[]
     }
 
 }

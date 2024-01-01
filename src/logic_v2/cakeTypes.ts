@@ -37,7 +37,10 @@ export type CakeLayerType = GoalType | PlacableIngredient;
  */
 export type RecipeComponent = CakeLayerType
 
-export type Recipe = Set<RecipeComponent> | RecipeComponent[]
+export interface Recipe {
+    recipe: RecipeComponent[],
+    ordered: boolean
+}
 
 // when we add more cake varieties, add them here
 
@@ -46,10 +49,28 @@ export type Recipe = Set<RecipeComponent> | RecipeComponent[]
  * Typically, if it is a set, we will be relying on what has already been placed and additional ingredients that have been placed.
  */
 export const RecipeBook: Record<GoalType, Recipe> = {
-    "cake_base": new Set(["eggs", "flour"]),
-    "cake_frosting": new Set(["butter", "sugar"]),
-    "basic_cake": ["cake_base", "cake_frosting"],
-    "choco_cake": ["basic_cake", "chocolate"],
-    "straw_cake": ["basic_cake", "strawberry"],
-    "carrot_cake": ["basic_cake", "carrot"]
+    "cake_base": {
+        recipe: ["eggs", "flour"],
+        ordered: false
+    },
+    "cake_frosting": {
+        recipe: ["butter", "sugar"],
+        ordered: false
+    },
+    "basic_cake": {
+        recipe: ["cake_base", "cake_frosting"],
+        ordered: true,
+    },
+    "choco_cake": {
+        recipe: ["basic_cake", "chocolate"],
+        ordered: true,
+    },
+    "straw_cake": {
+        recipe: ["basic_cake", "strawberry"],
+        ordered: true,
+    },
+    "carrot_cake": {
+        recipe: ["basic_cake", "carrot"],
+        ordered: true,
+    }
 }

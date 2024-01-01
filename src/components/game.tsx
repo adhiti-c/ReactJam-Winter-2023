@@ -48,6 +48,12 @@ export default function Game({ game }: { game: GameState | undefined }) {
             gameTimerHTML =
                 <div className="time-left">
                     Time Left: {`${(game.timeLeft / 1000).toFixed(3)}s`}
+                    <div>
+                        Next Up: {game.goals.current}
+                    </div>
+                    <div>
+                        {game.hint.name} recipe: {JSON.stringify(game.hint.recipe)}
+                    </div>
                     {/* show all the cake layers */}
                     <div>
                         {layers}
@@ -55,10 +61,17 @@ export default function Game({ game }: { game: GameState | undefined }) {
                     {/* TODO: tie this below button action into the real game logic */}
                     <button onClick={(e) => {
                         e.preventDefault();
-                        console.log("clicked")
+                        console.log("eggs")
                         Rune.actions.placeIngredient({ ingredient: "eggs" })
                     }}>
-                        test
+                        eggs
+                    </button>
+                    <button onClick={(e) => {
+                        e.preventDefault();
+                        console.log("flour")
+                        Rune.actions.placeIngredient({ ingredient: "flour" })
+                    }}>
+                        flour
                     </button>
                 </div>
             break;

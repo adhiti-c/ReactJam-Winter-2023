@@ -1,7 +1,7 @@
 import { CakeLayerType, Goals, RecipeBook } from "./logic_v2/cakeTypes";
 import { StartTimeLeftMilliseconds, HintRepeatCount } from "./logic_v2/logicConfig";
 import { Player, GameState } from "./logic_v2/types";
-import { checkSetEquivalency, checkArrayDeepEquality, chooseRandomIndexOfArray } from "./logic_v2/util";
+import { checkSetEquivalency, checkArrayDeepEquality, chooseRandomIndexOfArray, removeFromArray } from "./logic_v2/util";
 
 Rune.initLogic({
   minPlayers: 2,
@@ -39,14 +39,8 @@ Rune.initLogic({
       },
       goals: {
         current: initialGoal,
-        encountered: {
-          set: new Set([initialGoal]),
-          array: [initialGoal]
-        },
-        unencountered: {
-          set: initialUnencountered,
-          array: Array.from(initialUnencountered)
-        }
+        encountered: [initialGoal],
+        unencountered: removeFromArray([...Goals], initialGoal)
       }
     }
 
@@ -77,13 +71,15 @@ Rune.initLogic({
         const currentLayerArray = game.newLayer;
 
         // check if order matters
-        if (goalRecipe instanceof Set) {
+        if (goalRecipe.ordered) {
           // convert current layer to a set
           const currentLayerSet = new Set(currentLayerArray);
-          success = checkSetEquivalency(goalRecipe, currentLayerSet);
+          // convert recipe to a set
+          const goalSet = new Set(goalRecipe.recipe)
+          success = checkSetEquivalency(goalSet, currentLayerSet);
         } else {
           // deep array equivalency
-          success = checkArrayDeepEquality(goalRecipe, currentLayerArray);
+          success = checkArrayDeepEquality(goalRecipe.recipe, currentLayerArray);
         }
 
         // if it successfully matched:
@@ -97,6 +93,14 @@ Rune.initLogic({
           // set feedback to be success
           game.feedback = "success";
 
+          // reset the current layer
+          game.newLayer = [];
+
+          // make all players able to place again
+          for (const player in game.players) {
+            game.players[player].hasPlaced = false;
+          }
+
           // if the goal had a flavor, switch the flavor out of the player’s hand
           // TODO: handle player inventory changes
 
@@ -108,7 +112,7 @@ Rune.initLogic({
 
           // TODO: make sure it is possible to create the next goal based on the player's hand
           // if count exceeded, generate a new not-created recipe and make that the new goal
-          if (game.hint.count > HintRepeatCount) {
+          if (game.hint.count >= HintRepeatCount) {
             // generate a new non-created goal to make as the new goal
             // FIXME: can we make this logic better without the special hard-coded cases?
             // special case: if the initial goal is the cake_base, make the players do frosting next as part of the tutorial?
@@ -120,8 +124,8 @@ Rune.initLogic({
             } else {
               // choose from the unencountered goals
               const unencounteredRecipes = game.goals.unencountered;
-              const randomIndex = chooseRandomIndexOfArray(unencounteredRecipes.array);
-              game.goals.current = unencounteredRecipes.array[randomIndex];
+              const randomIndex = chooseRandomIndexOfArray(unencounteredRecipes);
+              game.goals.current = unencounteredRecipes[randomIndex];
             }
 
             const newGoal = game.goals.current;
@@ -132,23 +136,26 @@ Rune.initLogic({
             game.hint.recipe = RecipeBook[newGoal];
 
             // move the new goal to be encountered
-            game.goals.unencountered.set.delete(newGoal);
-            game.goals.encountered.set.add(newGoal);
-            game.goals.encountered.array.push(newGoal)
-
-            // rebuild unencountered array to update them
-            game.goals.unencountered.array = Array.from(game.goals.unencountered.set);
+            let oldEncountered = [...game.goals.encountered];
+            oldEncountered.push(newGoal)
+            game.goals.encountered = oldEncountered;
 
           } else {
             // else, move to next goal by grabbing another random recipe. It may be one already learned, or the current hint
             const encounteredRecipes = game.goals.encountered;
-            const randomIndex = chooseRandomIndexOfArray(encounteredRecipes.array);
-            game.goals.current = encounteredRecipes.array[randomIndex];
+            const randomIndex = chooseRandomIndexOfArray(encounteredRecipes);
+            game.goals.current = encounteredRecipes[randomIndex];
           }
         } else {
           // if it does not match
           // make sure that the thing that was built is part of the current recipe
-          // if it is, reset placement for players
+          // if it is
+          // reset placement for players
+          // // make all players able to place again
+          // for (const player in game.players) {
+          //   game.players[player].hasPlaced = false;
+          // }
+          // keep the current thing in the layer
           // enforce a penalty
         }
       } else {
