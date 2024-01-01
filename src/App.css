@@ -30,4 +30,6 @@
 
 .time-left {
   position: absolute;
+  /* re-enable clicking */
+  z-index: 100;
 }

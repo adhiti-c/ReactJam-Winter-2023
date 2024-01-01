@@ -5,7 +5,7 @@ import Player from './objects/player';
 import Camera from './objects/camera';
 import { GameState } from "../logic_v2/types";
 import Platform from './objects/platform';
-import React, { useState, KeyboardEvent, useRef, Suspense} from "react";
+import React, { useState, KeyboardEvent, useRef, Suspense } from "react";
 
 export default function Game({ game }: { game: GameState | undefined }) {
 
@@ -18,6 +18,25 @@ export default function Game({ game }: { game: GameState | undefined }) {
     // add or remove the timer depending on the game state
     let gameTimerHTML;
 
+    // for now, just show the layers as a bunch of text. This will be fixed later, when we are able to map cake layer types to actual three.js blocks
+    let layers = "";
+    for (const layer of game.cake) {
+        layers += layer + ", "
+    }
+    // now add in the new layer that is not finalized
+    let newLayers = ""
+    if (game.newLayer.length !== 0) {
+        newLayers += "["
+        for (const layer of game.newLayer) {
+            newLayers += layer + ", "
+        }
+        newLayers += "]"
+    }
+    layers += newLayers
+    if (layers.length === 0) {
+        layers = "empty!"
+    }
+
     switch (game.phase) {
         case "tutorial":
             gameTimerHTML =
@@ -29,6 +48,18 @@ export default function Game({ game }: { game: GameState | undefined }) {
             gameTimerHTML =
                 <div className="time-left">
                     Time Left: {`${(game.timeLeft / 1000).toFixed(3)}s`}
+                    {/* show all the cake layers */}
+                    <div>
+                        {layers}
+                    </div>
+                    {/* TODO: tie this below button action into the real game logic */}
+                    <button onClick={(e) => {
+                        e.preventDefault();
+                        console.log("clicked")
+                        Rune.actions.placeIngredient({ ingredient: "eggs" })
+                    }}>
+                        test
+                    </button>
                 </div>
             break;
         case "loss":
@@ -42,10 +73,9 @@ export default function Game({ game }: { game: GameState | undefined }) {
     return (
         <>
             {gameTimerHTML}
-
             <Canvas camera={{ position: [camera_pos[0], camera_pos[1], camera_pos[2]] }}>
                 {/*<Player controllable={true} /> */}
-                <Platform/> 
+                <Platform />
                 {/* render all other players */}
                 <ambientLight args={[0x000000]} />
                 <directionalLight position={[10, 10, 10]} />
