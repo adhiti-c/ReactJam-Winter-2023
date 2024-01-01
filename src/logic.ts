@@ -1,6 +1,7 @@
 import { RecipeBook } from "./logic_v2/cakeTypes";
 import { StartTimeLeftMilliseconds } from "./logic_v2/logicConfig";
 import { Player, GameState } from "./logic_v2/types";
+import { checkSetEquivalency, checkArrayDeepEquality } from "./logic_v2/util";
 
 Rune.initLogic({
   minPlayers: 2,
@@ -48,21 +49,39 @@ Rune.initLogic({
       }
 
       // add the ingredient to the current recipe
+      game.newLayer.push(ingredient);
 
       // set the player's placed status to be true
+      // TODO: how do we process only 1 player input?
       // if every players have placed, process the build
       if (Object.values(game.players).every(player => player.hasPlaced)) {
-        // check if game.currentCakeLayer matches game.currentRecipe
-
-        // if it does:
-        // if the goal had a flavor, switch that flavor out of the player’s hand
-        // if the goal was the same as the current recipe hint, increment the count up
-        // if count exceeded, generate a new not-created recipe and make that the new goal
-        // else, move to next goal by grabbing another recipe
-
-
-        // if it does not match
-        // enforce a penalty
+        // check if game.newLayer matches game.goal
+        const currentGoal = game.goal;
+        // pull the recipe from the recipe book
+        const goalRecipe = RecipeBook[currentGoal];
+        let success: boolean;
+        const currentLayerArray = game.newLayer;
+        // check if order matters
+        if (goalRecipe instanceof Set) {
+          // convert current layer to a set
+          const currentLayerSet = new Set(currentLayerArray);
+          success = checkSetEquivalency(goalRecipe, currentLayerSet);
+        } else {
+          // deep array equivalency
+          success = checkArrayDeepEquality(goalRecipe, currentLayerArray);
+        }
+        // if it successfully matched:
+        if (success) {
+          // if the goal had a flavor, switch that flavor out of the player’s hand
+          // if the goal was the same as the current recipe hint, increment the count up
+          // if count exceeded, generate a new not-created recipe and make that the new goal
+          // else, move to next goal by grabbing another recipe
+        } else {
+          // if it does not match
+          // make sure that the thing that was built is part of the current recipe
+          // if it is, reset placement for players
+          // enforce a penalty
+        }
       }
       // ???
     },
