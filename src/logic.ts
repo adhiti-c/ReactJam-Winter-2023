@@ -75,6 +75,7 @@ Rune.initLogic({
         const goalRecipe = RecipeBook[currentGoal];
         let success: boolean;
         const currentLayerArray = game.newLayer;
+
         // check if order matters
         if (goalRecipe instanceof Set) {
           // convert current layer to a set
@@ -84,24 +85,60 @@ Rune.initLogic({
           // deep array equivalency
           success = checkArrayDeepEquality(goalRecipe, currentLayerArray);
         }
+
         // if it successfully matched:
         if (success) {
+          // add the goal to the overall cake layer
+          game.cake.push(game.goals.current);
+
+          // increment the score
+          game.score = game.score + 1;
+
+          // set feedback to be success
+          game.feedback = "success";
+
           // if the goal had a flavor, switch the flavor out of the player’s hand
           // TODO: handle player inventory changes
 
           // if the goal was the same as the current recipe hint, increment the count up
-          if (currentGoal === game.hint.name) {
-            game.hint.count = game.hint.count + 1;
+          const gameHint = game.hint;
+          if (currentGoal === gameHint.name) {
+            game.hint.count = gameHint.count + 1;
           }
 
           // TODO: make sure it is possible to create the next goal based on the player's hand
           // if count exceeded, generate a new not-created recipe and make that the new goal
           if (game.hint.count > HintRepeatCount) {
             // generate a new non-created goal to make as the new goal
-            // FIXME: can we make this logic better without the special hard-coded case?
-            // special case: if the initial goal is the cake_base, make the players do frosting next
+            // FIXME: can we make this logic better without the special hard-coded cases?
+            // special case: if the initial goal is the cake_base, make the players do frosting next as part of the tutorial?
+            if (game.goals.current === "cake_base") {
+              game.goals.current = "cake_frosting";
+            } else if (game.goals.current === "cake_frosting") {
+              // special case: if the goal is cake_frosting, make it a chocolate cake as part of the tutorial?
+              game.goals.current = "choco_cake";
+            } else {
+              // choose from the unencountered goals
+              const unencounteredRecipes = game.goals.unencountered;
+              const randomIndex = chooseRandomIndexOfArray(unencounteredRecipes.array);
+              game.goals.current = unencounteredRecipes.array[randomIndex];
+            }
 
-            //
+            let newGoal = game.goals.current;
+
+            // reset the hint information and grab the new one
+            game.hint.count = 0;
+            game.hint.name = newGoal;
+            game.hint.recipe = RecipeBook[newGoal];
+
+            // move the new goal to be encountered
+            game.goals.unencountered.set.delete(newGoal);
+            game.goals.encountered.set.add(newGoal);
+            game.goals.encountered.array.push(newGoal)
+
+            // rebuild unencountered array to update them
+            game.goals.unencountered.array = Array.from(game.goals.unencountered.set);
+
           } else {
             // else, move to next goal by grabbing another random recipe. It may be one already learned, or the current hint
             const encounteredRecipes = game.goals.encountered;
