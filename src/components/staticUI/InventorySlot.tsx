@@ -1,6 +1,5 @@
-import React from 'react'
-import PropTypes from 'prop-types';
-function InventorySlot({icon, onClick}) {
+
+function InventorySlot({ icon, onClick }: { icon: string, onClick: Function }) {
   const handleClick = () => {
     if (onClick) {
       onClick();
@@ -9,14 +8,11 @@ function InventorySlot({icon, onClick}) {
   return (
     <div>
       <button className='inventory-slot' onClick={handleClick}>
-        <img src={icon}/>
+        <img src={icon} />
       </button>
     </div>
   )
 }
-InventorySlot.propTypes = {
-  icon: PropTypes.element.isRequired,
-  onClick: PropTypes.func, 
-};
+
 export default InventorySlot
 

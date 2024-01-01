@@ -66,14 +66,10 @@ export default function Game({ game }: { game: GameState | undefined }) {
                     </div>
                     {/* maps each ingredient to an inventoryslot */}
                     {InventoryData.map((ingredients, index) => (
-                        <InventorySlot 
-                        key = {index}
-                        icon = {ingredients.icon}
-                        onClick={(e) => {
-                            e.preventDefault();
-                            placeIngredient(ingredients.iconName)
-                        }}
-                        placeIngredient={placeIngredient}
+                        <InventorySlot
+                            key={index}
+                            icon={ingredients.icon}
+                            onClick={placeIngredient}
                         />
                     ))}
                     
@@ -102,8 +98,6 @@ export default function Game({ game }: { game: GameState | undefined }) {
 }
 
 // call this function when you want to place an ingredient
-type PlacableIngredient = string;
-
 function placeIngredient(ingredient: PlacableIngredient) {
     Rune.actions.placeIngredient({ ingredient: ingredient })
 }
