@@ -1,7 +1,7 @@
 /**
  * amount of time starting out before players lose
  */
-const StartTimeSeconds = 15;
+const StartTimeSeconds = 60;
 
 /**
  * amount of time starting out before players lose, in milliseconds. Modify the StartTimeSeconds in `logicConfig.ts` instead of this value 
