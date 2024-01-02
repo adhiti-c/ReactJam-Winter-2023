@@ -26,10 +26,6 @@ export default function Game({ game }: { game: GameState }) {
 
     const camera_pos = Camera();
 
-    if (!game) {
-        return <div>Loading...</div>;
-    }
-
     // add or remove the timer depending on the game state
     let gameTimerHTML;
 

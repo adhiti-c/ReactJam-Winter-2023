@@ -15,7 +15,14 @@ function App() {
 
   return (
     <div style={{ width: "100vw", height: "100vh" }}>
-      <Game game={game} />
+      {
+        !game ?
+          <div>
+            Loading...
+          </div>
+          :
+          <Game game={game} />
+      }
     </div>
   );
 
