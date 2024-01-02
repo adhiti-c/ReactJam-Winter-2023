@@ -1,20 +1,44 @@
 :root {
-  --pink: #FF8888;
-  --pinkLight: #FFCFE0;
-  --gold: #FFC061;
+  --pink: #ff8888;
+  --pinkLight: #ffcfe0;
+  --gold: #ffc061;
   --brownDark: #413434;
-  --border: 4px solid #fff;
+  --border: 3px solid #fff;
 }
-html, body {
-  font-family: 'Poppins', sans-serif;
+html,
+body {
+  font-family: "Poppins", sans-serif;
   margin: 0;
   background-color: var(--pinkLight);
+  box-sizing: border-box;
+}
+img {
+  margin: 0;
 }
 h1 {
   font-size: 28px;
-  outline: var(--brownDark);
+  /* -webkit-text-stroke-width: 2px;
+  -webkit-text-fill-color: var(--pink); 
+  -webkit-text-stroke-color: #fff; */
+  color: var(--pink);
+  margin: 0;
+  font-weight: 800;
+  text-shadow: -2px 0 #fff, 0 2px #fff, 2px 0 #fff, 0 -2px #fff;
+}
+/* next up, score count */
+h2 {
+  font-size: 14px;
+  color: #fff;
+  margin: 0;
 }
 /* main content */
+.top-section {
+  display: grid;
+  grid-template-columns: auto;
+  gap: 12px;
+  align-items: flex-start;
+
+}
 .static-ui-contain {
   display: grid;
   place-content: center;
@@ -31,13 +55,13 @@ h1 {
   grid-template-columns: repeat(3, 1fr);
   justify-items: center;
   gap: 4px;
-  padding: 36px;
+  padding: 16px 56px;
 }
 .inventory-slot {
-  background-color: rgba(218, 189, 194, 0.50);
+  background-color: rgba(218, 189, 194, 0.5);
   border-radius: 20px;
   padding: 20px;
-  border: 4px solid rgba(218, 189, 194, 0.50);
+  border: 4px solid rgba(218, 189, 194, 0.5);
   width: 70px;
   height: 70px;
   place-content: center;
@@ -47,10 +71,113 @@ h1 {
 .inventory-slot img {
   max-width: 30px;
 }
-.inventory-slot:hover, .selected {
+.inventory-slot:hover,
+.selected {
   cursor: pointer;
   border: var(--border);
   background-color: var(--pink);
 }
 
+/* top state nav */
+.state-contain {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 36px;
+  box-sizing: border-box;
+}
+.nextup-contain {
+  background-color: var(--pink);
+  border-radius: 18px;
+  padding: 8px;
+  width: fit-content;
+  height: fit-content;
+  display: grid;
+  place-content: center;
+  gap: 4px;
+  align-items: center;
+  justify-items: center;
+}
+.nextup-contain img {
+  max-width: 40px;
+}
 
+.score-contain {
+  display: grid;
+  place-content: center;
+  grid-template-columns: 1fr 1fr;
+  background-color: var(--pink);
+  border: var(--border);
+  border-radius: 100px;
+  padding: 8px 12px;
+  height: fit-content;
+  align-items: center;
+  gap: 8px;
+  height: 20px;
+  width: 50px;
+  align-items: center;
+  justify-items:center;
+}
+.score-contain img {
+  max-width: 22px;
+}
+.score-contain h2 {
+  font-size: 20px;
+}
+/* recipe items */
+.recipe-section {
+  padding: 0 60px;
+  display: grid;
+  justify-content: flex-end;
+}
+.recipe-contain {
+  display: grid;
+ grid-template-columns: auto;
+ max-width: 50px;
+ align-items: flex-end;
+ justify-items: end;
+}
+.recipe-item {
+  background-color: var(--pink);
+  border: var(--border);
+  padding: 8px;
+  width: fit-content;
+  width: 25px;
+  border-radius: 16px;
+  height: 25px;
+  
+}
+.final-recipe-item {
+  border: var(--border);
+  padding: 8px;
+  width: fit-content;
+  width: 25px;
+  border-radius: 16px;
+  height: 25px;
+  overflow: hidden;
+  background-color: #fff;
+}
+.final-recipe-item img {
+ width: 30px;
+}
+.recipe-contain-step {
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+  align-items: center;
+}
+.recipe-contain-step img{
+  max-height: 30px;
+  
+}
+/* lines between recipe items in the recipe container */
+.line-contain {
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+  
+}
+.line {
+  border-left: 6px solid #fff;
+height: 10px;
+margin-right: 20px;
+}

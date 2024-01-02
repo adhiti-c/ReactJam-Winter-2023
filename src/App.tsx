@@ -1,25 +1,23 @@
-import './App.css'
-import Game from './components/game'
-import { useEffect, useState } from 'react';
-import { GameState } from './logic_v2/types';
-
+import "./App.css";
+import Game from "./components/game";
+import { useEffect, useState } from "react";
+import { GameState } from "./logic_v2/types";
 
 function App() {
-
-  const [game, setGame] = useState<GameState>()
+  const [game, setGame] = useState<GameState>();
   useEffect(() => {
     Rune.initClient({
       onChange: ({ game, yourPlayerId }) => {
-        setGame(game)
+        setGame(game);
       },
-    })
-  }, [])
+    });
+  }, []);
 
   return (
     <div style={{ width: "100vw", height: "100vh" }}>
       <Game game={game} />
     </div>
-  )
+  );
 
   /*  const [count, setCount] = useState(0)
   
@@ -53,4 +51,4 @@ function App() {
     )*/
 }
 
-export default App
+export default App;

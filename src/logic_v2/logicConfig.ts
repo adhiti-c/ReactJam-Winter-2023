@@ -1,10 +1,10 @@
 /**
  * amount of time starting out before players lose
  */
-const StartTimeSeconds = 60;
+export const StartTimeSeconds = 60;
 
 /**
- * amount of time starting out before players lose, in milliseconds. Modify the StartTimeSeconds in `logicConfig.ts` instead of this value 
+ * amount of time starting out before players lose, in milliseconds. Modify the StartTimeSeconds in `logicConfig.ts` instead of this value
  */
 export const StartTimeLeftMilliseconds = StartTimeSeconds * 1000;
 

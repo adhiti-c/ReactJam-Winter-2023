@@ -1,25 +1,32 @@
 import { CakeLayerType, Goals, RecipeBook } from "./logic_v2/cakeTypes";
-import { StartTimeLeftMilliseconds, HintRepeatCount } from "./logic_v2/logicConfig";
+import {
+  StartTimeLeftMilliseconds,
+  HintRepeatCount,
+} from "./logic_v2/logicConfig";
 import { Player, GameState } from "./logic_v2/types";
-import { checkSetEquivalency, checkArrayDeepEquality, chooseRandomIndexOfArray, removeFromArray } from "./logic_v2/util";
+import {
+  checkSetEquivalency,
+  checkArrayDeepEquality,
+  chooseRandomIndexOfArray,
+  removeFromArray,
+} from "./logic_v2/util";
 
 Rune.initLogic({
   minPlayers: 2,
   maxPlayers: 2,
   setup: (allPlayerIds): GameState => {
-
     // create all players
     const players: Record<string, Player> = {};
     for (const playerId of allPlayerIds) {
       players[playerId] = {
         id: playerId,
         inventory: [null],
-        hasPlaced: false
-      }
+        hasPlaced: false,
+      };
     }
 
     const initialGoal: CakeLayerType = "cake_base";
-    const initialUnencountered = new Set(Goals)
+    const initialUnencountered = new Set(Goals);
     initialUnencountered.delete(initialGoal);
 
     // create the game state
@@ -35,23 +42,22 @@ Rune.initLogic({
       hint: {
         name: initialGoal,
         recipe: RecipeBook[initialGoal],
-        count: 0
+        count: 0,
       },
       goals: {
         current: initialGoal,
         encountered: [initialGoal],
-        unencountered: removeFromArray([...Goals], initialGoal)
-      }
-    }
+        unencountered: removeFromArray([...Goals], initialGoal),
+      },
+    };
 
     return game;
-
   },
   actions: {
     placeIngredient({ ingredient }, { allPlayerIds, game, playerId }) {
       // make sure the player has not already placed
       if (game.players[playerId].hasPlaced) {
-        throw Rune.invalidAction()
+        throw Rune.invalidAction();
       } else {
         game.players[playerId].hasPlaced = true;
       }
@@ -62,7 +68,7 @@ Rune.initLogic({
       // set the player's placed status to be true
       // TODO: how do we process only 1 player input? Aka, finishing the cake off
       // if every players have placed, process the build
-      if (Object.values(game.players).every(player => player.hasPlaced)) {
+      if (Object.values(game.players).every((player) => player.hasPlaced)) {
         // check if game.newLayer matches game.goal
         const currentGoal = game.goals.current;
         // pull the recipe from the recipe book
@@ -75,11 +81,14 @@ Rune.initLogic({
           // convert current layer to a set
           const currentLayerSet = new Set(currentLayerArray);
           // convert recipe to a set
-          const goalSet = new Set(goalRecipe.recipe)
+          const goalSet = new Set(goalRecipe.recipe);
           success = checkSetEquivalency(goalSet, currentLayerSet);
         } else {
           // deep array equivalency
-          success = checkArrayDeepEquality(goalRecipe.recipe, currentLayerArray);
+          success = checkArrayDeepEquality(
+            goalRecipe.recipe,
+            currentLayerArray,
+          );
         }
 
         // if it successfully matched:
@@ -124,7 +133,8 @@ Rune.initLogic({
             } else {
               // choose from the unencountered goals
               const unencounteredRecipes = game.goals.unencountered;
-              const randomIndex = chooseRandomIndexOfArray(unencounteredRecipes);
+              const randomIndex =
+                chooseRandomIndexOfArray(unencounteredRecipes);
               game.goals.current = unencounteredRecipes[randomIndex];
             }
 
@@ -137,9 +147,8 @@ Rune.initLogic({
 
             // move the new goal to be encountered
             let oldEncountered = [...game.goals.encountered];
-            oldEncountered.push(newGoal)
+            oldEncountered.push(newGoal);
             game.goals.encountered = oldEncountered;
-
           } else {
             // else, move to next goal by grabbing another random recipe. It may be one already learned, or the current hint
             const encounteredRecipes = game.goals.encountered;
@@ -185,5 +194,5 @@ Rune.initLogic({
       }
     }
   },
-  updatesPerSecond: 30
-})
+  updatesPerSecond: 30,
+});
