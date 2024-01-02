@@ -3,20 +3,54 @@
   --pinkLight: #FFCFE0;
   --gold: #FFC061;
   --brownDark: #413434;
+  --border: 4px solid #fff;
 }
 html, body {
   font-family: 'Poppins', sans-serif;
   margin: 0;
+  background-color: var(--pinkLight);
 }
 h1 {
   font-size: 28px;
   outline: var(--brownDark);
 }
-
-
-
-.time-left {
-  position: absolute;
+/* main content */
+.static-ui-contain {
+  display: grid;
+  place-content: center;
   /* re-enable clicking */
-  z-index: 100;
+  z-index: 200;
+  height: 100%;
+  position: absolute;
+  width: 100vw;
+  align-content: space-between;
 }
+.inventory-contain {
+  display: grid;
+  align-items: center;
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
+  gap: 4px;
+  padding: 36px;
+}
+.inventory-slot {
+  background-color: rgba(218, 189, 194, 0.50);
+  border-radius: 20px;
+  padding: 20px;
+  border: 4px solid rgba(218, 189, 194, 0.50);
+  width: 70px;
+  height: 70px;
+  place-content: center;
+  display: grid;
+  margin: 0;
+}
+.inventory-slot img {
+  max-width: 30px;
+}
+.inventory-slot:hover, .selected {
+  cursor: pointer;
+  border: var(--border);
+  background-color: var(--pink);
+}
+
+

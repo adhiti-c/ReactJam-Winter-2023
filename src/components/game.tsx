@@ -9,9 +9,22 @@ import React, { useState, KeyboardEvent, useRef, Suspense } from "react";
 import { PlacableIngredient } from '../logic_v2/cakeTypes';
 import InventorySlot from './staticUI/InventorySlot';
 import InventoryData from './staticUI/data/InventoryData';
-
 export default function Game({ game }: { game: GameState | undefined }) {
+    // selected element
+    const [selectedIngredient, setSelectedIngredient] = useState<string[]>([]);
 
+    const handleInventoryClick = ( ingredient: PlacableIngredient) => {
+        // if the list of ingredients includes the index
+        const newSelectedIngredient = selectedIngredient.includes(ingredient)
+        // then only include elements not equal to the ingredient 
+        ? selectedIngredient.filter((i) => i !== ingredient)
+        // else assign the selectedIngredient array to the new index clicked
+        : [ingredient]
+        setSelectedIngredient(newSelectedIngredient);
+        
+        placeIngredient(ingredient);
+        console.log(`Ingredient ${ingredient} is selected: ${newSelectedIngredient.includes(ingredient)}`);
+    }
     const camera_pos = Camera();
 
     if (!game) {
@@ -49,8 +62,9 @@ export default function Game({ game }: { game: GameState | undefined }) {
             break;
         case "playing":
             gameTimerHTML =
+            <div className="static-ui-contain">
                 <div className="time-left">
-                    Time Left: {`${(game.timeLeft / 1000).toFixed(3)}s`}
+                    {/* Time Left: {`${(game.timeLeft / 1000).toFixed(3)}s`} */}
                     <div>
                         Next Up: {game.goals.current}
                     </div>
@@ -64,23 +78,32 @@ export default function Game({ game }: { game: GameState | undefined }) {
                     <div>
                         {layers}
                     </div>
-                    {/* maps each ingredient to an inventoryslot */}
-                    {InventoryData.map((ingredients, index) => (
+
+                    </div>
+
+                    <div className="inventory-contain">
+         {/* maps each ingredient to an inventoryslot */}
+         {InventoryData.slice(0,3).map((ingredient, index) => (
                         <InventorySlot
                             key={index}
-                            icon={ingredients.icon}
-                            onClick={placeIngredient}
+                            icon={ingredient.icon}
+                            onClick={() =>handleInventoryClick(ingredient)}
+                            className={selectedIngredient.includes(ingredient) ? 'selected' : ''}
                         />
                     ))}
+                    </div>
+           
                     
-                </div>
-            break;
-        case "loss":
-            gameTimerHTML =
-                <div className="time-left">
-                    Game Over
-                </div>
-            break;
+                    </div>    
+                
+        //     break;
+        // case "loss":
+        //     gameTimerHTML =
+        //         <div className="time-left">
+        //             Game Over
+        //         </div>
+        //     break;
+            
     }
 
     return (
@@ -95,6 +118,7 @@ export default function Game({ game }: { game: GameState | undefined }) {
             </Canvas>
         </>
     )
+    
 }
 
 // call this function when you want to place an ingredient
