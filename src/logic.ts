@@ -1,15 +1,14 @@
-import { CakeLayerType, Goals, RecipeBook } from "./logic_v2/cakeTypes";
-import {
-  StartTimeLeftMilliseconds,
-  HintRepeatCount,
-} from "./logic_v2/logicConfig";
+import { CakeLayerType, GoalType, Goals, RecipeBook } from "./logic_v2/cakeTypes";
+import { StartTimeLeftMilliseconds, HintRepeatCount } from "./logic_v2/logicConfig";
 import { Player, GameState } from "./logic_v2/types";
-import {
-  checkSetEquivalency,
-  checkArrayDeepEquality,
-  chooseRandomIndexOfArray,
-  removeFromArray,
-} from "./logic_v2/util";
+import { compareArraysAsSets, compareArraysInOrder, chooseRandomIndexOfArray, removeFromArray } from "./logic_v2/util";
+
+/*
+random thoughts:
+- say we have a finisher flavor (aka only 1 player adds an ingredient.) do we immediately process?
+- do we actually check if we are making progress toward the goal during each placement instead?
+- this logic may break if we have spectators! make some sort of array of player IDs I think, maybe. Like, baker IDs
+*/
 
 Rune.initLogic({
   minPlayers: 2,
@@ -78,17 +77,10 @@ Rune.initLogic({
 
         // check if order matters
         if (goalRecipe.ordered) {
-          // convert current layer to a set
-          const currentLayerSet = new Set(currentLayerArray);
-          // convert recipe to a set
-          const goalSet = new Set(goalRecipe.recipe);
-          success = checkSetEquivalency(goalSet, currentLayerSet);
+          success = compareArraysAsSets(goalRecipe.recipe, currentLayerArray);
         } else {
           // deep array equivalency
-          success = checkArrayDeepEquality(
-            goalRecipe.recipe,
-            currentLayerArray,
-          );
+          success = compareArraysInOrder(goalRecipe.recipe, currentLayerArray);
         }
 
         // if it successfully matched:
@@ -157,15 +149,101 @@ Rune.initLogic({
           }
         } else {
           // if it does not match
-          // make sure that the thing that was built is part of the current recipe
-          // if it is
+          let penalty = true;
+          // what did the players actually build?
+          let attempted: GoalType | null = null;
+
+          // look through the recipe book to find a match
+          for (const goal in RecipeBook) {
+            // check this recipe
+            const goalType = goal as GoalType
+            const recipe = RecipeBook[goalType];
+            let res = false;
+            if (recipe.ordered) {
+              // deep equality
+              res = compareArraysInOrder(recipe.recipe, currentLayerArray);
+            } else {
+              // consider it like an unordered set
+              res = compareArraysAsSets(recipe.recipe, currentLayerArray);
+            }
+            // is there a match?
+            if (res) {
+              attempted = goalType;
+              break;
+            }
+          }
+
+          // if this is a real recipe
+          if (attempted) {
+            // make sure that the thing that was built is part of the current recipe. Players could have been building the basic_cake for the chocolate_cake.
+            // pretend that we built the thing we just tried to make
+            let newLayerCopy = [...currentLayerArray];
+            // TODO: make this logic work if all players have not placed yet
+            // if all players have placed, let's try to combine into what was attempted
+            // remove the recently placed blocks
+            const removeIndices = -1 * (Object.keys(game.players).length)
+            newLayerCopy.slice(0, removeIndices);
+
+            // add the attempted recipe
+            newLayerCopy.push(attempted);
+
+            // now we figure out if we are making true progress toward the goal
+            // is the goalRecipe ordered?
+            let isPartOfCurrentGoal = true;
+            if (goalRecipe.ordered) {
+              // check if the current layer matches the beginning of the goal recipe
+              for (let i = 0; i < newLayerCopy.length; i++) {
+                if (newLayerCopy[i] !== goalRecipe.recipe[i]) {
+                  isPartOfCurrentGoal = false;
+                  break;
+                }
+              }
+            } else {
+              // handle this like a set
+              // convert the goalRecipe into a set
+              const goalSet = new Set(goalRecipe.recipe);
+              for (const ingredient of newLayerCopy) {
+                if (!goalSet.has(ingredient)) {
+                  // something wrong was added in
+                  isPartOfCurrentGoal = false;
+                  break;
+                }
+              }
+            }
+
+            // if it is part of the current recipe
+            if (isPartOfCurrentGoal) {
+              // no penalty
+              penalty = false;
+              game.feedback = "success";
+              // side note: we keep the current thing in the layer
+            } else {
+              // not part of current goal
+              // enforce penalty
+              penalty = true;
+            }
+          } else {
+            // not a real recipe
+            // enforce penalty
+            penalty = true;
+          }
+
+          // enforce a penalty, if deserved
+          if (penalty) {
+            // TODO: create a penalty system. Time lost? Score deducted?
+
+            // change the game feedback
+            game.feedback = "failure";
+
+            // reset the current layer
+            game.newLayer = [];
+          }
+
           // reset placement for players
-          // // make all players able to place again
-          // for (const player in game.players) {
-          //   game.players[player].hasPlaced = false;
-          // }
-          // keep the current thing in the layer
-          // enforce a penalty
+          // make all players able to place again
+          for (const player in game.players) {
+            game.players[player].hasPlaced = false;
+          }
         }
       } else {
         // a player still needs to place

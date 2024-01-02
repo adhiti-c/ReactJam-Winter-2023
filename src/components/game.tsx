@@ -1,17 +1,21 @@
 // the game world, including the cake, syrup, players, and items
 /// <reference types="vite-plugin-svgr/client" />
-import { Canvas } from "@react-three/fiber";
 import Player from "./objects/player";
-import Camera from "./objects/camera";
-import { GameState } from "../logic_v2/types";
 import Platform from "./objects/platform";
 import React, { useState, KeyboardEvent, useRef, Suspense } from "react";
-import { PlacableIngredient } from "../logic_v2/cakeTypes";
 import InventorySlot from "./staticUI/InventorySlot";
 import InventoryData from "./staticUI/data/InventoryData";
 import NextUp from "./staticUI/NextUp";
-import Cake from "../assets/regularCake.svg";
+import CakeReg from "../assets/regularCake.svg";
 import Recipe from "./staticUI/Recipe";
+import { Canvas } from '@react-three/fiber';
+import Camera from './objects/camera';
+import { GameState } from "../logic_v2/types";
+import { AllInventory, PlacableIngredient } from '../logic_v2/cakeTypes';
+import Cake from './objects/cake';
+import { Physics, RigidBody} from "@react-three/rapier";
+import {Vector3} from "three";
+import { setTimeout } from "timers/promises";
 
 export default function Game({ game }: { game: GameState}) {
   // selected element
@@ -86,7 +90,7 @@ const formattedTimer = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`
             {/* <div>{layers}</div> */}
 
             <div className="score-contain">
-              <img src={Cake} alt="" />
+              <img src={CakeReg} alt="" />
               <h2>{game.score}</h2>
             </div>
             <div className="timer-contain">
@@ -150,6 +154,30 @@ const formattedTimer = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`
       </Canvas>
     </>
   );
+   
+
+    return (
+        <>
+            {gameTimerHTML}
+            <Canvas camera={{ position: [camera_pos[0], camera_pos[1], camera_pos[2]] }}
+                    onClick={cakeDrop}>
+                    <Suspense>
+                        <Physics gravity={[0, -15, 0]} >
+                            <RigidBody restitution={-100}>
+                                <Cake texture="eggs" position={new Vector3(0, 2.1, 0)}/>
+                            </RigidBody>
+                            <RigidBody type = "fixed">
+                                <Platform />
+                            </RigidBody>
+                            {/*<Player controllable={true} /> */}
+                            {/* render all other players */}
+                            <ambientLight args={[0x000000]} />
+                            <directionalLight position={[10, 10, 10]} />
+                        </Physics>
+                    </Suspense>
+            </Canvas>
+        </>
+    )
 }
 
 // call this function when you want to place an ingredient

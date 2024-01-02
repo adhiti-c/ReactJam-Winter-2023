@@ -7,17 +7,9 @@ import { Physics, RigidBody } from "@react-three/rapier";
 import Cake from "./cake";
 
 export default function Platform() {
-  return (
-    <Suspense>
-      <Physics gravity={[0, -15, 0]}>
-        <Cake />
-
-        <RigidBody type="fixed">
-          <RoundedBox position={[0, -0.5, 0]} args={[0.8, 0.1, 0.8]}>
+    return(
+        <RoundedBox position={[0,-.5,0]} args={[.8, 0.1, 0.8]}>
             <meshStandardMaterial />
-          </RoundedBox>
-        </RigidBody>
-      </Physics>
-    </Suspense>
-  );
+        </RoundedBox >
+    )
 }

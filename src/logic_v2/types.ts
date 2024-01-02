@@ -7,7 +7,7 @@ import {
 } from "./cakeTypes";
 
 /**
- * the current phase of the game
+ * the current phase of the game. loss = "complete loss" or the end of the game
  */
 export type GamePhase = "tutorial" | "playing" | "loss";
 
