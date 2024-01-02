@@ -2,8 +2,8 @@ import { CakeLayerType, GoalType, Recipe, RecipeBook, RecipeComponent } from "./
 
 /**
  * function to check if two sets are equivalent
- * @param set1 
- * @param set2 
+ * @param set1
+ * @param set2
  */
 export function compareArraysAsSets(arr1: any[], arr2: any[]): boolean {
     // check if same length
@@ -31,9 +31,10 @@ export function compareArraysAsSets(arr1: any[], arr2: any[]): boolean {
 /**
  * Function to check if two arrays are equal
  * Note: vite does not support util.isDeepEquals
- * @param arr1 
- * @param arr2 
- * @returns 
+ * @param arr1
+ * @param arr2
+/**
+ * @returns {boolean}
  */
 export function compareArraysInOrder(arr1: any[], arr2: any[]): boolean {
     if (arr1.length !== arr2.length) {
@@ -51,7 +52,7 @@ export function compareArraysInOrder(arr1: any[], arr2: any[]): boolean {
 
 export function chooseRandomIndexOfArray(array: any[]): number {
     if (array.length === 0) {
-        throw new Error('Array is empty');
+        throw new Error("Array is empty");
     }
 
     return Math.floor(Math.random() * array.length);
@@ -59,9 +60,9 @@ export function chooseRandomIndexOfArray(array: any[]): number {
 
 /**
  * removes an item from the array and returns a copy of the array
- * @param array 
- * @param value 
- * @returns 
+ * @param array
+ * @param value
+ * @returns
  */
 export function removeFromArray<T>(array: T[], value: T): T[] {
     const index = array.indexOf(value);

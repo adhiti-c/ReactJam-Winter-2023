@@ -16,8 +16,7 @@ export const Ingredients = ["eggs", "butter", "sugar", "flour"] as const;
 /**
  * an atomic ingredient that combines to make a cake component
  */
-export type IngredientType = typeof Ingredients[number]
-
+export type IngredientType = (typeof Ingredients)[number];
 
 /**
  * available flavor types
@@ -30,7 +29,14 @@ export const Flavors = ["strawberry", "chocolate", "carrot"] as const;
 /**
  * These are cake steps that the players may be asked to build to increase score
  */
-export const Goals = ["cake_base", "cake_frosting", "basic_cake", "choco_cake", "straw_cake", "carrot_cake"] as const;
+export const Goals = [
+    "cake_base",
+    "cake_frosting",
+    "basic_cake",
+    "choco_cake",
+    "straw_cake",
+    "carrot_cake",
+] as const;
 
 /**
  * a dictionary of possible cake goals and how to build them

@@ -2,7 +2,13 @@
 import React, { useState, KeyboardEvent, useRef } from "react";
 import { Vector3 } from "three";
 
-export default function Player({ controllable, position }: { controllable: boolean, position?: Vector3 }) {
+export default function Player({
+  controllable,
+  position,
+}: {
+  controllable: boolean;
+  position?: Vector3;
+}) {
   // if the player is controllable, then player position should be controlled via arrow keys
   let pos = new Vector3(0, 0, 0);
   if (controllable) {
@@ -12,9 +18,9 @@ export default function Player({ controllable, position }: { controllable: boole
     // player is not controllable
     if (!position) {
       // a position should always be given
-      throw new Error("")
+      throw new Error("");
     } else {
-      pos = position
+      pos = position;
     }
   }
   return (
@@ -22,7 +28,7 @@ export default function Player({ controllable, position }: { controllable: boole
       <boxGeometry />
       <meshStandardMaterial />
     </mesh>
-  )
+  );
 }
 
 //Player Movement
@@ -69,7 +75,5 @@ function PlayerMove(): Vector3 {
     };
   }, [position]);
 
-
-  return new Vector3(position[0], position[1], position[2])
-
+  return new Vector3(position[0], position[1], position[2]);
 }
