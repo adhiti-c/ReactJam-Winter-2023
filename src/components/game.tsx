@@ -18,7 +18,18 @@ import {Vector3} from "three";
 import { setTimeout } from "timers/promises";
 
 export default function Game({ game }: { game: GameState}) {
-  // selected element
+  
+
+    const[cakes, setCakes] = useState<any[]>([])
+
+    const handleDrop = () => {
+        console.log(cakes)
+        const cakeCount = cakes.length
+        setCakes([...cakes, <Cake position = {new Vector3(0,1,0)} texture={"eggs"} key={cakeCount}/>]);
+
+    } 
+  
+    // selected element
   const [selectedIngredient, setSelectedIngredient] = useState<string[]>([]);
 
   const handleInventoryClick = (ingredient: PlacableIngredient) => {
@@ -30,36 +41,37 @@ export default function Game({ game }: { game: GameState}) {
         [ingredient];
     setSelectedIngredient(newSelectedIngredient);
 
-    placeIngredient(ingredient);
-    console.log(
-      `Ingredient ${ingredient} is selected: ${newSelectedIngredient.includes(
-        ingredient,
-      )}`,
-    );
-  };
-//   math stuff
-// turn ms into sec
-// since you're using using an if then operator in game: gamestate, you must also use the same operator check in the const
-const totalSeconds = game ? Math.floor(game.timeLeft / 1000): 0;
-const minutes = game ? Math.floor(totalSeconds / 60): 0;
-// align seconds relative to minutes. calculates the remainder which is the seconds left (ignoring minutes)
-const seconds = game ? totalSeconds % 60: 0;
-// $ allows you to embed operators in a string
-// minutes:if seconds under 10, add 0 seconds
-const formattedTimer = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`
+        placeIngredient(ingredient);
+        console.log(
+        `Ingredient ${ingredient} is selected: ${newSelectedIngredient.includes(
+            ingredient,
+        )}`,
+        );
+    };
+    //   math stuff
+    // turn ms into sec
+    // since you're using using an if then operator in game: gamestate, you must also use the same operator check in the const
+    const totalSeconds = game ? Math.floor(game.timeLeft / 1000): 0;
+    const minutes = game ? Math.floor(totalSeconds / 60): 0;
+    // align seconds relative to minutes. calculates the remainder which is the seconds left (ignoring minutes)
+    const seconds = game ? totalSeconds % 60: 0;
+    // $ allows you to embed operators in a string
+    // minutes:if seconds under 10, add 0 seconds
+    const formattedTimer = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`
 
 
   const camera_pos = Camera();
 
   if (!game) {
     return <div>Loading...</div>;
-  }
+    }
 
   // add or remove the timer depending on the game state
   let gameTimerHTML;
 
   // for now, just show the layers as a bunch of text. This will be fixed later, when we are able to map cake layer types to actual three.js blocks
   let layers = "";
+
   for (const layer of game.cake) {
     layers += layer + ", ";
   }
@@ -121,9 +133,9 @@ const formattedTimer = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`
               <InventorySlot
                 key={index}
                 icon={ingredient.icon}
-                onClick={() => handleInventoryClick(ingredient)}
+                onClick={() => handleInventoryClick(ingredient.iconName)}
                 className={
-                  selectedIngredient.includes(ingredient) ? "selected" : ""
+                  selectedIngredient.includes(ingredient.iconName) ? "selected" : ""
                 }
               />
             ))}
@@ -138,34 +150,17 @@ const formattedTimer = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`
     //             Game Over
     //         </div>
     //     break;
-  }
+    }
 
-  return (
-    <>
-      {gameTimerHTML}
-      <Canvas
-        camera={{ position: [camera_pos[0], camera_pos[1], camera_pos[2]] }}
-      >
-        {/*<Player controllable={true} /> */}
-        <Platform />
-        {/* render all other players */}
-        <ambientLight args={[0x000000]} />
-        <directionalLight position={[10, 10, 10]} />
-      </Canvas>
-    </>
-  );
-   
-
+    
     return (
         <>
             {gameTimerHTML}
             <Canvas camera={{ position: [camera_pos[0], camera_pos[1], camera_pos[2]] }}
-                    onClick={cakeDrop}>
+                    onClick={handleDrop}>
                     <Suspense>
                         <Physics gravity={[0, -15, 0]} >
-                            <RigidBody restitution={-100}>
-                                <Cake texture="eggs" position={new Vector3(0, 2.1, 0)}/>
-                            </RigidBody>
+                            {...cakes}
                             <RigidBody type = "fixed">
                                 <Platform />
                             </RigidBody>
