@@ -7,7 +7,9 @@ import Platform from './objects/platform';
 import { AllInventory, PlacableIngredient } from '../logic_v2/cakeTypes';
 import Cake, {cakeDrop} from './objects/cake';
 import { Physics, RigidBody} from "@react-three/rapier";
-import {Suspense} from "react";
+import {Suspense, useState} from "react";
+import {Vector3} from "three";
+import { setTimeout } from "timers/promises";
 
 export default function Game({ game }: { game: GameState | undefined }) {
 
@@ -92,10 +94,12 @@ export default function Game({ game }: { game: GameState | undefined }) {
         <>
             {gameTimerHTML}
             <Canvas camera={{ position: [camera_pos[0], camera_pos[1], camera_pos[2]] }}
-                    onClick={(e) => console.log('click')}>
+                    onClick={cakeDrop}>
                     <Suspense>
-                        <Physics gravity={[0, -20, 0]}>
-                            <Cake texture= "eggs"/>
+                        <Physics gravity={[0, -15, 0]} >
+                            <RigidBody restitution={-100}>
+                                <Cake texture="eggs" position={new Vector3(0, 2.1, 0)}/>
+                            </RigidBody>
                             <RigidBody type = "fixed">
                                 <Platform />
                             </RigidBody>
