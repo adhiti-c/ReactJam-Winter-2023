@@ -125,7 +125,7 @@ h2 {
 }
 /* recipe items */
 .recipe-section {
-  padding: 0 60px;
+  padding: 0 70px;
   display: grid;
   justify-content: flex-end;
 }
