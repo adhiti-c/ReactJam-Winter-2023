@@ -1,5 +1,4 @@
 // contains player object and player logic
-import { Canvas } from "@react-three/fiber";
 import React, { useState, KeyboardEvent, useRef } from "react";
 
 //Player Movement

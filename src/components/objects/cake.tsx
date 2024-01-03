@@ -1,13 +1,10 @@
 // contains cake object and cake logic
-import React, { useState, KeyboardEvent, useRef, Suspense } from "react";
-import { TextureLoader, Vector3 } from "three";
+import { useState } from "react";
+import { Vector3 } from "three";
 import { RoundedBox, useTexture } from "@react-three/drei";
-import { Physics, RigidBody } from "@react-three/rapier";
-import { Canvas, useLoader } from "@react-three/fiber";
-import Logo from "../assets/wheatBlockTest.svg";
+import { RigidBody } from "@react-three/rapier";
 
 import { PlacableIngredient } from "../../logic_v2/cakeTypes";
-import { CakeLayer } from "../../logic/types";
 
 export default function Cake({ texture, position }: { texture: PlacableIngredient, position: Vector3 }) {
 
