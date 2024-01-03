@@ -11,6 +11,14 @@ body {
   margin: 0;
   background-color: var(--pinkLight);
   box-sizing: border-box;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.top-section {
+  pointer-events: none;
+  position: absolute;
+  top: 0;
 }
 img {
   margin: 0;
@@ -33,29 +41,37 @@ h2 {
 }
 /* main content */
 .top-section {
-  display: grid;
-  grid-template-columns: auto;
-  gap: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 12px;
   align-items: flex-start;
-
+  top: 0;
+  height: calc(80vh - 12px);
+  z-index: 1000;
+  width: calc(100vw - 24px);
 }
-.static-ui-contain {
+/* .static-ui-contain {
   display: grid;
   place-content: center;
-  /* re-enable clicking */
   z-index: 200;
   height: 100%;
   position: absolute;
   width: 100vw;
   align-content: space-between;
-}
+} */
 .inventory-contain {
-  display: grid;
+  display: flex;
+  flex-direction: row;
   align-items: center;
-  grid-template-columns: repeat(3, 1fr);
   justify-items: center;
-  gap: 4px;
-  padding: 16px 56px;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px;
+  position: absolute;
+  bottom: 0;
+  z-index: 1000;
+  width: calc(100vw - 24px);
 }
 .inventory-slot {
   background-color: rgba(218, 189, 194, 0.5);
@@ -82,8 +98,8 @@ h2 {
 .state-contain {
   display: flex;
   justify-content: space-between;
-  padding: 16px 36px;
-  box-sizing: border-box;
+  width: 100%;
+  /* box-sizing: border-box; */
 }
 .nextup-contain {
   background-color: var(--pink);
@@ -125,14 +141,14 @@ h2 {
 }
 /* recipe items */
 .recipe-section {
-  padding: 0 70px;
-  display: grid;
+  display: flex;
+  width: 100%;
   justify-content: flex-end;
 }
 .recipe-contain {
   display: grid;
  grid-template-columns: auto;
- max-width: 50px;
+ /* max-width: 50px; */
  align-items: flex-end;
  justify-items: end;
 }
