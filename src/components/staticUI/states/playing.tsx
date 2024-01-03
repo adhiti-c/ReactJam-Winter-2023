@@ -43,7 +43,7 @@ export default function PlayingUI({ game, placeIngredient }: { game: GameState, 
     const formattedTimer = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`
 
     return (
-        <div className="static-ui-contain">
+        <>
             <div className="top-section">
                 <div className="state-contain">
 
@@ -68,6 +68,7 @@ export default function PlayingUI({ game, placeIngredient }: { game: GameState, 
                     />
                 </div>
             </div>
+            
 
 
             {/* <div>
@@ -88,6 +89,6 @@ export default function PlayingUI({ game, placeIngredient }: { game: GameState, 
                     />
                 ))}
             </div>
-        </div>
+        </>
     )
 }
