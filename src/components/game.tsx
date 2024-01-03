@@ -71,7 +71,7 @@ export default function Game({ game }: { game: GameState }) {
             <Canvas camera={{ position: [camera_pos[0], camera_pos[1], camera_pos[2]] }}
                 onClick={handleDrop}>
                 <Suspense>
-                    <Physics gravity={[0, -15, 0]} >
+                    <Physics gravity={[0, -15, 0]} colliders="hull">
                         {...cakes}
                         <RigidBody type="fixed">
                             <Platform />
