@@ -9,7 +9,7 @@ import {
 /**
  * the current phase of the game. loss = "complete loss" or the end of the game
  */
-export type GamePhase = "tutorial" | "playing" | "loss";
+export type GamePhase = "lobby" | "tutorial" | "playing" | "loss";
 
 export type Feedback = "waiting" | "success" | "failure";
 
