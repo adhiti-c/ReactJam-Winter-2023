@@ -1,7 +1,7 @@
 import { CakeLayerType, GoalType, Goals, RecipeBook } from "./logic_v2/cakeTypes";
-import { StartTimeLeftMilliseconds, HintRepeatCount } from "./logic_v2/logicConfig";
+import { StartTimeLeftMilliseconds, HintRepeatCount, FlatTimeIncreaseOnComboMilliseconds } from "./logic_v2/logicConfig";
 import { Player, GameState } from "./logic_v2/types";
-import { compareArraysAsSets, compareArraysInOrder, chooseRandomIndexOfArray, removeFromArray, checkProgress } from "./logic_v2/util";
+import { compareArraysAsSets, compareArraysInOrder, chooseRandomIndexOfArray, removeFromArray, checkProgress, matchRecipe } from "./logic_v2/util";
 
 /*
 random thoughts:
@@ -91,6 +91,9 @@ Rune.initLogic({
           // increment the score
           game.score = game.score + 1;
 
+          // reward by adding time
+          game.timeLeft = game.timeLeft + FlatTimeIncreaseOnComboMilliseconds;
+
           // set feedback to be success
           game.feedback = "success";
 
@@ -151,27 +154,7 @@ Rune.initLogic({
           // if it does not match
           let penalty = true;
           // what did the players actually build?
-          let attempted: GoalType | null = null;
-
-          // look through the recipe book to find a match
-          for (const goal in RecipeBook) {
-            // check this recipe
-            const goalType = goal as GoalType
-            const recipe = RecipeBook[goalType];
-            let res = false;
-            if (recipe.ordered) {
-              // deep equality
-              res = compareArraysInOrder(recipe.recipe, currentLayerArray);
-            } else {
-              // consider it like an unordered set
-              res = compareArraysAsSets(recipe.recipe, currentLayerArray);
-            }
-            // is there a match?
-            if (res) {
-              attempted = goalType;
-              break;
-            }
-          }
+          let attempted: GoalType | null = matchRecipe(currentLayerArray);
 
           // if this is a real recipe
           if (attempted) {
@@ -188,30 +171,7 @@ Rune.initLogic({
             newLayerCopy.push(attempted);
 
             // now we figure out if we are making true progress toward the goal
-            // is the goalRecipe ordered?
             let isPartOfCurrentGoal = checkProgress(currentGoal, newLayerCopy);
-            // if (goalRecipe.ordered) {
-            //   // check if the current layer matches the beginning of the goal recipe
-            //   for (let i = 0; i < newLayerCopy.length; i++) {
-            //     if (newLayerCopy[i] !== goalRecipe.recipe[i]) {
-            //       // check to see if this is in the recipe book
-            //       // if it is, then break it down into its components and see if it is right
-            //       isPartOfCurrentGoal = false;
-            //       break;
-            //     }
-            //   }
-            // } else {
-            //   // handle this like a set
-            //   // convert the goalRecipe into a set
-            //   const goalSet = new Set(goalRecipe.recipe);
-            //   for (const ingredient of newLayerCopy) {
-            //     if (!goalSet.has(ingredient)) {
-            //       // something wrong was added in
-            //       isPartOfCurrentGoal = false;
-            //       break;
-            //     }
-            //   }
-            // }
 
             // if it is part of the current recipe
             if (isPartOfCurrentGoal) {
