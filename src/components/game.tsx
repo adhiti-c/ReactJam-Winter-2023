@@ -15,13 +15,23 @@ import TutorialUI from "../components/staticUI/states/tutorial";
 export default function Game({ game }: { game: GameState }) {
 
 
-    const [cakes, setCakes] = useState<any[]>([])
+    // the cake objects
+    const [cakes, setCakes] = useState<any[]>([]);
+
+    // selected ingredient
+    const [selectedIngredient, setSelectedIngredient] = useState<PlacableIngredient[]>([]);
 
     const handleDrop = () => {
-        console.log(cakes)
-        const cakeCount = cakes.length
-        setCakes([...cakes, <Cake position={new Vector3(0, 1, 0)} texture={"eggs"} key={cakeCount} />]);
-
+        if (selectedIngredient.length === 0) {
+            // nothing is selected
+            return;
+        } else {
+            // push the action to rune
+            Rune.actions.placeIngredient({ ingredient: selectedIngredient[0] });
+            console.log(cakes)
+            const cakeCount = cakes.length
+            setCakes([...cakes, <Cake position={new Vector3(0, 1, 0)} texture={"eggs"} key={cakeCount} />]);
+        }
     }
 
     const camera_pos = Camera();
@@ -54,7 +64,7 @@ export default function Game({ game }: { game: GameState }) {
             gameTimerHTML = <TutorialUI />;
             break;
         case "playing":
-            gameTimerHTML = <PlayingUI game={game} placeIngredient={placeIngredient} />
+            gameTimerHTML = <PlayingUI game={game} selectedIngredient={selectedIngredient} setSelectedIngredient={setSelectedIngredient} />
             break;
         case "loss":
             // gameTimerHTML =
@@ -85,9 +95,4 @@ export default function Game({ game }: { game: GameState }) {
             </Canvas>
         </>
     )
-}
-
-// call this function when you want to place an ingredient
-function placeIngredient(ingredient: PlacableIngredient) {
-    Rune.actions.placeIngredient({ ingredient: ingredient });
 }

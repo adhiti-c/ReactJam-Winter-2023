@@ -86,6 +86,7 @@ Rune.initLogic({
 
         // if it successfully matched:
         if (success) {
+          console.log("successfully made: " + game.goals.current)
           // add the goal to the overall cake layer
           game.cake.push(game.goals.current);
 
