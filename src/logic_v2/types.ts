@@ -17,6 +17,7 @@ export interface Player {
   id: PlayerId;
   inventory: (PlacableIngredient | null)[];
   hasPlaced: boolean;
+  ready: boolean
 }
 
 export interface GameState {
@@ -101,6 +102,7 @@ export interface GameState {
 type GameActions = {
   // increment: (params: { amount: number }) => void
   placeIngredient: (params: { ingredient: PlacableIngredient }) => void;
+  ready: () => void;
 };
 
 declare global {

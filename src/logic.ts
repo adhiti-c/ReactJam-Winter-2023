@@ -21,6 +21,7 @@ Rune.initLogic({
         id: playerId,
         inventory: [null],
         hasPlaced: false,
+        ready: false
       };
     }
 
@@ -217,6 +218,10 @@ Rune.initLogic({
         // do we set the player's status to be "waiting"?
       }
     },
+    ready(_, { allPlayerIds, game, playerId }) {
+      // toggle ready status
+      game.players[playerId].ready = !game.players[playerId].ready;
+    }
   },
   update: ({ game }) => {
     // check if the time is gone
