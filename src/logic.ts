@@ -1,7 +1,7 @@
 import { CakeLayerType, GoalType, Goals, RecipeBook } from "./logic_v2/cakeTypes";
 import { StartTimeLeftMilliseconds, HintRepeatCount } from "./logic_v2/logicConfig";
 import { Player, GameState } from "./logic_v2/types";
-import { compareArraysAsSets, compareArraysInOrder, chooseRandomIndexOfArray, removeFromArray } from "./logic_v2/util";
+import { compareArraysAsSets, compareArraysInOrder, chooseRandomIndexOfArray, removeFromArray, checkProgress } from "./logic_v2/util";
 
 /*
 random thoughts:
@@ -181,41 +181,47 @@ Rune.initLogic({
             // TODO: make this logic work if all players have not placed yet
             // if all players have placed, let's try to combine into what was attempted
             // remove the recently placed blocks
-            const removeIndices = -1 * (Object.keys(game.players).length)
-            newLayerCopy.slice(0, removeIndices);
-
+            for (const _ of Object.keys(game.players)) {
+              newLayerCopy.pop()
+            }
             // add the attempted recipe
             newLayerCopy.push(attempted);
 
             // now we figure out if we are making true progress toward the goal
             // is the goalRecipe ordered?
-            let isPartOfCurrentGoal = true;
-            if (goalRecipe.ordered) {
-              // check if the current layer matches the beginning of the goal recipe
-              for (let i = 0; i < newLayerCopy.length; i++) {
-                if (newLayerCopy[i] !== goalRecipe.recipe[i]) {
-                  isPartOfCurrentGoal = false;
-                  break;
-                }
-              }
-            } else {
-              // handle this like a set
-              // convert the goalRecipe into a set
-              const goalSet = new Set(goalRecipe.recipe);
-              for (const ingredient of newLayerCopy) {
-                if (!goalSet.has(ingredient)) {
-                  // something wrong was added in
-                  isPartOfCurrentGoal = false;
-                  break;
-                }
-              }
-            }
+            let isPartOfCurrentGoal = checkProgress(currentGoal, newLayerCopy);
+            // if (goalRecipe.ordered) {
+            //   // check if the current layer matches the beginning of the goal recipe
+            //   for (let i = 0; i < newLayerCopy.length; i++) {
+            //     if (newLayerCopy[i] !== goalRecipe.recipe[i]) {
+            //       // check to see if this is in the recipe book
+            //       // if it is, then break it down into its components and see if it is right
+            //       isPartOfCurrentGoal = false;
+            //       break;
+            //     }
+            //   }
+            // } else {
+            //   // handle this like a set
+            //   // convert the goalRecipe into a set
+            //   const goalSet = new Set(goalRecipe.recipe);
+            //   for (const ingredient of newLayerCopy) {
+            //     if (!goalSet.has(ingredient)) {
+            //       // something wrong was added in
+            //       isPartOfCurrentGoal = false;
+            //       break;
+            //     }
+            //   }
+            // }
 
             // if it is part of the current recipe
             if (isPartOfCurrentGoal) {
               // no penalty
               penalty = false;
               game.feedback = "success";
+
+              // combine properly
+              game.newLayer = newLayerCopy;
+
               // side note: we keep the current thing in the layer
             } else {
               // not part of current goal
