@@ -1,9 +1,8 @@
 // the game world, including the cake, syrup, players, and items
 /// <reference types="vite-plugin-svgr/client" />
 import Platform from "./objects/platform";
-import { useState, Suspense } from "react";
-import { Canvas } from '@react-three/fiber';
-import Camera from './objects/camera';
+import { useState, Suspense, useRef } from "react";
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { GameState } from "../logic_v2/types";
 import { PlacableIngredient } from '../logic_v2/cakeTypes';
 import Cake from './objects/cake';
@@ -11,6 +10,7 @@ import { Physics, RigidBody } from "@react-three/rapier";
 import { Vector3 } from "three";
 import PlayingUI from "../components/staticUI/states/playing";
 import TutorialUI from "../components/staticUI/states/tutorial";
+import Camera from "./objects/camera";
 
 export default function Game({ game }: { game: GameState }) {
 
@@ -30,11 +30,9 @@ export default function Game({ game }: { game: GameState }) {
             Rune.actions.placeIngredient({ ingredient: selectedIngredient[0] });
             console.log(cakes)
             const cakeCount = cakes.length
-            setCakes([...cakes, <Cake position={new Vector3(0, 1, 0)} texture={"eggs"} key={cakeCount} />]);
+            setCakes([...cakes, <Cake position={new Vector3(0, 1 + cakes.length * 0.5, 0)} texture={"eggs"} key={cakeCount} />]);
         }
     }
-
-    const camera_pos = Camera();
 
     // add or remove the timer depending on the game state
     let gameTimerHTML;
@@ -74,20 +72,19 @@ export default function Game({ game }: { game: GameState }) {
             break;
     }
 
-
     return (
         <>
             {gameTimerHTML}
-            <Canvas camera={{ position: [camera_pos[0], camera_pos[1], camera_pos[2]] }}
+            <Canvas
+                // camera={{ position: [1, 0, 1] }}
                 onClick={handleDrop}>
+                <Camera cakes={cakes} />
                 <Suspense>
                     <Physics gravity={[0, -15, 0]} colliders="hull">
                         {...cakes}
                         <RigidBody type="fixed">
                             <Platform />
                         </RigidBody>
-                        {/*<Player controllable={true} /> */}
-                        {/* render all other players */}
                         <ambientLight args={[0x000000]} />
                         <directionalLight position={[10, 10, 10]} />
                     </Physics>
