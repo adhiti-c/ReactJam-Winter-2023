@@ -1,7 +1,7 @@
 // the game world, including the cake, syrup, players, and items
 /// <reference types="vite-plugin-svgr/client" />
 import Platform from "./objects/platform";
-import { useState, Suspense, useRef } from "react";
+import { useState, Suspense, useRef, useEffect } from "react";
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { GameState } from "../logic_v2/types";
 import { PlacableIngredient } from '../logic_v2/cakeTypes';
@@ -18,6 +18,9 @@ export default function Game({ game }: { game: GameState }) {
     // the cake objects
     const [cakes, setCakes] = useState<any[]>([]);
 
+    // the topmost layer
+    const [newLayer, setNewLayer] = useState<JSX.Element[]>([]);
+
     // selected ingredient
     const [selectedIngredient, setSelectedIngredient] = useState<PlacableIngredient[]>([]);
 
@@ -28,11 +31,54 @@ export default function Game({ game }: { game: GameState }) {
         } else {
             // push the action to rune
             Rune.actions.placeIngredient({ ingredient: selectedIngredient[0] });
-            console.log(cakes)
-            const cakeCount = cakes.length
-            setCakes([...cakes, <Cake position={new Vector3(0, 1 + cakes.length * 0.5, 0)} texture={"eggs"} key={cakeCount} />]);
+            // console.log(cakes)
+            // const cakeCount = cakes.length
+            // setCakes([...cakes, <Cake position={new Vector3(0, 1 + cakes.length * 0.5, 0)} texture={"eggs"} key={cakeCount} />]);
         }
     }
+
+    useEffect(() => {
+        // whenever the new layer changes, update the rendered cakes
+        const gameStateLayerLength = game.newLayer.length;
+        const currentLayerLength = newLayer.length;
+        console.log(gameStateLayerLength + " vs " + currentLayerLength)
+        // has something new been added?
+        if (gameStateLayerLength > currentLayerLength) {
+            // something new has been added
+            // create more blocks in the new layer
+            let additionalBlocks: JSX.Element[] = [];
+            // TODO: instead, can we iterate through each and only spawn in new blocks?
+            for (let i = currentLayerLength; i < gameStateLayerLength; i++) {
+                // create more blocks
+                console.log("new block added")
+                additionalBlocks.push(
+                    <Cake position={new Vector3(0, 1 + cakes.length * 0.5, 0)} texture={"eggs"} key={i} />
+                )
+            }
+            // now add it into the state
+            // TODO: will this create some sort of collision type of race condition?
+            setNewLayer([...newLayer, ...additionalBlocks])
+        } else if (gameStateLayerLength < currentLayerLength) {
+            // I'm gonna assume that only top layers are removed
+            if (gameStateLayerLength === 0) {
+                // wipe it
+                setNewLayer([]);
+            } else {
+                // slice it
+                setNewLayer(newLayer.slice(0, gameStateLayerLength));
+            }
+        } else {
+            // should be the same thing
+        }
+    }, [game.newLayer]);
+
+    useEffect(() => {
+        // handle putting new things into the cake
+        // generally this happens when the goal happens
+        // const totalLength = game.newLayer.length + game.cake.length;
+
+        // we need to process any cake updates after a collision happened... rip
+    }, [game.cake]);
 
     // add or remove the timer depending on the game state
     let gameTimerHTML;
@@ -82,6 +128,7 @@ export default function Game({ game }: { game: GameState }) {
                 <Suspense>
                     <Physics gravity={[0, -15, 0]} colliders="hull">
                         {...cakes}
+                        {...newLayer}
                         <RigidBody type="fixed">
                             <Platform />
                         </RigidBody>
