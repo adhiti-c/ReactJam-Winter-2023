@@ -21,9 +21,15 @@ Rune.initLogic({
     // create all players
     const players: Record<string, Player> = {};
     for (const playerId of allPlayerIds) {
+      // choose random
+      const index = chooseRandomIndexOfArray(startingIngredients);
+      // get the ingredient
+      const ingredientInventory = startingIngredients.splice(index, 1);
+
+      // create player
       players[playerId] = {
         id: playerId,
-        inventory: startingIngredients.splice(chooseRandomIndexOfArray(startingIngredients)),
+        inventory: ingredientInventory,
         hasPlaced: false,
         ready: false
       };
