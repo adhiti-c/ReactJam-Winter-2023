@@ -1,14 +1,29 @@
 import "./App.css";
 import Game from "./components/game";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext, createContext } from "react";
 import { GameState } from "./logic_v2/types";
+import { PlayerId } from "rune-games-sdk";
+
+export interface GameContextType {
+  game: GameState | undefined, playerId: PlayerId | undefined
+}
 
 function App() {
-  const [game, setGame] = useState<GameState>();
+  const [game, setGame] = useState<GameContextType>();
+  const GameContext = createContext<GameContextType>({
+    game: undefined,
+    playerId: undefined
+  });
+
   useEffect(() => {
     Rune.initClient({
-      onChange: ({ game, yourPlayerId }) => {
-        setGame(game);
+      onChange: ({ game, yourPlayerId, players }) => {
+        setGame(
+          {
+            game: game,
+            playerId: yourPlayerId
+          }
+        );
       },
     });
   }, []);
@@ -16,46 +31,17 @@ function App() {
   return (
     <div style={{ width: "100vw", height: "100vh" }}>
       {
-        !game ?
+        !game || !(game.game) ?
           <div>
             Loading...
           </div>
           :
-          <Game game={game} />
+          <GameContext.Provider value={game}>
+            <Game game={game.game} />
+          </GameContext.Provider>
       }
     </div>
   );
-
-  /*  const [count, setCount] = useState(0)
-  
-  
-  
-    return (
-      <>
-        <div>
-          <a href="https://vitejs.dev" target="_blank">
-            <img src={viteLogo} className="logo" alt="Vite logo" />
-          </a>
-          <a href="https://developers.rune.ai" target="_blank">
-            <img src={reactLogo} className="logo rune" alt="Rune logo" />
-          </a>
-        </div>
-        <h1>Vite + Rune</h1>
-        <div className="card">
-          <button onClick={() => Rune.actions.increment({ amount: 1 })}>
-            count is {game.count}
-          </button>
-          <p>
-            Edit <code>src/App.tsx</code> or <code>src/logic.ts</code> and save to
-            test HMR
-          </p>
-        </div>
-        <p className="read-the-docs">
-          Click on the Vite and Rune logos to learn more
-        </p>
-        <Game />
-      </>
-    )*/
 }
 
 export default App;
