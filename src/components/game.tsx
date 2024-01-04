@@ -128,26 +128,6 @@ export default function Game({ game }: { game: GameState }) {
     // add or remove the timer depending on the game state
     let gameTimerHTML;
 
-    // for now, just show the layers as a bunch of text. This will be fixed later, when we are able to map cake layer types to actual three.js blocks
-    let layers = "";
-
-    for (const layer of game.cake) {
-        layers += layer + ", ";
-    }
-    // now add in the new layer that is not finalized
-    let newLayers = "";
-    if (game.newLayer.length !== 0) {
-        newLayers += "[";
-        for (const layer of game.newLayer) {
-            newLayers += layer + ", ";
-        }
-        newLayers += "]";
-    }
-    layers += newLayers;
-    if (layers.length === 0) {
-        layers = "empty cake!";
-    }
-
     switch (game.phase) {
         case "tutorial":
             gameTimerHTML = <TutorialUI />;
