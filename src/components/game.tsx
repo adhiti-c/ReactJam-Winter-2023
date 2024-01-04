@@ -12,6 +12,7 @@ import PlayingUI from "../components/staticUI/states/playing";
 import TutorialUI from "../components/staticUI/states/tutorial";
 import Camera from "./objects/camera";
 import Lobby from "./staticUI/states/lobby";
+// fix the typing error: https://github.com/joshwcomeau/use-sound/issues/135#issuecomment-1723305858
 import useSound from 'use-sound';
 import cafeSound from '../assets/sweet cafe.mp3'
 
