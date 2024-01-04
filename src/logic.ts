@@ -64,8 +64,12 @@ Rune.initLogic({
 
       // add the ingredient to the current recipe
       game.newLayer.push(ingredient);
-
-      // set the player's placed status to be true
+    },
+    ready(_, { allPlayerIds, game, playerId }) {
+      // toggle ready status
+      game.players[playerId].ready = !game.players[playerId].ready;
+    },
+    combine(_, { game, playerId }) {
       // TODO: how do we process only 1 player input? Aka, finishing the cake off
       // if every players have placed, process the build
       if (Object.values(game.players).every((player) => player.hasPlaced)) {
@@ -218,10 +222,6 @@ Rune.initLogic({
         // ??? what else do we need to do here? Do we need to do anything?
         // do we set the player's status to be "waiting"?
       }
-    },
-    ready(_, { allPlayerIds, game, playerId }) {
-      // toggle ready status
-      game.players[playerId].ready = !game.players[playerId].ready;
     }
   },
   update: ({ game }) => {

@@ -103,6 +103,7 @@ type GameActions = {
   // increment: (params: { amount: number }) => void
   placeIngredient: (params: { ingredient: PlacableIngredient }) => void;
   ready: () => void;
+  combine: () => void;
 };
 
 declare global {

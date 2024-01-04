@@ -21,6 +21,9 @@ export default function Game({ game }: { game: GameState }) {
     // the topmost layer
     const [newLayer, setNewLayer] = useState<JSX.Element[]>([]);
 
+    // a block is falling
+    const [blockInMotion, setBlockInMotion] = useState(false);
+
     // selected ingredient
     const [selectedIngredient, setSelectedIngredient] = useState<PlacableIngredient[]>([]);
 
@@ -29,15 +32,44 @@ export default function Game({ game }: { game: GameState }) {
             // nothing is selected
             return;
         } else {
-            // push the action to rune
-            Rune.actions.placeIngredient({ ingredient: selectedIngredient[0] });
-            // console.log(cakes)
-            // const cakeCount = cakes.length
-            // setCakes([...cakes, <Cake position={new Vector3(0, 1 + cakes.length * 0.5, 0)} texture={"eggs"} key={cakeCount} />]);
+            // wait until any blocks falling have stopped
+            if (!blockInMotion) {
+                // push the action to rune
+                Rune.actions.placeIngredient({ ingredient: selectedIngredient[0] });
+                // console.log(cakes)
+                // const cakeCount = cakes.length
+                // setCakes([...cakes, <Cake position={new Vector3(0, 1 + cakes.length * 0.5, 0)} texture={"eggs"} key={cakeCount} />]);
+            }
         }
     }
 
     useEffect(() => {
+        // only rerender if no block is in motion
+        if (!blockInMotion) {
+            rerenderCake();
+        }
+    }, [game.newLayer]);
+
+    useEffect(() => {
+        // handle putting new things into the cake
+        // generally this happens when the goal happens
+        // const totalLength = game.newLayer.length + game.cake.length;
+
+        // we need to process any cake updates after a collision happened... rip
+    }, [game.cake]);
+
+    useEffect(() => {
+        // if the block is no longer in motion, handle rerenders
+        if (!blockInMotion) {
+            console.log("Block is not falling")
+            rerenderCake();
+        } else {
+            console.log("Block is falling")
+        }
+    }, [blockInMotion]);
+
+    function rerenderCake() {
+        // handle the new layer
         // whenever the new layer changes, update the rendered cakes
         const gameStateLayerLength = game.newLayer.length;
         const currentLayerLength = newLayer.length;
@@ -52,7 +84,7 @@ export default function Game({ game }: { game: GameState }) {
                 // create more blocks
                 console.log("new block added")
                 additionalBlocks.push(
-                    <Cake position={new Vector3(0, 1 + cakes.length * 0.5, 0)} texture={"eggs"} key={i} />
+                    <Cake position={new Vector3(0, 1 + cakes.length * 0.5, 0)} texture={"eggs"} key={i} setBlockInMotion={setBlockInMotion} />
                 )
             }
             // now add it into the state
@@ -70,15 +102,7 @@ export default function Game({ game }: { game: GameState }) {
         } else {
             // should be the same thing
         }
-    }, [game.newLayer]);
-
-    useEffect(() => {
-        // handle putting new things into the cake
-        // generally this happens when the goal happens
-        // const totalLength = game.newLayer.length + game.cake.length;
-
-        // we need to process any cake updates after a collision happened... rip
-    }, [game.cake]);
+    }
 
     // add or remove the timer depending on the game state
     let gameTimerHTML;
