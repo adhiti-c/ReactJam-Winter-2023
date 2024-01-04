@@ -1,4 +1,4 @@
-import { CakeLayerType, GoalType, Goals, RecipeBook } from "./logic_v2/cakeTypes";
+import { CakeLayerType, GoalType, Goals, PlacableIngredient, RecipeBook } from "./logic_v2/cakeTypes";
 import { StartTimeLeftMilliseconds, HintRepeatCount, FlatTimeIncreaseOnComboMilliseconds } from "./logic_v2/logicConfig";
 import { Player, GameState } from "./logic_v2/types";
 import { compareArraysAsSets, compareArraysInOrder, chooseRandomIndexOfArray, removeFromArray, checkProgress, matchRecipe } from "./logic_v2/util";
@@ -14,12 +14,16 @@ Rune.initLogic({
   minPlayers: 2,
   maxPlayers: 2,
   setup: (allPlayerIds): GameState => {
+
+    // define initial starting ingredients that will be spread out across all players
+    const startingIngredients: PlacableIngredient[] = ["eggs", "flour"];
+
     // create all players
     const players: Record<string, Player> = {};
     for (const playerId of allPlayerIds) {
       players[playerId] = {
         id: playerId,
-        inventory: [null],
+        inventory: startingIngredients.splice(chooseRandomIndexOfArray(startingIngredients)),
         hasPlaced: false,
         ready: false
       };
