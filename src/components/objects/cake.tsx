@@ -14,9 +14,12 @@ export default function Cake({texture, position}: {texture: PlacableIngredient, 
     if (texture === "eggs"){
         colorMap = useTexture("/src/assets/wheatBlockTest.svg")}
     return(
+      //* Rigidbody = physics block in space
         <RigidBody>
+          {/* position sets position in 3d space */}
             <RoundedBox position={position}
-                args={[.7, 0.3, 0.7]} >
+            //* args = arguments (width, height, depth)
+                args={[.7, .35, 0.7]} >
                 <meshStandardMaterial map={colorMap}/>
             </RoundedBox >
         </RigidBody>

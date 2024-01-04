@@ -1,6 +1,7 @@
 :root {
   --pink: #ff8888;
   --pinkLight: #ffcfe0;
+  --pinkDark: #D06E6E;
   --gold: #ffc061;
   --brownDark: #413434;
   --border: 3px solid #fff;
@@ -38,6 +39,33 @@ h2 {
   font-size: 14px;
   color: #fff;
   margin: 0;
+}
+button {
+  outline: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 800;
+  width: 100%;
+  font-size: 24px;
+}
+.main-button {
+  border-radius: 16px;
+  padding: 12px;
+  background-color: var(--pink);
+  border: 4px solid var(--pinkDark);
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+}
+/* disabeled state for main menu button */
+.disable {
+  background-color: #B2ABAB;
+  border: 4px solid #938F8F;
+  color: #ffffff6a;
 }
 /* main content */
 .top-section {
@@ -196,4 +224,9 @@ h2 {
   border-left: 6px solid #fff;
 height: 10px;
 margin-right: 20px;
+}
+/* lobby */
+.lobby-contain {
+  height: 100%;
+  background-color: #413434bd;
 }

@@ -11,6 +11,7 @@ import { Physics, RigidBody } from "@react-three/rapier";
 import { Vector3 } from "three";
 import PlayingUI from "../components/staticUI/states/playing";
 import TutorialUI from "../components/staticUI/states/tutorial";
+import lobby from "./staticUI/states/lobby";
 
 export default function Game({ game }: { game: GameState }) {
 
@@ -62,12 +63,14 @@ export default function Game({ game }: { game: GameState }) {
             //         Game Over
             //     </div>
             break;
+        
     }
 
 
     return (
         <>
             {gameTimerHTML}
+            
             <Canvas camera={{ position: [camera_pos[0], camera_pos[1], camera_pos[2]] }}
                 onClick={handleDrop}>
                 <Suspense>
