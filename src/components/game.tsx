@@ -12,8 +12,16 @@ import PlayingUI from "../components/staticUI/states/playing";
 import TutorialUI from "../components/staticUI/states/tutorial";
 import Camera from "./objects/camera";
 import Lobby from "./staticUI/states/lobby";
+import useSound from 'use-sound';
+import cafeSound from '../assets/sweet cafe.mp3'
+
 export default function Game({ game }: { game: GameState }) {
 
+    // handle the music
+    const [isPlaying, setPlaying] = useState(false);
+
+    // this is the play function called when the button is clicked
+    const [play] = useSound(cafeSound, { volume: 0.5, loop: true });
 
     // the cake objects
     const [cakes, setCakes] = useState<any[]>([]);
@@ -129,6 +137,9 @@ export default function Game({ game }: { game: GameState }) {
     let gameTimerHTML;
 
     switch (game.phase) {
+        case "lobby":
+            gameTimerHTML = <Lobby isPlaying={isPlaying} play={play} setPlaying={setPlaying} />;
+            break;
         case "tutorial":
             gameTimerHTML = <TutorialUI />;
             break;
@@ -141,8 +152,6 @@ export default function Game({ game }: { game: GameState }) {
             //         Game Over
             //     </div>
             break;
-        case "lobby":
-          gameTimerHTML = <Lobby />;
     }
 
     return (
