@@ -27,6 +27,32 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
         );
     };
 
+    let feedback;
+    switch (game.feedback) {
+        case "waiting":
+            feedback =
+                null
+            break;
+        case "success":
+            feedback =
+                <div className="sucess-feedback">
+                    Success!
+                </div>
+            break;
+        case "failure":
+            feedback =
+                <div className="failure-feedback">
+                    Wrong Ingredient!
+                </div>
+            break;
+        case "encourage":
+            feedback =
+                <div className="failure-feedback">
+                    Keep Going!
+                </div>
+            break;
+    }
+
     // timer calculations
     //   math stuff
     // turn ms into sec
@@ -65,6 +91,8 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
                     />
                 </div>
             </div>
+
+            {feedback}
 
 
 

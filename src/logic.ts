@@ -71,6 +71,8 @@ Rune.initLogic({
         throw Rune.invalidAction();
       } else {
         game.players[playerId].hasPlaced = true;
+        // set feedback to waiting
+        game.feedback = "waiting";
       }
 
       // add the ingredient to the current recipe

@@ -11,7 +11,7 @@ import {
  */
 export type GamePhase = "lobby" | "tutorial" | "playing" | "loss";
 
-export type Feedback = "waiting" | "success" | "failure";
+export type Feedback = "waiting" | "success" | "failure" | "encourage";
 
 export interface Player {
   id: PlayerId;
@@ -97,7 +97,11 @@ export interface GameState {
      */
     unencountered: GoalType[];
   };
-  ready: boolean
+
+  /**
+   * whether all the players are ready or not
+   */
+  ready: boolean;
 }
 
 type GameActions = {

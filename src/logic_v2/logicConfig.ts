@@ -2,7 +2,7 @@
 /**
  * amount of time starting out before players lose
  */
-export const StartTimeSeconds = 5;
+export const StartTimeSeconds = 60;
 
 
 /**
@@ -13,7 +13,7 @@ export const HintRepeatCount = 3;
 /**
  * amount of time to increase in seconds upon a successful combo
  */
-export const FlatTimeIncreaseOnComboSeconds = 1;
+export const FlatTimeIncreaseOnComboSeconds = 5;
 
 
 // ----------- Don't touch these ------------
