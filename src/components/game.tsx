@@ -46,29 +46,27 @@ export default function Game({ game }: { game: GameState }) {
     useEffect(() => {
         // only rerender if no block is in motion
         if (!blockInMotion) {
-            rerenderCake();
+            rerenderNewLayer();
         }
     }, [game.newLayer]);
 
     useEffect(() => {
-        // handle putting new things into the cake
-        // generally this happens when the goal happens
-        // const totalLength = game.newLayer.length + game.cake.length;
-
+        if (!blockInMotion) {
+            // handle putting new things into the cake
+            // generally this happens when the goal happens
+            // const totalLength = game.newLayer.length + game.cake.length;
+        }
         // we need to process any cake updates after a collision happened... rip
     }, [game.cake]);
 
     useEffect(() => {
         // if the block is no longer in motion, handle rerenders
         if (!blockInMotion) {
-            console.log("Block is not falling")
-            rerenderCake();
-        } else {
-            console.log("Block is falling")
+            rerenderNewLayer();
         }
     }, [blockInMotion]);
 
-    function rerenderCake() {
+    function rerenderNewLayer() {
         // handle the new layer
         // whenever the new layer changes, update the rendered cakes
         const gameStateLayerLength = game.newLayer.length;
