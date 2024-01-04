@@ -53,11 +53,34 @@ export default function Game({ game }: { game: GameState }) {
     useEffect(() => {
         if (!blockInMotion) {
             // handle putting new things into the cake
-            // generally this happens when the goal happens
-            // const totalLength = game.newLayer.length + game.cake.length;
+            rerenderCake();
         }
         // we need to process any cake updates after a collision happened... rip
     }, [game.cake]);
+
+    function rerenderCake() {
+        // handle the new layer
+        // whenever the new layer changes, update the rendered cakes
+        const gameStateCakeLength = game.cake.length;
+        const currentCakeLength = cakes.length;
+        // has something new been added?
+        if (gameStateCakeLength > currentCakeLength) {
+            console.log("cake layer has changed")
+            // something new has been added
+            // create more blocks in the new layer
+            let additionalBlocks: JSX.Element[] = [];
+            // TODO: instead, can we iterate through each and only spawn in new blocks?
+            for (let i = currentCakeLength; i < gameStateCakeLength; i++) {
+                // create more blocks
+                additionalBlocks.push(
+                    <Cake position={new Vector3(0, 1 + ((cakes.length + currentCakeLength) * 0.5), 0)} texture={"eggs"} key={"cake-" + i} setBlockInMotion={setBlockInMotion} />
+                )
+            }
+            // now add it into the state
+            // TODO: will this create some sort of collision type of race condition?
+            setCakes([...cakes, ...additionalBlocks])
+        }
+    }
 
     useEffect(() => {
         // if the block is no longer in motion, handle rerenders
@@ -82,7 +105,7 @@ export default function Game({ game }: { game: GameState }) {
                 // create more blocks
                 console.log("new block added")
                 additionalBlocks.push(
-                    <Cake position={new Vector3(0, 1 + cakes.length * 0.5, 0)} texture={"eggs"} key={i} setBlockInMotion={setBlockInMotion} />
+                    <Cake position={new Vector3(0, 1 + ((cakes.length + currentLayerLength) * 0.5), 0)} texture={"eggs"} key={"new-layer-" + i} setBlockInMotion={setBlockInMotion} />
                 )
             }
             // now add it into the state
