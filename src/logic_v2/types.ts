@@ -97,12 +97,13 @@ export interface GameState {
      */
     unencountered: GoalType[];
   };
+  ready: boolean
 }
 
 type GameActions = {
   // increment: (params: { amount: number }) => void
   placeIngredient: (params: { ingredient: PlacableIngredient }) => void;
-  ready: () => void;
+  setGamePhase: (params: { phase: GamePhase }) => void;
   combine: () => void;
 };
 

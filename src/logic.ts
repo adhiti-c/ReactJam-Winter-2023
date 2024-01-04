@@ -59,6 +59,7 @@ Rune.initLogic({
         encountered: [initialGoal],
         unencountered: removeFromArray([...Goals], initialGoal),
       },
+      ready: true
     };
 
     return game;
@@ -75,9 +76,9 @@ Rune.initLogic({
       // add the ingredient to the current recipe
       game.newLayer.push(ingredient);
     },
-    ready(_, { allPlayerIds, game, playerId }) {
-      // toggle ready status
-      game.players[playerId].ready = !game.players[playerId].ready;
+    setGamePhase({ phase }, { allPlayerIds, game, playerId }) {
+      // change the game phase to be whatever we want
+      game.phase = phase
     },
     combine(_, { game, playerId }) {
       // TODO: how do we process only 1 player input? Aka, finishing the cake off
