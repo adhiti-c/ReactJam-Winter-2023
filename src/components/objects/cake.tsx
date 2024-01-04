@@ -1,26 +1,41 @@
 // contains cake object and cake logic
-import React, { useState, KeyboardEvent, useRef, Suspense } from "react";
-import { TextureLoader, Vector3 } from "three";
+import { useEffect, useState } from "react";
+import { Vector3 } from "three";
 import { RoundedBox, useTexture } from "@react-three/drei";
-import { Physics, RigidBody } from "@react-three/rapier";
-import { Canvas, useLoader } from "@react-three/fiber";
-import Logo from "../assets/wheatBlockTest.svg";
+import { RigidBody } from "@react-three/rapier";
 
 import { PlacableIngredient } from "../../logic_v2/cakeTypes";
-import { CakeLayer } from "../../logic/types";
 
-export default function Cake({texture, position}: {texture: PlacableIngredient, position: Vector3} ) {
+export default function Cake({ texture, position, setBlockInMotion }: { texture: PlacableIngredient, position: Vector3, setBlockInMotion: React.Dispatch<React.SetStateAction<boolean>> }) {
+
+    // make this layer movable by default
+    const [dynamic, setDynamic] = useState<boolean>(true);
+
     var colorMap = undefined;
-    if (texture === "eggs"){
-        colorMap = useTexture("/src/assets/wheatBlockTest.svg")}
-    return(
-      //* Rigidbody = physics block in space
-        <RigidBody>
-          {/* position sets position in 3d space */}
+    if (texture === "eggs") {
+        colorMap = useTexture("/src/assets/wheatBlockTest.svg")
+    }
+
+    useEffect(() => {
+        // this object is falling
+        setBlockInMotion(true);
+    }, [])
+
+    return (
+        <RigidBody type={dynamic ? "dynamic" : "fixed"} onCollisionEnter={() => {
+            // stop gravity
+            setDynamic(false);
+            // block is stopped
+            setBlockInMotion(false);
+            // combine
+            Rune.actions.combine();
+        }}>
             <RoundedBox position={position}
-            //* args = arguments (width, height, depth)
-                args={[.7, .35, 0.7]} >
-                <meshStandardMaterial map={colorMap}/>
+            
+       
+          //* args = arguments (width, height, depth)
+                args={[.7, 0.35, 0.7]} >
+                <meshStandardMaterial map={colorMap} />
             </RoundedBox >
         </RigidBody>
     )

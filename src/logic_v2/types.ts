@@ -9,7 +9,7 @@ import {
 /**
  * the current phase of the game. loss = "complete loss" or the end of the game
  */
-export type GamePhase = "tutorial" | "playing" | "loss";
+export type GamePhase = "lobby" | "tutorial" | "playing" | "loss";
 
 export type Feedback = "waiting" | "success" | "failure";
 
@@ -17,6 +17,7 @@ export interface Player {
   id: PlayerId;
   inventory: (PlacableIngredient | null)[];
   hasPlaced: boolean;
+  ready: boolean
 }
 
 export interface GameState {
@@ -101,6 +102,8 @@ export interface GameState {
 type GameActions = {
   // increment: (params: { amount: number }) => void
   placeIngredient: (params: { ingredient: PlacableIngredient }) => void;
+  ready: () => void;
+  combine: () => void;
 };
 
 declare global {

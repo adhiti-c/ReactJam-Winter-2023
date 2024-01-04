@@ -18,7 +18,7 @@ const Music: React.FC<musicProps> = ({setGamePhase}) => {
         if (!isPlaying) {
             play();
             setPlaying(true); 
-            setGamePhase('tutorial');
+            setGamePhase('playing');
         }
        
     };

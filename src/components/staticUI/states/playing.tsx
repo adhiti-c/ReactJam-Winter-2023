@@ -7,12 +7,11 @@ import { GameState } from "../../../logic_v2/types";
 import { PlacableIngredient } from "../../../logic_v2/cakeTypes";
 import CakeReg from "../../../assets/regularCake.svg";
 
-
-export default function PlayingUI({ game, placeIngredient }: { game: GameState, placeIngredient: Function }) {
-
-    // selected element
-    const [selectedIngredient, setSelectedIngredient] = useState<string[]>([]);
-
+/**
+ * the props to this UI are: the game state, the ingredient currently selected (passed in from the parent which remembers the state), and a useState function to change this selected ingredient
+ * it works identically as if we had the useState in this file.
+ */
+export default function PlayingUI({ game, selectedIngredient, setSelectedIngredient }: { game: GameState, selectedIngredient: PlacableIngredient[], setSelectedIngredient: React.Dispatch<React.SetStateAction<PlacableIngredient[]>> }) {
     const handleInventoryClick = (ingredient: PlacableIngredient) => {
         // if the list of ingredients includes the index
         const newSelectedIngredient = selectedIngredient.includes(ingredient)
@@ -21,8 +20,6 @@ export default function PlayingUI({ game, placeIngredient }: { game: GameState, 
             : // else assign the selectedIngredient array to the new index clicked
             [ingredient];
         setSelectedIngredient(newSelectedIngredient);
-
-        placeIngredient(ingredient);
         console.log(
             `Ingredient ${ingredient} is selected: ${newSelectedIngredient.includes(
                 ingredient,
@@ -68,7 +65,7 @@ export default function PlayingUI({ game, placeIngredient }: { game: GameState, 
                     />
                 </div>
             </div>
-            
+
 
 
             {/* <div>

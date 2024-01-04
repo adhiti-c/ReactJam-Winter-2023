@@ -126,7 +126,26 @@ export function checkProgress(goal: RecipeComponent, layers: CakeLayerType[]): b
     return true;
 }
 
-
-export function recursivelyCombineLayers(layers: CakeLayerType[]): CakeLayerType[] {
-
+export function matchRecipe(layers: CakeLayerType[]) {
+    let created: GoalType | null = null;
+    // look through the recipe book to find a match
+    for (const goal in RecipeBook) {
+        // check this recipe
+        const goalType = goal as GoalType
+        const recipe = RecipeBook[goalType];
+        let res = false;
+        if (recipe.ordered) {
+            // deep equality
+            res = compareArraysInOrder(recipe.recipe, layers);
+        } else {
+            // consider it like an unordered set
+            res = compareArraysAsSets(recipe.recipe, layers);
+        }
+        // is there a match?
+        if (res) {
+            created = goalType;
+            break;
+        }
+    }
+    return created;
 }

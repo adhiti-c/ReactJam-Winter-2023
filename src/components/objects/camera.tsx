@@ -1,49 +1,35 @@
 // contains player object and player logic
-import { Canvas } from "@react-three/fiber";
-import React, { useState, KeyboardEvent, useRef } from "react";
+import React, { useState, useEffect } from "react";
+import { useThree, useFrame } from "@react-three/fiber";
+import { Vector3 } from "three";
 
 //Player Movement
-export default function Camera() {
-  const [position_c, setPosition] = useState([1, 0, 1]);
-  const moveSpeed = 0.1;
-  const windowSize = useRef([window.innerWidth, window.innerHeight]);
+export default function Camera({ cakes }: { cakes: JSX.Element[] }) {
 
-  const handleMove = (e: KeyboardEvent): void => {
-    const newPosition = [...position_c];
-    if (e.key === "a") {
-      newPosition[0] -= moveSpeed;
-      newPosition[2] += moveSpeed;
-      console.log("left_c", e.key);
-      console.log(windowSize.current[0]);
-      console.log(position_c[0]);
-    } else if (e.key === "d") {
-      newPosition[0] += moveSpeed;
-      newPosition[2] -= moveSpeed;
-      console.log("right", e.key);
-    } else if (e.key === "w") {
-      newPosition[0] -= moveSpeed;
-      newPosition[2] -= moveSpeed;
-      console.log("up", e.key);
-    } else if (e.key === "s") {
-      newPosition[0] += moveSpeed;
-      newPosition[2] += moveSpeed;
-      console.log("down", e.key);
-    }
-    setPosition(newPosition);
-  };
+  const initialPos = [1, 0, 1]
+  const initialCameraVector = new Vector3(initialPos[0], initialPos[1], initialPos[2]);
+  const camera = useThree(state => state.camera);
+  const [cameraVector, setCameraVector] = useState<Vector3>(initialCameraVector)
 
-  // Attach keydown event listener when the component mounts
-  React.useEffect(() => {
-    const keydownHandler = (event: Event): void => {
-      handleMove(event as unknown as KeyboardEvent<Element>);
-    };
+  useEffect(() => {
+    // recalculate the vector
+    // const newCamPos = new Vector3(initialPos[0], initialPos[1] + cakes.length * 0.25, initialPos[2])
+    const newCamPos = new Vector3(initialPos[0], initialPos[1] + cakes.length * 0.25, initialPos[2])
 
-    document.addEventListener("keydown", keydownHandler);
-    // Clean up the event listener when the component unmounts
-    return () => {
-      document.removeEventListener("keydown", keydownHandler);
-    };
-  }, [position_c]);
+    setCameraVector(newCamPos)
+  }, [cakes])
 
-  return position_c;
+  useFrame(() => {
+    // move camera to right position
+    // camera.position.set(initialCameraPosition[0], initialCameraPosition[1] + cakes.length, initialCameraPosition[2])
+    // camera.position.x = initialCameraPosition[0];
+    // camera.position.y = initialCameraPosition[1] + (cakes.length * 0.1);
+    // camera.position.z = initialCameraPosition[2];
+    camera.position.lerp(cameraVector, 0.025);
+    camera.rotation.set(0, 0.8, 0)
+  });
+
+  return (
+    <mesh />
+  )
 }
