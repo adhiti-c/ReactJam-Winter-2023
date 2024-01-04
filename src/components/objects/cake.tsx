@@ -11,7 +11,7 @@ export default function Cake({ texture, position, setBlockInMotion }: { texture:
     // make this layer movable by default
     const [dynamic, setDynamic] = useState<boolean>(true);
 
-    var colorMap = undefined;
+    let colorMap = undefined;
     if (texture === "eggs") {
         colorMap = useTexture("/src/assets/wheatBlockTest.svg")
     }
