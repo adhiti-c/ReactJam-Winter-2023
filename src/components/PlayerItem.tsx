@@ -1,6 +1,6 @@
 import React from 'react'
 
-function PlayerItem({profile, username, userType}:{profile: string, username: string, userType: string}) {
+function PlayerItem({game, players}:{profile: string, username: string, userType: string}) {
   return (
     <div className='player-item'>
       <img src={profile} alt="" />

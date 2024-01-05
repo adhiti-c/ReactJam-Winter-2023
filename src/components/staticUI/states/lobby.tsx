@@ -3,6 +3,7 @@ import PlayerItem from '../../PlayerItem'
 import Logo from '../../../assets/sweetStackLogo.svg'
 import Music from '../../Music'
 import { GameState } from '../../../logic_v2/types'
+import Background from '../../../assets/lobbyBackground.svg'
 
 const Lobby = ({ game, isPlaying, setPlaying, play }: { game: GameState, isPlaying: boolean, setPlaying: React.Dispatch<React.SetStateAction<boolean>>, play: Function }) => {
 
