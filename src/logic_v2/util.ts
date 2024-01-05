@@ -38,7 +38,6 @@ export function compareArraysAsSets(arr1: any[], arr2: any[]): boolean {
  * @returns {boolean}
  */
 export function compareArraysInOrder(arr1: any[], arr2: any[]): boolean {
-    console.log("comparing:", arr1, arr2);
     if (arr1.length !== arr2.length) {
         return false;
     }
@@ -176,7 +175,6 @@ export function combineLayer(layer: CakeLayerType[]): CakeLayerType[] {
         // if the match array gets a valid match
         // get rid of the current l,r pointer we are on and add the match
         if (match !== null) {
-            console.log("match")
             // add the item that is matched to where the l index was
             combinedLayer.splice(l, 0, match)
 
