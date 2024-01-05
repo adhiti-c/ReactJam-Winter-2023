@@ -1,7 +1,6 @@
 import { useState } from "react"
 import NextUp from "../NextUp";
 import Recipe from "../Recipe";
-import InventoryData from "../data/InventoryData";
 import InventorySlot from "../InventorySlot";
 import { LayerToAssetMap } from "../../../logic_v2/assetMap";
 import { GameState } from "../../../logic_v2/types";
@@ -90,6 +89,7 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
                         imgPlayer1=""
                         imgPlayer2=""
                         imgFinal=""
+                        game={game}
                     />
                 </div>
             </div>
