@@ -199,7 +199,6 @@ Rune.initLogic({
           // TODO: switch this with the combineLayer function
           // TODO: maintenance: apply this function to the beginning of the combination mechanic only?
           newLayerCopy = combineLayer(newLayerCopy);
-
           // // make sure that the thing that was built is part of the current recipe. Players could have been building the basic_cake for the chocolate_cake.
           // // pretend that we built the thing we just tried to make
 

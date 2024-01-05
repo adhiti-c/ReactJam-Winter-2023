@@ -104,7 +104,6 @@ export default function Game({ game, player, players }: { game: GameState, playe
         // whenever the new layer changes, update the rendered cakes
         const gameStateLayerLength = game.newLayer.length;
         const currentLayerLength = newLayer.length;
-        console.log(gameStateLayerLength + " vs " + currentLayerLength)
         // has something new been added?
         if (gameStateLayerLength > currentLayerLength) {
             // something new has been added
