@@ -1,24 +1,32 @@
-// import InventoryData, {InventoryItem} from './InventoryData';
-// import NextUp from '../NextUp';
-// import LayerData from './LayerData'
-// import { RecipeBook, GoalType, Recipe } from './cakeType';
+//* this will be the holy bible of all asset data
+// from data/staticUI/components/assets
+import Butter from "../../../assets/butterIcon.svg";
+import Egg from "../../../assets/eggIcon.svg";
+import Wheat from "../../../assets/wheatIcon.svg";
+import Chocolate from "../../../assets/chocolateIcon.svg";
+import Straw from "../../../assets/carrotIcon.svg";
+import Carrot from "../../../assets/strawberryCake.svg";
+import { PlacableIngredient } from "../../../logic_v2/cakeTypes";
+//? each element has: 
+//? name
+//? static ui icon
+//? 3d asset (model OR material)
+type RecipeItem = {
+    //* identifier label
+    Name: PlacableIngredient;
+    //* static UI
+    StaticIcon: string;
+    //* 3d asset material or 3d asset
+    Model: string;
+    //* final goal contained in "next up"
 
-// // function maps images from inventoryData and LayerData based on the REcipeBook arrays to each recipe
-// // "Record" used for defining output for objects
-// export function mapImagestoRecipes(RecipeBook: Record<GoalType, Recipe>,inventoryData: InventoryItem[], layerData: NextUp[]): Record<string, string> {
-//     // initializes empty object with both key type as strings
-//     const ImageMapping: Record<string ,string> = {}
+}
+const RecipeData: RecipeItem[] = [
+    //* ingredients
+    // egg
+    {Name: "eggs", StaticIcon: Egg, Model: EggBlock},
+    //* flavors
+    // carrot
+]
 
-//     Object.entries(RecipeBook).forEach(([goalType, recipe])=> {
-
-//     })
-// }
-// interface Recipe = {
-//     imgPlayer1: string;
-//     imgPlayer2: string;
-//     imgFinal: string;
-// };
-// // map images to recipe
-// export const RecipeData: Recipe[] = [
-//  {imgPlayer1: "eggs", imgPlayer2: "flour", imgFinal: "cake_base"}
-// ];
+export default RecipeData

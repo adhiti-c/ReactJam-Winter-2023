@@ -1,3 +1,4 @@
+
 :root {
   --pink: #ff8888;
   --pinkLight: #ffcfe0;
@@ -229,4 +230,16 @@ margin-right: 20px;
 .lobby-contain {
   height: 100%;
   background-color: #413434bd;
+  background-image: url(./assets/lobbyBackground.svg);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 22px;
+}
+.lobby-contain img {
+  max-width: 100px;
 }
