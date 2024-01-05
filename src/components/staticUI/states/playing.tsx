@@ -6,7 +6,7 @@ import { LayerToAssetMap } from "../../../logic_v2/assetMap";
 import { GameState } from "../../../logic_v2/types";
 import { PlacableIngredient } from "../../../logic_v2/cakeTypes";
 import CakeReg from "../../../assets/regularCake.svg";
-import { Player, Players } from "rune-games-sdk";
+import { Player } from "rune-games-sdk";
 
 /**
  * the props to this UI are: the game state, the ingredient currently selected (passed in from the parent which remembers the state), and a useState function to change this selected ingredient
@@ -85,24 +85,12 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
                     {/* show all the cake layers */}
                 </div>
                 <div className="recipe-section">
-                    <Recipe
-                        imgPlayer1=""
-                        imgPlayer2=""
-                        imgFinal=""
-                        game={game}
-                    />
+                    <Recipe game={game} />
                 </div>
             </div>
 
             {feedback}
 
-
-
-            {/* <div>
-
-            {JSON.stringify(game.hint.recipe)}
-            {game.hint.name} 
-          </div> */}
             <div className="inventory-contain">
                 {/* maps each ingredient to an inventoryslot */}
                 {game.players[player.playerId].inventory.map((ingredient, index) => {

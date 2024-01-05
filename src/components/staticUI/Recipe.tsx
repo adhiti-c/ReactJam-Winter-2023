@@ -6,13 +6,10 @@ import { GameState } from '../../logic_v2/types'
 import { Fragment } from 'react'
 
 type Recipe = {
-  imgPlayer1: string;
-  imgPlayer2: string;
-  imgFinal: string;
   game: GameState
   // ingredient: string[]; 
 };
-function Recipe({ imgPlayer1, imgPlayer2, imgFinal, game }: Recipe) {
+function Recipe({ game }: Recipe) {
 
 
   // parse the current hint

@@ -1,6 +1,6 @@
 import React from 'react'
 import { GameState } from '../../logic_v2/types'
-import { CakeLayerType, PlacableIngredient, isPlacableIngredient } from '../../logic_v2/cakeTypes';
+import { CakeLayerType, isPlacableIngredient } from '../../logic_v2/cakeTypes';
 import { PlayerIndexToCharacterIcon } from '../../logic_v2/assetMap';
 
 function RecipeItem({ img, ingredient, game }: { img: string, ingredient: CakeLayerType, game: GameState }) {
