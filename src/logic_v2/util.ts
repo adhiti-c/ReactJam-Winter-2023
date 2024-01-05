@@ -1,4 +1,5 @@
-import { CakeLayerType, GoalType, Recipe, RecipeBook, RecipeComponent } from "./cakeTypes";
+import { CakeLayerType, GoalType, PlacableIngredient, Recipe, RecipeBook, RecipeComponent } from "./cakeTypes";
+import { Player } from "./types";
 
 /**
  * function to check if two sets are equivalent
@@ -148,4 +149,55 @@ export function matchRecipe(layers: CakeLayerType[]) {
         }
     }
     return created;
+}
+
+/**
+ * function to combine layers in a sliding window algorithm, from the top to the bottom
+ * @param layer 
+ * @returns 
+ */
+export function combineLayer(layer: CakeLayerType[]): CakeLayerType[] {
+    let r = layer.length - 1
+    let l = r - 1
+
+    while (l >= 0) {
+        // create an array that is just layer[l] and layer[r] to put into matchRecipe
+        let matchArray: CakeLayerType[] = layer.slice(l, r + 1)
+
+        // parameter to put into matchRecipe
+        let match = matchRecipe(matchArray)
+        // if the match array gets a valid match
+        // get rid of the current l,r pointer we are on and add the match
+        if (match != null) {
+            // add the item that is matched to where the l index was
+            layer.splice(l, 0, match)
+
+            // get rid of the items that just got matched
+            layer.splice(r + 1, r + 1)
+            layer.splice(l + 1, l + 1)
+
+            // decrement the window
+            l--
+            r--
+        }
+        // there is no valid match, move up the pointers
+        else {
+            l--
+            r--
+        }
+    }
+    return layer
+}
+
+export function giveAllPlayersRandomly(players: Record<string, Player>, ingredients: PlacableIngredient[]): Record<string, Player> {
+    for (const playerId in players) {
+        // choose random
+        const index = chooseRandomIndexOfArray(ingredients);
+        // get the ingredient
+        const ingredientInventory = ingredients.splice(index, 1);
+        const currentInventory = players[playerId].inventory
+        // create player
+        players[playerId].inventory = [...currentInventory].concat(ingredientInventory)
+    }
+    return players;
 }

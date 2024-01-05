@@ -1,7 +1,7 @@
 import { CakeLayerType, GoalType, Goals, PlacableIngredient, RecipeBook } from "./logic_v2/cakeTypes";
 import { StartTimeLeftMilliseconds, HintRepeatCount, FlatTimeIncreaseOnComboMilliseconds } from "./logic_v2/logicConfig";
 import { Player, GameState } from "./logic_v2/types";
-import { compareArraysAsSets, compareArraysInOrder, chooseRandomIndexOfArray, removeFromArray, checkProgress, matchRecipe } from "./logic_v2/util";
+import { compareArraysAsSets, compareArraysInOrder, chooseRandomIndexOfArray, removeFromArray, checkProgress, matchRecipe, combineLayer, giveAllPlayersRandomly } from "./logic_v2/util";
 
 /*
 random thoughts:
@@ -127,8 +127,9 @@ Rune.initLogic({
           game.players[player].hasPlaced = false;
         }
 
-        // if the goal had a flavor, switch the flavor out of the player’s hand
+        // if the goal had a flavor, switch that flavor out of the player’s hand
         // TODO: handle player inventory changes
+        // TODO: make sure that like it's a flavor the player has already encountered?
 
         // if the goal was the same as the current recipe hint, increment the count up
         const gameHint = game.hint;
@@ -136,7 +137,6 @@ Rune.initLogic({
           game.hint.count = gameHint.count + 1;
         }
 
-        // TODO: make sure it is possible to create the next goal based on the player's hand
         // if count exceeded, generate a new not-created recipe and make that the new goal
         if (game.hint.count >= HintRepeatCount) {
           // generate a new non-created goal to make as the new goal
@@ -144,11 +144,19 @@ Rune.initLogic({
           // special case: if the initial goal is the cake_base, make the players do frosting next as part of the tutorial?
           if (game.goals.current === "cake_base") {
             game.goals.current = "cake_frosting";
+            // give players butter and sugar
+            game.players = giveAllPlayersRandomly(game.players, ["butter", "sugar"]);
           } else if (game.goals.current === "cake_frosting") {
             // special case: if the goal is cake_frosting, make it a chocolate cake as part of the tutorial?
             game.goals.current = "choco_cake";
+            // give players some ingredients
+            // remove chocolate from ingredients, and give players something random
+
+            // now given the players the ingredients
+            game.players = giveAllPlayersRandomly(game.players, ["chocolate", "strawberry"]);
           } else {
             // choose from the unencountered goals
+            // TODO: make sure it is possible to create the next goal based on the player's hand
             const unencounteredRecipes = game.goals.unencountered;
             const randomIndex =
               chooseRandomIndexOfArray(unencounteredRecipes);
@@ -175,26 +183,28 @@ Rune.initLogic({
       } else {
         // if it does not match
         let penalty = true;
-        // what did the players actually build?
+        // id the players actually build something?
         let attempted: GoalType | null = matchRecipe(currentLayerArray);
 
         // if this is a real recipe
         let newLayerCopy = [...currentLayerArray];
         if (attempted) {
-          // basically, we handle the combination here
+          // handle the combination here
           // TODO: switch this with the combineLayer function
+          // TODO: maintenance: apply this function to the beginning of the combination mechanic only?
+          newLayerCopy = combineLayer(newLayerCopy);
 
-          // make sure that the thing that was built is part of the current recipe. Players could have been building the basic_cake for the chocolate_cake.
-          // pretend that we built the thing we just tried to make
+          // // make sure that the thing that was built is part of the current recipe. Players could have been building the basic_cake for the chocolate_cake.
+          // // pretend that we built the thing we just tried to make
 
-          // to build something, we assume that both players have placed already
-          // let's try to combine into what was attempted
-          // remove the recently placed blocks
-          for (const _ of Object.keys(game.players)) {
-            newLayerCopy.pop()
-          }
-          // add the attempted recipe
-          newLayerCopy.push(attempted);
+          // // to build something, we assume that both players have placed already
+          // // let's try to combine into what was attempted
+          // // remove the recently placed blocks
+          // for (const _ of Object.keys(game.players)) {
+          //   newLayerCopy.pop()
+          // }
+          // // add the attempted recipe
+          // newLayerCopy.push(attempted);
         }
         // now we figure out if we are making true progress toward the goal
         let isPartOfCurrentGoal = checkProgress(currentGoal, newLayerCopy);
