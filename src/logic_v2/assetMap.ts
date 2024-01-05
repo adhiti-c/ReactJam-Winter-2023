@@ -22,14 +22,28 @@ import CarrotCake from "../assets/icons/carrotCake.svg";
 import Base from "../assets/icons/baseIcon.svg";
 import Frosting from "../assets/icons/frostingIcon.svg";
 
+// textures
+import BaseTexture from "../assets/textures/baseBlock.svg";
+import ButterTexture from "../assets/textures/butterBlock.svg";
+import SugarTexture from "../assets/textures/sugarBlock.svg";
+import WheatTexture from "../assets/textures/wheatBlock.svg";
+import FrostingTexture from "../assets/textures/frostingBlock.svg";
+import EggTexture from "../assets/textures/eggBlock.svg";
+
 // blender models
 
 // import types and stuff
 import { CakeLayerType } from "./cakeTypes";
 
 interface assetInformation {
-    texture?: string,
-    blender?: string,
+    /**
+     * a flag stating whether this is representing in three as a blender object
+     */
+    isBlenderObj: boolean,
+    /**
+     * the texture or the blender block path
+     */
+    block: string,
     /**
      * a 2d representation of the object. It might be in the inventory slot, or part of the recipe hint
      */
@@ -41,43 +55,69 @@ export const LayerToAssetMap: Record<CakeLayerType, assetInformation> = {
     // fill the stuff in here
     "eggs": {
         icon: Egg,
+        isBlenderObj: false,
+        block: EggTexture,
     },
     "flour": {
         icon: Wheat,
+        isBlenderObj: false,
+        block: WheatTexture,
     },
     "butter": {
-        icon: Butter
+        icon: Butter,
+        isBlenderObj: false,
+        block: ButterTexture,
     },
     "sugar": {
         icon: Sugar,
+        isBlenderObj: false,
+        block: SugarTexture,
     },
     "strawberry": {
         icon: Straw,
+        isBlenderObj: false, // TODO: make this true
+        block: WheatTexture, // TODO: update with strawberry blender model
     },
     "chocolate": {
         icon: Chocolate,
+        isBlenderObj: false, // TODO: make this true
+        block: WheatTexture, // TODO: update with chocolate blender model
     },
     "carrot": {
         icon: Carrot,
+        isBlenderObj: false, // TODO: make this true
+        block: WheatTexture, // TODO: update with carrot blender model
     },
     // do all the combos now
     "cake_base": {
         icon: Base,
+        isBlenderObj: false,
+        block: BaseTexture,
     },
     "cake_frosting": {
         icon: Frosting,
+        isBlenderObj: false,
+        block: FrostingTexture,
     },
     "basic_cake": {
         icon: Cake,
+        isBlenderObj: false, // TODO: make this true
+        block: WheatTexture, // TODO: update this with blender
     },
     "choco_cake": {
         icon: ChocolateCake,
+        isBlenderObj: false, // TODO: make this true
+        block: WheatTexture, // TODO: update this with blender
     },
     "straw_cake": {
         icon: StrawberryCake,
+        isBlenderObj: false, // TODO: make true
+        block: WheatTexture, // TODO: update with blender
     },
     "carrot_cake": {
-        icon: CarrotCake
+        icon: CarrotCake,
+        isBlenderObj: false, // TODO: make true,
+        block: WheatTexture, // TODO: update with blender
     }
 }
 
