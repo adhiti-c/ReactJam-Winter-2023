@@ -1,4 +1,5 @@
-import { CakeLayerType, GoalType, Recipe, RecipeBook, RecipeComponent } from "./cakeTypes";
+import { CakeLayerType, GoalType, PlacableIngredient, Recipe, RecipeBook, RecipeComponent } from "./cakeTypes";
+import { Player } from "./types";
 
 /**
  * function to check if two sets are equivalent
@@ -105,22 +106,22 @@ export function checkProgress(goal: RecipeComponent, layers: CakeLayerType[]): b
         // turn recipe into a set
         const recipeSet = new Set(recipe.recipe);
         for (const [index, layer] of layers.entries()) {
-            // check if the current layer is in the set
+            // check if the current thing in the layer is in the set
             if (!recipeSet.has(layer)) {
+                // we could not find this current thing, but it may be a smaller part of another ingredient in the set
                 // slice new layer to match
                 const layerSliced = layers.slice(index);
                 // check each part of the set
                 for (const component of recipeSet.values()) {
-                    // recursively call
+                    // recursively call, check if this thing is making progress
                     const progress = checkProgress(component, layerSliced)
-                    if (progress) {
-                        return true;
+                    if (!progress) {
+                        return false;
                     }
                 }
             }
-            // we did not hit a match, so return false
-            return false;
         }
+        return true;
     }
     // the entire recipe is in line so far
     return true;
@@ -148,4 +149,55 @@ export function matchRecipe(layers: CakeLayerType[]) {
         }
     }
     return created;
+}
+
+/**
+ * function to combine layers in a sliding window algorithm, from the top to the bottom
+ * @param layer 
+ * @returns 
+ */
+export function combineLayer(layer: CakeLayerType[]): CakeLayerType[] {
+    let r = layer.length - 1
+    let l = r - 1
+
+    while (l >= 0) {
+        // create an array that is just layer[l] and layer[r] to put into matchRecipe
+        let matchArray: CakeLayerType[] = layer.slice(l, r + 1)
+
+        // parameter to put into matchRecipe
+        let match = matchRecipe(matchArray)
+        // if the match array gets a valid match
+        // get rid of the current l,r pointer we are on and add the match
+        if (match != null) {
+            // add the item that is matched to where the l index was
+            layer.splice(l, 0, match)
+
+            // get rid of the items that just got matched
+            layer.splice(r + 1, r + 1)
+            layer.splice(l + 1, l + 1)
+
+            // decrement the window
+            l--
+            r--
+        }
+        // there is no valid match, move up the pointers
+        else {
+            l--
+            r--
+        }
+    }
+    return layer
+}
+
+export function giveAllPlayersRandomly(players: Record<string, Player>, ingredients: PlacableIngredient[]): Record<string, Player> {
+    for (const playerId in players) {
+        // choose random
+        const index = chooseRandomIndexOfArray(ingredients);
+        // get the ingredient
+        const ingredientInventory = ingredients.splice(index, 1);
+        const currentInventory = players[playerId].inventory
+        // create player
+        players[playerId].inventory = [...currentInventory].concat(ingredientInventory)
+    }
+    return players;
 }

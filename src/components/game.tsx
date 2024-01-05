@@ -15,8 +15,9 @@ import Lobby from "./staticUI/states/lobby";
 // fix the typing error: https://github.com/joshwcomeau/use-sound/issues/135#issuecomment-1723305858
 import useSound from 'use-sound';
 import cafeSound from '../assets/sweet cafe.mp3'
+import { Player, Players } from "rune-games-sdk";
 
-export default function Game({ game }: { game: GameState }) {
+export default function Game({ game, player, players }: { game: GameState, player: Player, players: Players }) {
 
     // handle the music
     const [isPlaying, setPlaying] = useState(false);
