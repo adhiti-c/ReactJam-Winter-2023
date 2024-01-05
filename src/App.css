@@ -189,7 +189,11 @@ button {
   width: 25px;
   border-radius: 16px;
   height: 25px;
-  
+  display: grid;
+  place-content: center;
+}
+.recipe-item img {
+  max-width: 30px;
 }
 .final-recipe-item {
   border: var(--border);

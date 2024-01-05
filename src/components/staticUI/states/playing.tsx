@@ -5,7 +5,7 @@ import InventorySlot from "../InventorySlot";
 import { LayerToAssetMap } from "../../../logic_v2/assetMap";
 import { GameState } from "../../../logic_v2/types";
 import { PlacableIngredient } from "../../../logic_v2/cakeTypes";
-import CakeReg from "../../../assets/regularCake.svg";
+import CakeReg from "../../../assets/icons/regularCake.svg";
 import SuccessSound from "../../../assets/successSound.wav";
 import FailureSound from "../../../assets/failureSound.wav";
 import { Player } from "rune-games-sdk";
