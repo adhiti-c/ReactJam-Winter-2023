@@ -95,10 +95,10 @@ Rune.initLogic({
 
         // check if order matters
         if (goalRecipe.ordered) {
-          success = compareArraysAsSets(goalRecipe.recipe, currentLayerArray);
+          success = compareArraysInOrder(goalRecipe.recipe, currentLayerArray);
         } else {
           // deep array equivalency
-          success = compareArraysInOrder(goalRecipe.recipe, currentLayerArray);
+          success = compareArraysAsSets(goalRecipe.recipe, currentLayerArray);
         }
 
         // if it successfully matched:
