@@ -11,6 +11,9 @@ import Straw from "../assets/carrotIcon.svg";
 import Carrot from "../assets/strawberryCake.svg";
 import Sugar from "../assets/sugarIcon.svg";
 
+import Chicken from "../assets/chicken.svg";
+import Cow from "../assets/cow.svg";
+
 // these are icons for Next Up and recipe hints
 import Cake from "../assets/regularCake.svg";
 import ChocolateCake from "../assets/chocolateCake.svg";
@@ -76,4 +79,6 @@ export const LayerToAssetMap: Record<CakeLayerType, assetInformation> = {
     "carrot_cake": {
         icon: CarrotCake
     }
-} 
+}
+
+export const PlayerIndexToCharacterIcon = [Chicken, Cow]

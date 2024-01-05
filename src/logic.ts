@@ -267,7 +267,6 @@ Rune.initLogic({
       // Rune.gameOver(); // TODO: implement this later
     } else {
       if (game.phase === "playing") {
-        console.log("counting down")
         const timeDiff = Rune.gameTime() - game.lastCountdown;
         // if we counting down, count down every second
         if (timeDiff >= 1) {

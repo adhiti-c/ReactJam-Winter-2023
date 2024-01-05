@@ -1,10 +1,28 @@
 import React from 'react'
+import { GameState } from '../../logic_v2/types'
+import { CakeLayerType, PlacableIngredient, isPlacableIngredient } from '../../logic_v2/cakeTypes';
+import { PlayerIndexToCharacterIcon } from '../../logic_v2/assetMap';
 
-function RecipeItem({img}: {img: string,}) {
+function RecipeItem({ img, ingredient, game }: { img: string, ingredient: CakeLayerType, game: GameState }) {
+  // loop through the inventory to find out who owns what
+  let owner: number | null = null;
+  let index = 0;
+  for (const player of Object.values(game.players)) {
+    const inventory = player.inventory;
+    if (isPlacableIngredient(ingredient) && inventory.includes(ingredient)) {
+      owner = player.number;
+      break;
+    }
+    index++;
+  }
   return (
-    <div className='recipe-item'>
-      <img src={img}/>
-    </div>
+    <>
+      {/* figure out who owns this item, if anyone */}
+      {owner !== null ? <img src={PlayerIndexToCharacterIcon[owner]} /> : null}
+      <div className='recipe-item'>
+        <img src={img} />
+      </div>
+    </>
   )
 }
 

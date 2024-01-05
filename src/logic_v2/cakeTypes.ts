@@ -88,6 +88,10 @@ export const AllInventory = [...Ingredients, ...Flavors];
  */
 export type PlacableIngredient = IngredientType | FlavorType
 
+// PlacableIngredient type guard
+export function isPlacableIngredient(value: any): value is PlacableIngredient {
+    return AllInventory.includes(value);
+}
 
 /**
  * These are non-atomic cake layers that make up PlacableIngredient or other non-atomic cake layers
