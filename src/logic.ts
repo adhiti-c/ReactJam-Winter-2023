@@ -150,7 +150,10 @@ Rune.initLogic({
             // give players butter and sugar
             game.players = giveAllPlayersRandomly(game.players, ["butter", "sugar"]);
           } else if (game.goals.current === "cake_frosting") {
-            // special case: if the goal is cake_frosting, make it a chocolate cake as part of the tutorial?
+            // special case: if the goal is cake_frosting, make it a basic cake as part of the tutorial
+            game.goals.current = "basic_cake";
+          } else if (game.goals.current === "basic_cake") {
+            // special case: if the goal is basic_cake, make it a chocolate cake as part of the tutorial
             game.goals.current = "choco_cake";
             // give players some ingredients
             // remove chocolate from ingredients, and give players something random
