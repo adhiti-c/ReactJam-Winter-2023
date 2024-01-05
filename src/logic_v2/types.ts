@@ -17,7 +17,8 @@ export interface Player {
   id: PlayerId;
   inventory: (PlacableIngredient | null)[];
   hasPlaced: boolean;
-  ready: boolean
+  ready: boolean;
+  number: number;
 }
 
 export interface GameState {

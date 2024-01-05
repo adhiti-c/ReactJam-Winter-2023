@@ -20,6 +20,7 @@ Rune.initLogic({
 
     // create all players
     const players: Record<string, Player> = {};
+    let playerIndex = 0;
     for (const playerId of allPlayerIds) {
       // choose random
       const index = chooseRandomIndexOfArray(startingIngredients);
@@ -31,8 +32,10 @@ Rune.initLogic({
         id: playerId,
         inventory: ingredientInventory,
         hasPlaced: false,
-        ready: false
+        ready: false,
+        number: playerIndex
       };
+      playerIndex++;
     }
 
     const initialGoal: CakeLayerType = "cake_base";
