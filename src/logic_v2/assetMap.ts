@@ -28,6 +28,7 @@ import ButterTexture from "../assets/textures/butterBlock.svg";
 import SugarTexture from "../assets/textures/sugarBlock.svg";
 import WheatTexture from "../assets/textures/wheatBlock.svg";
 import FrostingTexture from "../assets/textures/frostingBlock.svg";
+import EggTexture from "../assets/textures/eggBlock.svg";
 
 // blender models
 
@@ -55,7 +56,7 @@ export const LayerToAssetMap: Record<CakeLayerType, assetInformation> = {
     "eggs": {
         icon: Egg,
         isBlenderObj: false,
-        block: WheatTexture, // TODO: add an egg texture
+        block: EggTexture,
     },
     "flour": {
         icon: Wheat,
