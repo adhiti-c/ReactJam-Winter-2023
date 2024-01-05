@@ -163,12 +163,12 @@ export default function Game({ game, player, players }: { game: GameState, playe
                 onClick={handleDrop}>
                 <Camera cakes={cakes} />
                 <Suspense>
-                    <Physics gravity={[0, -15, 0]} colliders="hull">
+                    <Physics gravity={[0, -15, 0]}
+                        colliders="hull"
+                    >
                         {...cakes}
                         {...newLayer}
-                        <RigidBody type="fixed">
-                            <Platform />
-                        </RigidBody>
+                        <Platform />
                         <ambientLight args={[0x000000]} />
                         <directionalLight position={[10, 10, 10]} />
                     </Physics>

@@ -1,8 +1,8 @@
 // contains cake object and cake logic
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Vector3 } from "three";
 import { RoundedBox, useTexture } from "@react-three/drei";
-import { RigidBody } from "@react-three/rapier";
+import { RapierRigidBody, RigidBody } from "@react-three/rapier";
 
 import { PlacableIngredient } from "../../logic_v2/cakeTypes";
 
@@ -21,8 +21,11 @@ export default function Cake({ texture, position, setBlockInMotion }: { texture:
         setBlockInMotion(true);
     }, [])
 
+    //* args = arguments (width, height, depth)
+    const size: [width?: number | undefined, height?: number | undefined, depth?: number | undefined] = [.7, 0.35, 0.7]
+
     return (
-        <RigidBody type={dynamic ? "dynamic" : "fixed"} onCollisionEnter={() => {
+        <RigidBody type={dynamic ? "dynamic" : "fixed"} onContactForce={() => {
             // stop gravity
             setDynamic(false);
             // block is stopped
@@ -31,10 +34,7 @@ export default function Cake({ texture, position, setBlockInMotion }: { texture:
             Rune.actions.combine();
         }}>
             <RoundedBox position={position}
-            
-       
-          //* args = arguments (width, height, depth)
-                args={[.7, 0.35, 0.7]} >
+                args={size} >
                 <meshStandardMaterial map={colorMap} />
             </RoundedBox >
         </RigidBody>
