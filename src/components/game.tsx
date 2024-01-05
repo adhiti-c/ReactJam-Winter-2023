@@ -146,7 +146,7 @@ export default function Game({ game, player, players }: { game: GameState, playe
             gameTimerHTML = <TutorialUI />;
             break;
         case "playing":
-            gameTimerHTML = <PlayingUI game={game} selectedIngredient={selectedIngredient} setSelectedIngredient={setSelectedIngredient} />
+            gameTimerHTML = <PlayingUI game={game} selectedIngredient={selectedIngredient} setSelectedIngredient={setSelectedIngredient} player={player} />
             break;
         case "loss":
             // gameTimerHTML =

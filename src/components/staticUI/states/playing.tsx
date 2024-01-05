@@ -3,15 +3,17 @@ import NextUp from "../NextUp";
 import Recipe from "../Recipe";
 import InventoryData from "../data/InventoryData";
 import InventorySlot from "../InventorySlot";
+import { LayerToAssetMap } from "../../../logic_v2/assetMap";
 import { GameState } from "../../../logic_v2/types";
 import { PlacableIngredient } from "../../../logic_v2/cakeTypes";
 import CakeReg from "../../../assets/regularCake.svg";
+import { Player, Players } from "rune-games-sdk";
 
 /**
  * the props to this UI are: the game state, the ingredient currently selected (passed in from the parent which remembers the state), and a useState function to change this selected ingredient
  * it works identically as if we had the useState in this file.
  */
-export default function PlayingUI({ game, selectedIngredient, setSelectedIngredient }: { game: GameState, selectedIngredient: PlacableIngredient[], setSelectedIngredient: React.Dispatch<React.SetStateAction<PlacableIngredient[]>> }) {
+export default function PlayingUI({ game, selectedIngredient, setSelectedIngredient, player }: { game: GameState, selectedIngredient: PlacableIngredient[], setSelectedIngredient: React.Dispatch<React.SetStateAction<PlacableIngredient[]>>, player: Player }) {
     const handleInventoryClick = (ingredient: PlacableIngredient) => {
         // if the list of ingredients includes the index
         const newSelectedIngredient = selectedIngredient.includes(ingredient)
@@ -103,16 +105,24 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
           </div> */}
             <div className="inventory-contain">
                 {/* maps each ingredient to an inventoryslot */}
-                {InventoryData.slice(0, 3).map((ingredient, index) => (
-                    <InventorySlot
-                        key={index}
-                        icon={ingredient.icon}
-                        onClick={() => handleInventoryClick(ingredient.iconName)}
-                        className={
-                            selectedIngredient.includes(ingredient.iconName) ? "selected" : ""
+                {game.players[player.playerId].inventory.map((ingredient, index) => {
+                    if (ingredient) {
+                        const ingredientIcon = LayerToAssetMap[ingredient].icon;
+                        if (ingredientIcon) {
+                            return (
+                                <InventorySlot
+                                    key={index}
+                                    icon={ingredientIcon}
+                                    onClick={() => handleInventoryClick(ingredient)}
+                                    className={
+                                        selectedIngredient.includes(ingredient) ? "selected" : ""
+                                    }
+                                />
+                            )
                         }
-                    />
-                ))}
+                    }
+                    return null;
+                })}
             </div>
         </>
     )
