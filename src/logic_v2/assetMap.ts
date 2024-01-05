@@ -3,24 +3,24 @@
 // import all the assets
 
 // 2d icons
-import Butter from "../assets/butterIcon.svg";
-import Egg from "../assets/eggIcon.svg";
-import Wheat from "../assets/wheatIcon.svg";
-import Chocolate from "../assets/chocolateIcon.svg";
-import Straw from "../assets/carrotIcon.svg";
-import Carrot from "../assets/strawberryCake.svg";
-import Sugar from "../assets/sugarIcon.svg";
+import Butter from "../assets/icons/butterIcon.svg";
+import Egg from "../assets/icons/eggIcon.svg";
+import Wheat from "../assets/icons/wheatIcon.svg";
+import Chocolate from "../assets/icons/chocolateIcon.svg";
+import Straw from "../assets/icons/strawberryCake.svg";
+import Carrot from "../assets/icons/carrotIcon.svg";
+import Sugar from "../assets/icons/sugarIcon.svg";
 
-import Chicken from "../assets/chicken.svg";
-import Cow from "../assets/cow.svg";
+import Chicken from "../assets/characters/chicken.svg";
+import Cow from "../assets/characters/cow.svg";
 
 // these are icons for Next Up and recipe hints
-import Cake from "../assets/regularCake.svg";
-import ChocolateCake from "../assets/chocolateCake.svg";
-import StrawberryCake from "../assets/strawberryCake.svg";
-import CarrotCake from "../assets/carrotCake.svg";
-import Base from "../assets/baseIcon.svg";
-import Frosting from "../assets/frostingIcon.svg";
+import Cake from "../assets/icons/regularCake.svg";
+import ChocolateCake from "../assets/icons/chocolateCake.svg";
+import StrawberryCake from "../assets/icons/strawberryCake.svg";
+import CarrotCake from "../assets/icons/carrotCake.svg";
+import Base from "../assets/icons/baseIcon.svg";
+import Frosting from "../assets/icons/frostingIcon.svg";
 
 // blender models
 
