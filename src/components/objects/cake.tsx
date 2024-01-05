@@ -26,12 +26,14 @@ export default function Cake({ texture, position, setBlockInMotion }: { texture:
 
     return (
         <RigidBody type={dynamic ? "dynamic" : "fixed"} onContactForce={() => {
-            // stop gravity
-            setDynamic(false);
-            // block is stopped
-            setBlockInMotion(false);
-            // combine
-            Rune.actions.combine();
+            if (dynamic) {
+                // stop gravity
+                setDynamic(false);
+                // block is stopped
+                setBlockInMotion(false);
+                // combine
+                Rune.actions.combine();
+            }
         }}>
             <RoundedBox position={position}
                 args={size} >

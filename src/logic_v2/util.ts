@@ -8,7 +8,7 @@ import { Player } from "./types";
  */
 export function compareArraysAsSets(arr1: any[], arr2: any[]): boolean {
     // check if same length
-    if (arr1.length != arr2.length) {
+    if (arr1.length !== arr2.length) {
         return false;
     }
     // turn both into sets
@@ -38,6 +38,7 @@ export function compareArraysAsSets(arr1: any[], arr2: any[]): boolean {
  * @returns {boolean}
  */
 export function compareArraysInOrder(arr1: any[], arr2: any[]): boolean {
+    console.log("comparing:", arr1, arr2);
     if (arr1.length !== arr2.length) {
         return false;
     }
@@ -88,6 +89,11 @@ export function checkProgress(goal: RecipeComponent, layers: CakeLayerType[]): b
     // this may not be found
     if (!recipe) {
         return false;
+    }
+
+    // check if our layer is literally just the goal
+    if (layers.length === 1 && layers[0] === goal) {
+        return true;
     }
 
     // recursion now
@@ -157,24 +163,26 @@ export function matchRecipe(layers: CakeLayerType[]) {
  * @returns 
  */
 export function combineLayer(layer: CakeLayerType[]): CakeLayerType[] {
-    let r = layer.length - 1
+    let combinedLayer = [...layer];
+    let r = combinedLayer.length - 1
     let l = r - 1
 
     while (l >= 0) {
         // create an array that is just layer[l] and layer[r] to put into matchRecipe
-        let matchArray: CakeLayerType[] = layer.slice(l, r + 1)
+        let matchArray: CakeLayerType[] = combinedLayer.slice(l, r + 1)
 
         // parameter to put into matchRecipe
         let match = matchRecipe(matchArray)
         // if the match array gets a valid match
         // get rid of the current l,r pointer we are on and add the match
-        if (match != null) {
+        if (match !== null) {
+            console.log("match")
             // add the item that is matched to where the l index was
-            layer.splice(l, 0, match)
+            combinedLayer.splice(l, 0, match)
 
             // get rid of the items that just got matched
-            layer.splice(r + 1, r + 1)
-            layer.splice(l + 1, l + 1)
+            combinedLayer.splice(r + 1, r + 1)
+            combinedLayer.splice(l + 1, l + 1)
 
             // decrement the window
             l--
@@ -186,7 +194,7 @@ export function combineLayer(layer: CakeLayerType[]): CakeLayerType[] {
             r--
         }
     }
-    return layer
+    return combinedLayer;
 }
 
 export function giveAllPlayersRandomly(players: Record<string, Player>, ingredients: PlacableIngredient[]): Record<string, Player> {
