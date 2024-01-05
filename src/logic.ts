@@ -247,10 +247,11 @@ Rune.initLogic({
         }
 
         // reset placement for players
-        // make all players able to place again
-        for (const player in game.players) {
-          game.players[player].hasPlaced = false;
-        }
+        // make all players able to place again if a penalty has happened or every player has placed
+        if (penalty || (Object.values(game.players).every((player) => player.hasPlaced)))
+          for (const player in game.players) {
+            game.players[player].hasPlaced = false;
+          }
       }
     }
   },
