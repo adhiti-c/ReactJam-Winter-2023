@@ -113,8 +113,9 @@ export default function Game({ game, player, players }: { game: GameState, playe
             for (let i = currentLayerLength; i < gameStateLayerLength; i++) {
                 // create more blocks
                 console.log("new block added")
+                const blockType = game.newLayer[i];
                 additionalBlocks.push(
-                    <Cake position={new Vector3(0, 1 + ((cakes.length + currentLayerLength) * 0.5), 0)} texture={"eggs"} key={"new-layer-" + i} setBlockInMotion={setBlockInMotion} />
+                    <Cake position={new Vector3(0, 1 + ((cakes.length + currentLayerLength) * 0.5), 0)} texture={blockType} key={"new-layer-" + i} setBlockInMotion={setBlockInMotion} />
                 )
             }
             // now add it into the state

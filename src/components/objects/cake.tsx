@@ -1,20 +1,29 @@
 // contains cake object and cake logic
 import { useEffect, useRef, useState } from "react";
 import { Vector3 } from "three";
-import { RoundedBox, useTexture } from "@react-three/drei";
+import { RoundedBox, useTexture, useGLTF } from "@react-three/drei";
 import { RapierRigidBody, RigidBody } from "@react-three/rapier";
+import { LayerToAssetMap } from "../../logic_v2/assetMap";
 
-import { PlacableIngredient } from "../../logic_v2/cakeTypes";
+import { CakeLayerType } from "../../logic_v2/cakeTypes";
 
-export default function Cake({ texture, position, setBlockInMotion }: { texture: PlacableIngredient, position: Vector3, setBlockInMotion: React.Dispatch<React.SetStateAction<boolean>> }) {
+export default function Cake({ texture, position, setBlockInMotion }: { texture: CakeLayerType, position: Vector3, setBlockInMotion: React.Dispatch<React.SetStateAction<boolean>> }) {
 
     // make this layer movable by default
     const [dynamic, setDynamic] = useState<boolean>(true);
 
     let colorMap = undefined;
-    if (texture === "eggs") {
-        colorMap = useTexture("/src/assets/textures/wheatBlock.svg")
+    const block = LayerToAssetMap[texture].block;
+    if (LayerToAssetMap[texture].isBlenderObj) {
+
+    } else {
+        // load the texture using useTexture
+        colorMap = useTexture(block);
     }
+
+    // if (texture === "eggs") {
+    //     colorMap = useTexture("/src/assets/textures/wheatBlock.svg")
+    // }
 
     useEffect(() => {
         // this object is falling
