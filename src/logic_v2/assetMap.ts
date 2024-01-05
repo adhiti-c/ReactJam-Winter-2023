@@ -27,7 +27,10 @@ import { CakeLayerType } from "./cakeTypes";
 interface assetInformation {
     texture?: string,
     blender?: string,
-    icon?: string
+    /**
+     * a 2d representation of the object. It might be in the inventory slot, or part of the recipe hint
+     */
+    icon: string
 }
 
 // now we use a record to enforce that we have every layer mapped to some sort of asset
