@@ -82,8 +82,9 @@ export default function Game({ game, player, players }: { game: GameState, playe
             // TODO: instead, can we iterate through each and only spawn in new blocks?
             for (let i = currentCakeLength; i < gameStateCakeLength; i++) {
                 // create more blocks
+                const blockType = game.cake[i];
                 additionalBlocks.push(
-                    <Cake position={new Vector3(0, 1 + ((cakes.length + currentCakeLength) * 0.5), 0)} texture={"eggs"} key={"cake-" + i} setBlockInMotion={setBlockInMotion} />
+                    <Cake position={new Vector3(0, 1 + ((cakes.length + currentCakeLength) * 0.5), 0)} texture={blockType} key={"cake-" + i} setBlockInMotion={setBlockInMotion} />
                 )
             }
             // now add it into the state
