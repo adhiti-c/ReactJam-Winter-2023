@@ -81,6 +81,10 @@ Rune.initLogic({
     setGamePhase({ phase }, { allPlayerIds, game, playerId }) {
       // change the game phase to be whatever we want
       game.phase = phase
+      if (phase === "playing") {
+        // start the countdown from when we moved over
+        game.lastCountdown = Rune.gameTime();
+      }
     },
     combine(_, { game, playerId }) {
       // TODO: how do we process only 1 player input? Aka, finishing the cake off
@@ -246,6 +250,7 @@ Rune.initLogic({
       // Rune.gameOver(); // TODO: implement this later
     } else {
       if (game.phase === "playing") {
+        console.log("counting down")
         const timeDiff = Rune.gameTime() - game.lastCountdown;
         // if we counting down, count down every second
         if (timeDiff >= 1) {
