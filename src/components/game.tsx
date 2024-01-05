@@ -104,7 +104,6 @@ export default function Game({ game, player, players }: { game: GameState, playe
         // whenever the new layer changes, update the rendered cakes
         const gameStateLayerLength = game.newLayer.length;
         const currentLayerLength = newLayer.length;
-        console.log(gameStateLayerLength + " vs " + currentLayerLength)
         // has something new been added?
         if (gameStateLayerLength > currentLayerLength) {
             // something new has been added
@@ -146,7 +145,7 @@ export default function Game({ game, player, players }: { game: GameState, playe
             gameTimerHTML = <TutorialUI />;
             break;
         case "playing":
-            gameTimerHTML = <PlayingUI game={game} selectedIngredient={selectedIngredient} setSelectedIngredient={setSelectedIngredient} />
+            gameTimerHTML = <PlayingUI game={game} selectedIngredient={selectedIngredient} setSelectedIngredient={setSelectedIngredient} player={player} />
             break;
         case "loss":
             // gameTimerHTML =
@@ -164,12 +163,12 @@ export default function Game({ game, player, players }: { game: GameState, playe
                 onClick={handleDrop}>
                 <Camera cakes={cakes} />
                 <Suspense>
-                    <Physics gravity={[0, -15, 0]} colliders="hull">
+                    <Physics gravity={[0, -15, 0]}
+                        colliders="hull"
+                    >
                         {...cakes}
                         {...newLayer}
-                        <RigidBody type="fixed">
-                            <Platform />
-                        </RigidBody>
+                        <Platform />
                         <ambientLight args={[0x000000]} />
                         <directionalLight position={[10, 10, 10]} />
                     </Physics>

@@ -90,26 +90,27 @@ Rune.initLogic({
       }
     },
     combine(_, { game, playerId }) {
-      // TODO: how do we process only 1 player input? Aka, finishing the cake off
-      // if every players have placed, process the build
       // check if game.newLayer matches game.goal
       const currentGoal = game.goals.current;
-      // pull the recipe from the recipe book
-      const goalRecipe = RecipeBook[currentGoal];
-      let success: boolean;
-      const currentLayerArray = game.newLayer;
 
-      // check if order matters
-      if (goalRecipe.ordered) {
-        success = compareArraysInOrder(goalRecipe.recipe, currentLayerArray);
-      } else {
-        // deep array equivalency
-        success = compareArraysAsSets(goalRecipe.recipe, currentLayerArray);
+      let success = false;
+      const currentLayerArray = [...game.newLayer];
+
+      // try to combine
+      let combined = false;
+      let newLayerCombined = combineLayer(currentLayerArray);
+      // if these are different, something was combined
+      if (!compareArraysInOrder(currentLayerArray, newLayerCombined)) {
+        combined = true;
+      }
+
+      // check if the goal was reached
+      if (combined && newLayerCombined.length === 1 && newLayerCombined[0] === currentGoal) {
+        success = true;
       }
 
       // if it successfully matched:
       if (success) {
-        console.log("successfully made: " + game.goals.current)
         // add the goal to the overall cake layer
         game.cake.push(game.goals.current);
 
@@ -143,14 +144,18 @@ Rune.initLogic({
         // if count exceeded, generate a new not-created recipe and make that the new goal
         if (game.hint.count >= HintRepeatCount) {
           // generate a new non-created goal to make as the new goal
+          const unencounteredRecipes = game.goals.unencountered;
           // FIXME: can we make this logic better without the special hard-coded cases?
           // special case: if the initial goal is the cake_base, make the players do frosting next as part of the tutorial?
-          if (game.goals.current === "cake_base") {
+          if (game.goals.current === "cake_base" && game.goals.unencountered.includes("cake_frosting")) {
             game.goals.current = "cake_frosting";
             // give players butter and sugar
             game.players = giveAllPlayersRandomly(game.players, ["butter", "sugar"]);
-          } else if (game.goals.current === "cake_frosting") {
-            // special case: if the goal is cake_frosting, make it a chocolate cake as part of the tutorial?
+          } else if (game.goals.current === "cake_frosting" && game.goals.unencountered.includes("basic_cake")) {
+            // special case: if the goal is cake_frosting, make it a basic cake as part of the tutorial
+            game.goals.current = "basic_cake";
+          } else if (game.goals.current === "basic_cake" && game.goals.unencountered.includes("choco_cake")) {
+            // special case: if the goal is basic_cake, make it a chocolate cake as part of the tutorial
             game.goals.current = "choco_cake";
             // give players some ingredients
             // remove chocolate from ingredients, and give players something random
@@ -160,7 +165,6 @@ Rune.initLogic({
           } else {
             // choose from the unencountered goals
             // TODO: make sure it is possible to create the next goal based on the player's hand
-            const unencounteredRecipes = game.goals.unencountered;
             const randomIndex =
               chooseRandomIndexOfArray(unencounteredRecipes);
             game.goals.current = unencounteredRecipes[randomIndex];
@@ -186,43 +190,22 @@ Rune.initLogic({
       } else {
         // if it does not match
         let penalty = true;
-        // id the players actually build something?
-        let attempted: GoalType | null = matchRecipe(currentLayerArray);
 
-        // if this is a real recipe
-        let newLayerCopy = [...currentLayerArray];
-        if (attempted) {
-          // handle the combination here
-          // TODO: switch this with the combineLayer function
-          // TODO: maintenance: apply this function to the beginning of the combination mechanic only?
-          newLayerCopy = combineLayer(newLayerCopy);
-
-          // // make sure that the thing that was built is part of the current recipe. Players could have been building the basic_cake for the chocolate_cake.
-          // // pretend that we built the thing we just tried to make
-
-          // // to build something, we assume that both players have placed already
-          // // let's try to combine into what was attempted
-          // // remove the recently placed blocks
-          // for (const _ of Object.keys(game.players)) {
-          //   newLayerCopy.pop()
-          // }
-          // // add the attempted recipe
-          // newLayerCopy.push(attempted);
-        }
         // now we figure out if we are making true progress toward the goal
-        let isPartOfCurrentGoal = checkProgress(currentGoal, newLayerCopy);
+        let isPartOfCurrentGoal = checkProgress(currentGoal, newLayerCombined);
 
         // if it is part of the current recipe
         if (isPartOfCurrentGoal) {
           // no penalty
           penalty = false;
-          if (attempted) {
-            // only encourage if something was combined
+
+          // only encourage if something was combined
+          if (combined) {
             game.feedback = "encourage";
           }
 
-          // combine properly
-          game.newLayer = newLayerCopy;
+          // bring game state up to date
+          game.newLayer = newLayerCombined;
 
           // side note: we keep the current thing in the layer
         } else {
@@ -231,11 +214,6 @@ Rune.initLogic({
           // enforce penalty
           penalty = true;
         }
-        // else {
-        //   // not a real recipe
-        //   // enforce penalty
-        //   penalty = true;
-        // }
 
         // enforce a penalty, if deserved
         if (penalty) {
@@ -247,10 +225,11 @@ Rune.initLogic({
         }
 
         // reset placement for players
-        // make all players able to place again
-        for (const player in game.players) {
-          game.players[player].hasPlaced = false;
-        }
+        // make all players able to place again if a penalty has happened or every player has placed
+        if (penalty || (Object.values(game.players).every((player) => player.hasPlaced)))
+          for (const player in game.players) {
+            game.players[player].hasPlaced = false;
+          }
       }
     }
   },
@@ -263,7 +242,6 @@ Rune.initLogic({
       // Rune.gameOver(); // TODO: implement this later
     } else {
       if (game.phase === "playing") {
-        console.log("counting down")
         const timeDiff = Rune.gameTime() - game.lastCountdown;
         // if we counting down, count down every second
         if (timeDiff >= 1) {
