@@ -105,22 +105,22 @@ export function checkProgress(goal: RecipeComponent, layers: CakeLayerType[]): b
         // turn recipe into a set
         const recipeSet = new Set(recipe.recipe);
         for (const [index, layer] of layers.entries()) {
-            // check if the current layer is in the set
+            // check if the current thing in the layer is in the set
             if (!recipeSet.has(layer)) {
+                // we could not find this current thing, but it may be a smaller part of another ingredient in the set
                 // slice new layer to match
                 const layerSliced = layers.slice(index);
                 // check each part of the set
                 for (const component of recipeSet.values()) {
-                    // recursively call
+                    // recursively call, check if this thing is making progress
                     const progress = checkProgress(component, layerSliced)
-                    if (progress) {
-                        return true;
+                    if (!progress) {
+                        return false;
                     }
                 }
             }
-            // we did not hit a match, so return false
-            return false;
         }
+        return true;
     }
     // the entire recipe is in line so far
     return true;
