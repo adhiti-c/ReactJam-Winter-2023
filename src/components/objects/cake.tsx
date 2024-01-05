@@ -13,7 +13,7 @@ export default function Cake({ texture, position, setBlockInMotion }: { texture:
 
     let colorMap = undefined;
     if (texture === "eggs") {
-        colorMap = useTexture("/src/assets/wheatBlockTest.svg")
+        colorMap = useTexture("/src/assets/SugarBlock.svg")
     }
 
     useEffect(() => {

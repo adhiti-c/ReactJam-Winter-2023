@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import NextUp from "../NextUp";
 import Recipe from "../Recipe";
 import InventoryData from "../data/InventoryData";
@@ -6,7 +6,8 @@ import InventorySlot from "../InventorySlot";
 import { GameState } from "../../../logic_v2/types";
 import { PlacableIngredient } from "../../../logic_v2/cakeTypes";
 import CakeReg from "../../../assets/regularCake.svg";
-
+import SuccessSound from "../../../assets/successSound.wav";
+import FailureSound from "../../../assets/failureSound.wav";
 /**
  * the props to this UI are: the game state, the ingredient currently selected (passed in from the parent which remembers the state), and a useState function to change this selected ingredient
  * it works identically as if we had the useState in this file.
@@ -28,6 +29,31 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
     };
 
     let feedback;
+    // trigger audio sfx for success
+    useEffect(( )=> {
+        if(game.feedback === "success") {
+            playSuccessSound();
+        }
+    }, [game.feedback])
+    const playSuccessSound = () => {
+        const successSound = document.getElementById('successSound') as HTMLAudioElement;
+        if (successSound) {
+            successSound.play();
+            console.log('Success sound played!');
+        }
+    };
+    // trigger audio for failure
+    useEffect(()=> {
+        if(game.feedback === "failure") {
+            playFailureSound();
+        }
+    }, [game.feedback])
+    const playFailureSound = () => {
+        const failureSound = document.getElementById('failureSound') as HTMLAudioElement;
+        if (failureSound) {
+            failureSound.play();
+        }
+    }
     switch (game.feedback) {
         case "waiting":
             feedback =
@@ -35,19 +61,26 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
             break;
         case "success":
             feedback =
-                <div className="sucess-feedback">
+                <div className="feedback success">
                     Success!
+                    <audio id="successSound" preload="auto">
+                        <source src={SuccessSound} type="audio/wav" />
+                    </audio>
                 </div>
             break;
         case "failure":
             feedback =
-                <div className="failure-feedback">
+                <div className="feedback failure">
                     Wrong Ingredient!
+                    <audio id="failureSound" preload="auto">
+                        <source src={FailureSound} type="audio/wav" />
+                    </audio>
                 </div>
+                
             break;
         case "encourage":
             feedback =
-                <div className="failure-feedback">
+                <div className="encourage-feedback">
                     Keep Going!
                 </div>
             break;
