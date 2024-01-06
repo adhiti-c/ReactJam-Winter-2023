@@ -20,7 +20,11 @@ export default function ObjModel({ texture, position }: { texture: CakeLayerType
     }
 
     return (
-        <instancedMesh position={position} scale={0.3}>
+        <instancedMesh
+            // position={position}
+            // the subtraction is to compensate for the weirdly positioned cake assets
+            position={new Vector3(position.x - 0.015, position.y, position.z - 0.1)}
+            scale={0.37}>
             {/* https://discourse.threejs.org/t/duplicate-same-model-in-a-canvas-react-three-fiber/50913/5 */}
             <primitive object={colorMap.clone()} />
         </instancedMesh>

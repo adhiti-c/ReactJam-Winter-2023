@@ -18,8 +18,9 @@ export default function Camera({ yPos }: { yPos: number | undefined }) {
       newCamPos = new Vector3(initialPos[0], initialPos[1], initialPos[2]);
     } else {
       // recalculate the vector
-      // const newCamPos = new Vector3(initialPos[0], initialPos[1] + cakes.length * 0.25, initialPos[2])
-      newCamPos = new Vector3(initialPos[0], -1 * yPos / 2.8, initialPos[2])
+      const yPosDivisionFactor = 2.3; // use this for general gameplay
+      // const yPosDivisionFactor = 5; // use this to confirm cake asset positioning
+      newCamPos = new Vector3(initialPos[0], -1 * yPos / yPosDivisionFactor, initialPos[2])
     }
 
     setCameraVector(newCamPos)
