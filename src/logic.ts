@@ -1,5 +1,5 @@
 import { CakeLayerType, GoalType, Goals, PlacableIngredient, RecipeBook } from "./logic_v2/cakeTypes";
-import { StartTimeLeftMilliseconds, HintRepeatCount, FlatTimeIncreaseOnComboMilliseconds } from "./logic_v2/logicConfig";
+import { StartTimeLeftMilliseconds, HintRepeatCount, FlatTimeIncreaseOnComboMilliseconds, FlatTimePenaltyMilliseconds } from "./logic_v2/logicConfig";
 import { Player, GameState } from "./logic_v2/types";
 import { compareArraysAsSets, compareArraysInOrder, chooseRandomIndexOfArray, removeFromArray, checkProgress, matchRecipe, combineLayer, giveAllPlayersRandomly } from "./logic_v2/util";
 
@@ -222,6 +222,9 @@ Rune.initLogic({
 
           // reset the current layer
           game.newLayer = [];
+
+          // subtract time
+          game.timeLeft = game.timeLeft - FlatTimePenaltyMilliseconds;
         }
 
         // reset placement for players
@@ -239,7 +242,7 @@ Rune.initLogic({
       // set the phase to be loss
       game.phase = "loss";
       game.timeLeft = 0;
-      // Rune.gameOver(); // TODO: implement this later
+      Rune.gameOver(); // TODO: implement this later
     } else {
       if (game.phase === "playing") {
         const timeDiff = Rune.gameTime() - game.lastCountdown;

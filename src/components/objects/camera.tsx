@@ -5,11 +5,15 @@ import { Vector3 } from "three";
 
 //Player Movement
 export default function Camera({ yPos }: { yPos: number | undefined }) {
+  // change this to affect the camera's zoom
+  const zoomFactor = 0.2;
 
-  const initialPos = [1, 0, 1]
+  const initialXandZ = 1;
+  const initialPos = [initialXandZ + zoomFactor, 0, initialXandZ + zoomFactor]
   const initialCameraVector = new Vector3(initialPos[0], initialPos[1], initialPos[2]);
   const camera = useThree(state => state.camera);
   const [cameraVector, setCameraVector] = useState<Vector3>(initialCameraVector)
+
 
   useEffect(() => {
     let newCamPos: Vector3;
@@ -20,7 +24,8 @@ export default function Camera({ yPos }: { yPos: number | undefined }) {
       // recalculate the vector
       const yPosDivisionFactor = 2.3; // use this for general gameplay
       // const yPosDivisionFactor = 5; // use this to confirm cake asset positioning
-      newCamPos = new Vector3(initialPos[0], -1 * yPos / yPosDivisionFactor, initialPos[2])
+      const newXandZ = initialXandZ + zoomFactor
+      newCamPos = new Vector3(newXandZ, -1 * yPos / yPosDivisionFactor, newXandZ)
     }
 
     setCameraVector(newCamPos)
