@@ -11,7 +11,8 @@ export function calculateCurrentCameraY(yPos: number): number {
 
 export default function Camera({ yPos }: { yPos: number | undefined }) {
   // change this to affect the camera's zoom
-  const zoomFactor = 0.2;
+  // larger is more zoomed out
+  const zoomFactor = 3;
 
   const initialXandZ = 1;
   const initialPos = [initialXandZ + zoomFactor, 0, initialXandZ + zoomFactor]

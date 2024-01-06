@@ -46,8 +46,10 @@ export default function Cake({ texture, index, position, setBlockInMotion, setCa
     return (
         <RigidBody type={dynamic ? "dynamic" : "fixed"} colliders={isBlenderObj ? "cuboid" : "hull"} ref={rigidBody} onContactForce={(payload) => {
             // I think things that are colliding with two things are
-            // console.log(payload.target.collider.activeEvents())
-            if (dynamic && payload.target.collider.activeEvents() === 2) {
+            // if (dynamic && payload.target.collider.activeEvents() === 2) {
+            // 0 is the dynamic body type, and 1 is the fixed
+            // only stop if you collide with a fixed body type
+            if (dynamic && payload.other.rigidBody?.bodyType() === 1) {
                 // stop gravity
                 setDynamic(false);
                 // block is stopped

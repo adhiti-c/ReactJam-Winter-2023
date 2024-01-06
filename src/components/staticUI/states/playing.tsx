@@ -32,8 +32,8 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
 
     let feedback;
     // trigger audio sfx for success
-    useEffect(( )=> {
-        if(game.feedback === "success") {
+    useEffect(() => {
+        if (game.feedback === "success") {
             playSuccessSound();
         }
     }, [game.feedback])
@@ -41,12 +41,11 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
         const successSound = document.getElementById('successSound') as HTMLAudioElement;
         if (successSound) {
             successSound.play();
-            console.log('Success sound played!');
         }
     };
     // trigger audio for failure
-    useEffect(()=> {
-        if(game.feedback === "failure") {
+    useEffect(() => {
+        if (game.feedback === "failure") {
             playFailureSound();
         }
     }, [game.feedback])
@@ -78,7 +77,7 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
                         <source src={FailureSound} type="audio/wav" />
                     </audio>
                 </div>
-                
+
             break;
         case "encourage":
             feedback =

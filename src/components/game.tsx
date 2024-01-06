@@ -77,7 +77,6 @@ export default function Game({ game, player, players }: { game: GameState, playe
         const currentCakeLength = cakes.length;
         // has something new been added?
         if (gameStateCakeLength > currentCakeLength) {
-            console.log("cake layer has changed")
             // something new has been added
             // create more blocks in the new layer
             let additionalBlocks: JSX.Element[] = [];
@@ -86,8 +85,8 @@ export default function Game({ game, player, players }: { game: GameState, playe
             for (let i = currentCakeLength; i < gameStateCakeLength; i++) {
                 // create more blocks
                 const blockType = game.cake[i];
-                console.log("buildling new " + blockType);
                 const spawnY = cakes.length === 0 || cakeYPositions.length === 0 ? 1 : calculateCurrentCameraY(cakeYPositions.at(-1)!) + i;
+                console.log(`Spawning at: ${spawnY}`)
                 // old calculation: 1 + ((cakes.length + currentCakeLength) * 0.5)
                 latestCake = <Cake position={new Vector3(0, spawnY, 0)} index={i} texture={blockType} key={"cake-" + blockType + "-" + i} setBlockInMotion={setBlockInMotion} setCakeYPosition={setCakeYPositions} cakeYPos={cakeYPositions} />
                 additionalBlocks.push(latestCake);
@@ -112,7 +111,6 @@ export default function Game({ game, player, players }: { game: GameState, playe
             // TODO: instead, can we iterate through each and only spawn in new blocks?
             for (let i = currentLayerLength; i < gameStateLayerLength; i++) {
                 // create more blocks
-                console.log("new block added")
                 const blockType = game.newLayer[i];
                 const spawnY = cakes.length === 0 || cakeYPositions.length === 0 ? 1 : calculateCurrentCameraY(cakeYPositions.at(-1)!) + i * 1.5;
                 additionalBlocks.push(
