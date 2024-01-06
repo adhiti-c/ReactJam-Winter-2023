@@ -1,10 +1,10 @@
 // contains player object and player logic
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useThree, useFrame } from "@react-three/fiber";
 import { Vector3 } from "three";
 
 //Player Movement
-export default function Camera({ cakes }: { cakes: JSX.Element[] }) {
+export default function Camera({ yPos }: { yPos: number | undefined }) {
 
   const initialPos = [1, 0, 1]
   const initialCameraVector = new Vector3(initialPos[0], initialPos[1], initialPos[2]);
@@ -12,12 +12,20 @@ export default function Camera({ cakes }: { cakes: JSX.Element[] }) {
   const [cameraVector, setCameraVector] = useState<Vector3>(initialCameraVector)
 
   useEffect(() => {
-    // recalculate the vector
-    // const newCamPos = new Vector3(initialPos[0], initialPos[1] + cakes.length * 0.25, initialPos[2])
-    const newCamPos = new Vector3(initialPos[0], initialPos[1] + cakes.length * 0.25, initialPos[2])
+    let newCamPos: Vector3;
+    if (yPos === undefined) {
+      // initial position of 0
+      newCamPos = new Vector3(initialPos[0], initialPos[1], initialPos[2]);
+    } else {
+      // recalculate the vector
+      // const newCamPos = new Vector3(initialPos[0], initialPos[1] + cakes.length * 0.25, initialPos[2])
+      newCamPos = new Vector3(initialPos[0], -1 * yPos / 2.8, initialPos[2])
+    }
 
     setCameraVector(newCamPos)
-  }, [cakes])
+  }, [yPos]);
+
+  const [latestY, setLatestY] = useState<number>(0);
 
   useFrame(() => {
     // move camera to right position

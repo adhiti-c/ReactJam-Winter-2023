@@ -16,7 +16,6 @@ import Lobby from "./staticUI/states/lobby";
 import useSound from 'use-sound';
 import cafeSound from '../assets/sweet cafe.mp3'
 import { Player, Players } from "rune-games-sdk";
-import ObjModel from "./objects/objModel";
 
 export default function Game({ game, player, players }: { game: GameState, player: Player, players: Players }) {
 
@@ -37,6 +36,8 @@ export default function Game({ game, player, players }: { game: GameState, playe
 
     // selected ingredient
     const [selectedIngredient, setSelectedIngredient] = useState<PlacableIngredient[]>([]);
+
+    const [cakeYPositions, setCakeYPositions] = useState<number[]>([]);
 
     const handleDrop = () => {
         if (selectedIngredient.length === 0) {
@@ -80,27 +81,21 @@ export default function Game({ game, player, players }: { game: GameState, playe
             // something new has been added
             // create more blocks in the new layer
             let additionalBlocks: JSX.Element[] = [];
+            let latestCake;
             // TODO: instead, can we iterate through each and only spawn in new blocks?
             for (let i = currentCakeLength; i < gameStateCakeLength; i++) {
                 // create more blocks
                 const blockType = game.cake[i];
-                console.log("buildling new " + blockType)
-                additionalBlocks.push(
-                    <Cake position={new Vector3(0, 1 + ((cakes.length + currentCakeLength) * 0.5), 0)} texture={blockType} key={"cake-" + blockType + "-" + i} setBlockInMotion={setBlockInMotion} />
-                )
+                console.log("buildling new " + blockType);
+                latestCake = <Cake position={new Vector3(0, 1 + ((cakes.length + currentCakeLength) * 0.5), 0)} index={i} texture={blockType} key={"cake-" + blockType + "-" + i} setBlockInMotion={setBlockInMotion} setCakeYPosition={setCakeYPositions} cakeYPos={cakeYPositions} />
+                additionalBlocks.push(latestCake);
             }
             // now add it into the state
             // TODO: will this create some sort of collision type of race condition?
-            setCakes([...cakes, ...additionalBlocks])
+            setCakes([...cakes, ...additionalBlocks]);
         }
     }
 
-    // useEffect(() => {
-    //     // if the block is no longer in motion, handle rerenders
-    //     if (!blockInMotion) {
-    //         rerenderNewLayer();
-    //     }
-    // }, [blockInMotion]);
 
     function rerenderNewLayer() {
         // handle the new layer
@@ -174,7 +169,7 @@ export default function Game({ game, player, players }: { game: GameState, playe
             <Canvas
                 // camera={{ position: [1, 0, 1] }}
                 onClick={handleDrop}>
-                <Camera cakes={cakes} />
+                <Camera yPos={cakeYPositions.at(-1)} />
                 <Suspense>
                     <Physics gravity={[0, -15, 0]}
                         // colliders="hull"
