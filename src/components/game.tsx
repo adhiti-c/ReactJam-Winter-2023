@@ -94,10 +94,15 @@ export default function Game({ game, player, players }: { game: GameState, playe
                 latestCake = <Cake position={new Vector3(0, spawnY, 0)} index={i} texture={blockType} key={"cake-" + blockType + "-" + i} setBlockInMotion={setBlockInMotion} setCakeYPosition={setCakeYPositions} cakeYPos={cakeYPositions} />
                 additionalBlocks.push(latestCake);
             }
+
             // now add it into the state
-            // TODO: will this create some sort of collision type of race condition?
             setCakes([...cakes, ...additionalBlocks]);
+
         } else {
+            if (gameStateCakeLength === 0) {
+                // wipe
+                setCakes([]);
+            }
             // console.log(`${player.playerId} sees ${currentCakeLength} vs game state ${gameStateCakeLength}`)
         }
     }
