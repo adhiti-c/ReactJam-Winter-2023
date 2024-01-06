@@ -43,6 +43,10 @@ interface assetInformation {
      */
     block: string,
     /**
+     * path to the mtl file. Only used if this is a blender obj
+     */
+    mtl?: string,
+    /**
      * a 2d representation of the object. It might be in the inventory slot, or part of the recipe hint
      */
     icon: string
@@ -100,7 +104,8 @@ export const LayerToAssetMap: Record<CakeLayerType, assetInformation> = {
     "basic_cake": {
         icon: Cake,
         isBlenderObj: true,
-        block: "blender/cake.glb",
+        block: "blender/straw_cake/straw_cake.obj",
+        mtl: "blender/straw_cake/straw_cake.mtl",
     },
     "choco_cake": {
         icon: ChocolateCake,
@@ -110,7 +115,8 @@ export const LayerToAssetMap: Record<CakeLayerType, assetInformation> = {
     "straw_cake": {
         icon: StrawberryCake,
         isBlenderObj: true,
-        block: "blender/straw_cake.glb",
+        block: "blender/straw_cake/straw_cake.obj",
+        mtl: "blender/straw_cake/straw_cake.mtl",
     },
     "carrot_cake": {
         icon: CarrotCake,

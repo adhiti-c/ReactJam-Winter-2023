@@ -1,0 +1,1 @@
+https://discourse.threejs.org/t/object-is-rendered-as-wireframe/4507/6

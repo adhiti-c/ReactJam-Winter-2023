@@ -7,6 +7,9 @@ import { LayerToAssetMap } from "../../logic_v2/assetMap";
 import useSound from 'use-sound';
 import { useLoader } from "@react-three/fiber";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
+import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js'
+
 
 import { CakeLayerType } from "../../logic_v2/cakeTypes";
 import CombineSound from "../../assets/blockSound.wav"
@@ -16,10 +19,19 @@ export default function Cake({ texture, position, setBlockInMotion }: { texture:
     const [dynamic, setDynamic] = useState<boolean>(true);
 
     let colorMap = undefined;
-    const block = LayerToAssetMap[texture].block;
-    const isBlenderObj = LayerToAssetMap[texture].isBlenderObj
+    const assetMap = LayerToAssetMap[texture]
+    const block = assetMap.block;
+    const isBlenderObj = assetMap.isBlenderObj
     if (isBlenderObj) {
-        colorMap = useLoader(GLTFLoader, block);
+        if (assetMap.mtl) {
+            const materials = useLoader(MTLLoader, assetMap.mtl);
+            colorMap = useLoader(OBJLoader, block, loader => {
+                materials.preload();
+                loader.setMaterials(materials)
+            });
+        } else {
+            throw Error("no MTL file defined for blender object " + texture);
+        }
     } else {
         // load the texture using useTexture
         colorMap = useTexture(block);
@@ -36,11 +48,11 @@ export default function Cake({ texture, position, setBlockInMotion }: { texture:
 
     //* args = arguments (width, height, depth)
     const size: [width?: number | undefined, height?: number | undefined, depth?: number | undefined] = [.7, 0.35, 0.7]
-// trigger audio for combine
-// html audio component that sets the initial audio state to null
-// audioRef used to play audio when triggered
-// const audioRef= useRef<HTMLAudioElement | null > (null)
-const [play] = useSound(CombineSound, { volume: 0.5, loop: false});
+    // trigger audio for combine
+    // html audio component that sets the initial audio state to null
+    // audioRef used to play audio when triggered
+    // const audioRef= useRef<HTMLAudioElement | null > (null)
+    const [play] = useSound(CombineSound, { volume: 0.5, loop: false });
 
 
     return (
@@ -56,18 +68,18 @@ const [play] = useSound(CombineSound, { volume: 0.5, loop: false});
                 play();
             }
         }}>
-          {/* contains audio info for block collides */}
-           {/* if dynamic is true, audio is executed */}
-           {/* {dynamic && (
+            {/* contains audio info for block collides */}
+            {/* if dynamic is true, audio is executed */}
+            {/* {dynamic && (
                 <audio ref={audioRef} id="combineSound" preload="auto">
                     <source src={CombineSound} type="audio/wav" />
                 </audio>
             )} */}
-            
+
             {
                 isBlenderObj ?
                     <mesh position={position} scale={0.3}>
-                        <primitive object={colorMap.scene} />
+                        <primitive object={colorMap} />
                     </mesh>
                     :
                     <RoundedBox position={position}
