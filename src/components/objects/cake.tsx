@@ -1,10 +1,13 @@
 // contains cake object and cake logic
 import { useEffect, useRef, useState } from "react";
 import { Vector3 } from "three";
-import { RoundedBox, useTexture, useGLTF } from "@react-three/drei";
+import { RoundedBox, useTexture } from "@react-three/drei";
 import { RapierRigidBody, RigidBody } from "@react-three/rapier";
 import { LayerToAssetMap } from "../../logic_v2/assetMap";
 import useSound from 'use-sound';
+import { useLoader } from "@react-three/fiber";
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+
 import { CakeLayerType } from "../../logic_v2/cakeTypes";
 import CombineSound from "../../assets/blockSound.wav"
 export default function Cake({ texture, position, setBlockInMotion }: { texture: CakeLayerType, position: Vector3, setBlockInMotion: React.Dispatch<React.SetStateAction<boolean>> }) {
@@ -14,8 +17,9 @@ export default function Cake({ texture, position, setBlockInMotion }: { texture:
 
     let colorMap = undefined;
     const block = LayerToAssetMap[texture].block;
-    if (LayerToAssetMap[texture].isBlenderObj) {
-
+    const isBlenderObj = LayerToAssetMap[texture].isBlenderObj
+    if (isBlenderObj) {
+        colorMap = useLoader(GLTFLoader, block);
     } else {
         // load the texture using useTexture
         colorMap = useTexture(block);
@@ -37,10 +41,11 @@ export default function Cake({ texture, position, setBlockInMotion }: { texture:
 // audioRef used to play audio when triggered
 // const audioRef= useRef<HTMLAudioElement | null > (null)
 const [play] = useSound(CombineSound, { volume: 0.5, loop: false});
-return (
-        <RigidBody type={dynamic ? "dynamic" : "fixed"} onContactForce={() => {
-          
-          if (dynamic) {
+
+
+    return (
+        <RigidBody type={dynamic ? "dynamic" : "fixed"} colliders={isBlenderObj ? "cuboid" : "hull"} onContactForce={() => {
+            if (dynamic) {
                 // stop gravity
                 setDynamic(false);
                 // block is stopped
@@ -58,10 +63,18 @@ return (
                     <source src={CombineSound} type="audio/wav" />
                 </audio>
             )} */}
-            <RoundedBox position={position}
-                args={size} >
-                <meshStandardMaterial map={colorMap} />
-            </RoundedBox >
+            
+            {
+                isBlenderObj ?
+                    <mesh position={position} scale={0.3}>
+                        <primitive object={colorMap.scene} />
+                    </mesh>
+                    :
+                    <RoundedBox position={position}
+                        args={size} >
+                        <meshStandardMaterial map={colorMap} />
+                    </RoundedBox >
+            }
         </RigidBody>
     )
 }
