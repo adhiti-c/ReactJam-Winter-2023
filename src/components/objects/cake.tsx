@@ -44,8 +44,10 @@ export default function Cake({ texture, index, position, setBlockInMotion, setCa
     const [play] = useSound(CombineSound, { volume: 0.5, loop: false });
 
     return (
-        <RigidBody type={dynamic ? "dynamic" : "fixed"} colliders={isBlenderObj ? "cuboid" : "hull"} ref={rigidBody} onContactForce={() => {
-            if (dynamic) {
+        <RigidBody type={dynamic ? "dynamic" : "fixed"} colliders={isBlenderObj ? "cuboid" : "hull"} ref={rigidBody} onContactForce={(payload) => {
+            // I think things that are colliding with two things are
+            // console.log(payload.target.collider.activeEvents())
+            if (dynamic && payload.target.collider.activeEvents() === 2) {
                 // stop gravity
                 setDynamic(false);
                 // block is stopped

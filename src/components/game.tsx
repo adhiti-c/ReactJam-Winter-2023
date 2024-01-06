@@ -114,7 +114,7 @@ export default function Game({ game, player, players }: { game: GameState, playe
                 // create more blocks
                 console.log("new block added")
                 const blockType = game.newLayer[i];
-                const spawnY = cakes.length === 0 || cakeYPositions.length === 0 ? 1 : calculateCurrentCameraY(cakeYPositions.at(-1)!) + i * 1.1;
+                const spawnY = cakes.length === 0 || cakeYPositions.length === 0 ? 1 : calculateCurrentCameraY(cakeYPositions.at(-1)!) + i * 1.5;
                 additionalBlocks.push(
                     <Cake position={new Vector3(0, spawnY, 0)} texture={blockType} key={"new-layer-" + blockType + "-" + i} setBlockInMotion={setBlockInMotion} />
                 )

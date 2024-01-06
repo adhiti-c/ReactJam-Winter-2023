@@ -2,7 +2,7 @@
 /**
  * amount of time starting out before players lose
  */
-export const StartTimeSeconds = 60;
+export const StartTimeSeconds = 120;
 
 
 /**
