@@ -82,7 +82,7 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
             break;
         case "encourage":
             feedback =
-                <div className="encourage-feedback">
+                <div className="feedback encourage">
                     Keep Going!
                 </div>
             break;
