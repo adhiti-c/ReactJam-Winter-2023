@@ -420,3 +420,47 @@ animation: Pop 1.5s forwards;
   }
 }
 
+/** tutorial page */
+/* lobby section */
+.tutorial-button {
+  background-color: transparent;
+  color: #fff;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+}
+.icon-contain {
+  background-color: #fff;
+  color: var(--pink);
+  font-size: 15px;
+  display: grid;
+  place-content: center;
+  border-radius: 100px;
+  height: 20px;
+  width: 20px;
+  /* border: 3px solid #fff; */
+}
+/* button .tutorial-button .icon-contain  {
+  font-size: 5px;
+} */
+/* inner tutorial */
+.tutorial-contain {
+  height: 100%;
+  background-color: #413434bd;
+  background-image: url(./assets/lobbyBackground.svg);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: absolute;
+  display: block;
+}
+.tutorial-page-contain {
+  border: 6px solid var(--pink);
+  
+}
+/* when tutorial is closed */
+.close-tutorial {
+  display: none;
+}

@@ -7,7 +7,7 @@ import Butter from "../assets/icons/butterIcon.svg";
 import Egg from "../assets/icons/eggIcon.svg";
 import Wheat from "../assets/icons/wheatIcon.svg";
 import Chocolate from "../assets/icons/chocolateIcon.svg";
-import Straw from "../assets/icons/strawberryCake.svg";
+import Straw from "../assets/icons/strawberryIcon.svg";
 import Carrot from "../assets/icons/carrotIcon.svg";
 import Sugar from "../assets/icons/sugarIcon.svg";
 
@@ -42,6 +42,10 @@ interface assetInformation {
      * the texture or the blender block path
      */
     block: string,
+    /**
+     * path to the mtl file. Only used if this is a blender obj
+     */
+    mtl?: string,
     /**
      * a 2d representation of the object. It might be in the inventory slot, or part of the recipe hint
      */
@@ -100,7 +104,8 @@ export const LayerToAssetMap: Record<CakeLayerType, assetInformation> = {
     "basic_cake": {
         icon: Cake,
         isBlenderObj: true,
-        block: "blender/cake.glb",
+        block: "blender/straw_cake/straw_cake.obj", // TODO: update this
+        mtl: "blender/straw_cake/straw_cake.mtl", // TODO: update this
     },
     "choco_cake": {
         icon: ChocolateCake,
@@ -110,7 +115,8 @@ export const LayerToAssetMap: Record<CakeLayerType, assetInformation> = {
     "straw_cake": {
         icon: StrawberryCake,
         isBlenderObj: true,
-        block: "blender/straw_cake.glb",
+        block: "blender/straw_cake/straw_cake.obj",
+        mtl: "blender/straw_cake/straw_cake.mtl",
     },
     "carrot_cake": {
         icon: CarrotCake,
