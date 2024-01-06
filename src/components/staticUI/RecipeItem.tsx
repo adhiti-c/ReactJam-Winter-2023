@@ -2,6 +2,8 @@ import React from 'react'
 import { GameState } from '../../logic_v2/types'
 import { CakeLayerType, isPlacableIngredient } from '../../logic_v2/cakeTypes';
 import { PlayerIndexToCharacterIcon } from '../../logic_v2/assetMap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
 function RecipeItem({ img, ingredient, game }: { img: string, ingredient: CakeLayerType, game: GameState }) {
   // loop through the inventory to find out who owns what
@@ -19,8 +21,11 @@ function RecipeItem({ img, ingredient, game }: { img: string, ingredient: CakeLa
     <>
       {/* figure out who owns this item, if anyone */}
       {owner !== null ? <img src={PlayerIndexToCharacterIcon[owner]} /> : null}
-      <div className='recipe-item'>
+      <div className='recipe-item disabled-recipe-item'>
         <img src={img} />
+        {/* <div className="check-contain">
+            <FontAwesomeIcon icon={faCheck}/>
+        </div> */}
       </div>
     </>
   )
