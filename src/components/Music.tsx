@@ -4,21 +4,22 @@ import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import useSound from "use-sound";
 import clickSound from '../assets/clickSound.wav'
 
-const Music = ({ isPlaying, setPlaying, play, ready }: { isPlaying: boolean, setPlaying: React.Dispatch<React.SetStateAction<boolean>>, play: Function, ready: boolean }) => {
+const Music = ({ isPlaying, setPlaying, play, enableReady, playerIsReady }: { isPlaying: boolean, setPlaying: React.Dispatch<React.SetStateAction<boolean>>, play: Function, enableReady: boolean, playerIsReady: boolean }) => {
     //* sound trigger
     const [playClickSound] = useSound(clickSound, { volume: 0.5 })
     //* when button clicked, run toggleLobby function
     const handleButtonClick = () => {
 
-
+        // play music
         if (!isPlaying) {
             play();
             setPlaying(true);
             playClickSound();
 
         }
-        // move both players to the game screen
-        Rune.actions.setGamePhase({ phase: "playing" });
+
+        // set the current player's ready status as ready
+        Rune.actions.toggleReady();
     };
 
     const handleButtonHover = () => {
@@ -27,10 +28,20 @@ const Music = ({ isPlaying, setPlaying, play, ready }: { isPlaying: boolean, set
 
     //* start game
     // no parenthesis bc only one element inside return statement
+    // note: "enableReady" shows whether the game has enough people to start
+    // playerIsReady is true if the current player is ready to play
     return (
-        <button className={`main-button ${ready ? null : "disable"}`} onClick={handleButtonClick} onMouseEnter={handleButtonHover}>
-            <FontAwesomeIcon icon={faPlay} />
-            Play
+        <button className={`main-button ${enableReady ? null : "disable"}`} onClick={handleButtonClick} onMouseEnter={handleButtonHover}>
+            {
+                playerIsReady ?
+                    "Not Ready"
+                    :
+                    <>
+                        <FontAwesomeIcon icon={faPlay} />
+                        Ready
+                    </>
+            }
+
         </button>);
 };
 export default Music

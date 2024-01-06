@@ -301,11 +301,25 @@ Rune.initLogic({
       }
       // bring the state up to date
       game = updatedGame;
+    },
+    toggleReady(_, { allPlayerIds, game, playerId }) {
+      // toggle the current player's ready status
+      game.players[playerId].ready = !game.players[playerId].ready;
+      // if all players are ready, begin countdown
+      if ((Object.values(game.players).every((player) => player.ready))) {
+        if (game.phase === "lobby") {
+          // TODO: actually, trigger a countdown instead
+          // send the players to the "playing" phase
+          game.phase = "playing";
+        }
+      } else {
+        // TODO: stop the countdown
+      }
     }
   },
   update: ({ game }) => {
     // check if the time is gone
-    if (game.timeLeft < 0) {
+    if (game.phase === "playing" && game.timeLeft < 0) {
       // set the phase to be loss
       game.phase = "loss";
       game.timeLeft = 0;
