@@ -1,4 +1,4 @@
-import { CakeLayerType, GoalType, PlacableIngredient, Recipe, RecipeBook, RecipeComponent } from "./cakeTypes";
+import { CakeLayerType, FlavorType, GoalType, PlacableIngredient, Recipe, RecipeBook, RecipeComponent, isFlavor } from "./cakeTypes";
 import { Player } from "./types";
 
 /**
@@ -66,11 +66,12 @@ export function chooseRandomIndexOfArray(array: any[]): number {
  * @returns
  */
 export function removeFromArray<T>(array: T[], value: T): T[] {
-    const index = array.indexOf(value);
+    const arrayCopy = [...array];
+    const index = arrayCopy.indexOf(value);
     if (index > -1) { // only splice array when item is found
-        array.splice(index, 1); // 2nd parameter means remove one item only
+        arrayCopy.splice(index, 1); // 2nd parameter means remove one item only
     }
-    return array;
+    return arrayCopy;
 }
 
 /**
@@ -132,6 +133,11 @@ export function checkProgress(goal: RecipeComponent, layers: CakeLayerType[]): b
     return true;
 }
 
+/**
+ * check if the layers array matches any recipe known
+ * @param layers 
+ * @returns 
+ */
 export function matchRecipe(layers: CakeLayerType[]) {
     let created: GoalType | null = null;
     // look through the recipe book to find a match
@@ -195,15 +201,56 @@ export function combineLayer(layer: CakeLayerType[]): CakeLayerType[] {
     return combinedLayer;
 }
 
+/**
+ * function to give each player only one ingredient in the array
+ * @param players 
+ * @param ingredients 
+ * @returns 
+ */
 export function giveAllPlayersRandomly(players: Record<string, Player>, ingredients: PlacableIngredient[]): Record<string, Player> {
     for (const playerId in players) {
         // choose random
         const index = chooseRandomIndexOfArray(ingredients);
         // get the ingredient
         const ingredientInventory = ingredients.splice(index, 1);
-        const currentInventory = players[playerId].inventory
+        const currentInventory = players[playerId].inventory;
+        const currentEncountered = [...players[playerId].encounteredInventory];
         // create player
         players[playerId].inventory = [...currentInventory].concat(ingredientInventory)
+        // add this ingredient to their encountered set
+        const newIngredient = ingredientInventory[0]
+        if (!currentEncountered.includes(newIngredient)) {
+            currentEncountered.push(newIngredient)
+            players[playerId].encounteredInventory = currentEncountered
+        }
     }
     return players;
+}
+
+/**
+ * function to analyze a goal and find out what flavors it has, if any (on a surface level)
+ * if the goal is layered (a goal that has a flavored cake as an ingredient), fix this function to do a deep search of the recipe
+ * @param goal 
+ * @returns 
+ */
+export function getFlavorsInGoal(goal: GoalType): FlavorType[] {
+    // if the goal had a flavor
+    let flavorsInGoal: FlavorType[] = [];
+    for (const ingredient of RecipeBook[goal].recipe) {
+        if (isFlavor(ingredient)) {
+            flavorsInGoal.push(ingredient)
+        } else {
+            // TODO: if we do layered goals (e.g. a goal that has a flavored cake as an ingredient) this check must do a deep search of the recipe
+        }
+    }
+    return flavorsInGoal;
+}
+
+export function isInAnyInventory(ingredient: PlacableIngredient, players: Record<string, Player>): boolean {
+    for (const player in players) {
+        if (players[player].inventory.includes(ingredient)) {
+            return true;
+        }
+    }
+    return false;
 }

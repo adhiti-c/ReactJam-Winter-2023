@@ -10,13 +10,12 @@ import { Physics, RigidBody } from "@react-three/rapier";
 import { Vector3 } from "three";
 import PlayingUI from "../components/staticUI/states/playing";
 import TutorialUI from "../components/staticUI/states/tutorial";
-import Camera from "./objects/camera";
+import Camera, { calculateCurrentCameraY } from "./objects/camera";
 import Lobby from "./staticUI/states/lobby";
 // fix the typing error: https://github.com/joshwcomeau/use-sound/issues/135#issuecomment-1723305858
 import useSound from 'use-sound';
 import cafeSound from '../assets/sweet cafe.mp3'
 import { Player, Players } from "rune-games-sdk";
-import ObjModel from "./objects/objModel";
 
 export default function Game({ game, player, players }: { game: GameState, player: Player, players: Players }) {
 
@@ -37,6 +36,8 @@ export default function Game({ game, player, players }: { game: GameState, playe
 
     // selected ingredient
     const [selectedIngredient, setSelectedIngredient] = useState<PlacableIngredient[]>([]);
+
+    const [cakeYPositions, setCakeYPositions] = useState<number[]>([]);
 
     const handleDrop = () => {
         if (selectedIngredient.length === 0) {
@@ -76,31 +77,26 @@ export default function Game({ game, player, players }: { game: GameState, playe
         const currentCakeLength = cakes.length;
         // has something new been added?
         if (gameStateCakeLength > currentCakeLength) {
-            console.log("cake layer has changed")
             // something new has been added
             // create more blocks in the new layer
             let additionalBlocks: JSX.Element[] = [];
+            let latestCake;
             // TODO: instead, can we iterate through each and only spawn in new blocks?
             for (let i = currentCakeLength; i < gameStateCakeLength; i++) {
                 // create more blocks
                 const blockType = game.cake[i];
-                console.log("buildling new " + blockType)
-                additionalBlocks.push(
-                    <Cake position={new Vector3(0, 1 + ((cakes.length + currentCakeLength) * 0.5), 0)} texture={blockType} key={"cake-" + blockType + "-" + i} setBlockInMotion={setBlockInMotion} />
-                )
+                const spawnY = cakes.length === 0 || cakeYPositions.length === 0 ? 1 : calculateCurrentCameraY(cakeYPositions.at(-1)!) + i;
+                console.log(`Spawning at: ${spawnY}`)
+                // old calculation: 1 + ((cakes.length + currentCakeLength) * 0.5)
+                latestCake = <Cake position={new Vector3(0, spawnY, 0)} index={i} texture={blockType} key={"cake-" + blockType + "-" + i} setBlockInMotion={setBlockInMotion} setCakeYPosition={setCakeYPositions} cakeYPos={cakeYPositions} />
+                additionalBlocks.push(latestCake);
             }
             // now add it into the state
             // TODO: will this create some sort of collision type of race condition?
-            setCakes([...cakes, ...additionalBlocks])
+            setCakes([...cakes, ...additionalBlocks]);
         }
     }
 
-    // useEffect(() => {
-    //     // if the block is no longer in motion, handle rerenders
-    //     if (!blockInMotion) {
-    //         rerenderNewLayer();
-    //     }
-    // }, [blockInMotion]);
 
     function rerenderNewLayer() {
         // handle the new layer
@@ -115,10 +111,10 @@ export default function Game({ game, player, players }: { game: GameState, playe
             // TODO: instead, can we iterate through each and only spawn in new blocks?
             for (let i = currentLayerLength; i < gameStateLayerLength; i++) {
                 // create more blocks
-                console.log("new block added")
                 const blockType = game.newLayer[i];
+                const spawnY = cakes.length === 0 || cakeYPositions.length === 0 ? 1 : calculateCurrentCameraY(cakeYPositions.at(-1)!) + i * 1.5;
                 additionalBlocks.push(
-                    <Cake position={new Vector3(0, 1 + ((cakes.length + currentLayerLength) * 0.5), 0)} texture={blockType} key={"new-layer-" + blockType + "-" + i} setBlockInMotion={setBlockInMotion} />
+                    <Cake position={new Vector3(0, spawnY, 0)} texture={blockType} key={"new-layer-" + blockType + "-" + i} setBlockInMotion={setBlockInMotion} />
                 )
             }
             // now add it into the state
@@ -134,8 +130,9 @@ export default function Game({ game, player, players }: { game: GameState, playe
                 let additionalBlocks: JSX.Element[] = [];
                 for (let i = 0; i < gameStateLayerLength; i++) {
                     const blockType = game.newLayer[i];
+                    const spawnY = cakes.length === 0 || cakeYPositions.length === 0 ? 1 : calculateCurrentCameraY(cakeYPositions.at(-1)!) + currentLayerLength;
                     additionalBlocks.push(
-                        <Cake position={new Vector3(0, 1 + ((cakes.length + currentLayerLength) * 0.5), 0)} texture={blockType} key={"new-layer-" + blockType + "-" + i} setBlockInMotion={setBlockInMotion} />
+                        <Cake position={new Vector3(0, spawnY, 0)} texture={blockType} key={"new-layer-" + blockType + "-" + i} setBlockInMotion={setBlockInMotion} />
                     )
                 }
                 setNewLayer(additionalBlocks);
@@ -174,7 +171,7 @@ export default function Game({ game, player, players }: { game: GameState, playe
             <Canvas
                 // camera={{ position: [1, 0, 1] }}
                 onClick={handleDrop}>
-                <Camera cakes={cakes} />
+                <Camera yPos={cakeYPositions.at(-1)} />
                 <Suspense>
                     <Physics gravity={[0, -15, 0]}
                         // colliders="hull"

@@ -2,7 +2,7 @@
 /**
  * amount of time starting out before players lose
  */
-export const StartTimeSeconds = 60;
+export const StartTimeSeconds = 120;
 
 
 /**
@@ -15,6 +15,11 @@ export const HintRepeatCount = 1;
  */
 export const FlatTimeIncreaseOnComboSeconds = 5;
 
+/**
+ * number of seconds to decrease when the players place a wrong ingredient
+ */
+export const FlatTimePenaltySeconds = 5;
+
 
 // ----------- Don't touch these ------------
 
@@ -24,3 +29,5 @@ export const FlatTimeIncreaseOnComboSeconds = 5;
 export const StartTimeLeftMilliseconds = StartTimeSeconds * 1000;
 
 export const FlatTimeIncreaseOnComboMilliseconds = FlatTimeIncreaseOnComboSeconds * 1000;
+
+export const FlatTimePenaltyMilliseconds = FlatTimePenaltySeconds * 1000;

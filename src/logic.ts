@@ -1,7 +1,8 @@
-import { CakeLayerType, GoalType, Goals, PlacableIngredient, RecipeBook } from "./logic_v2/cakeTypes";
-import { StartTimeLeftMilliseconds, HintRepeatCount, FlatTimeIncreaseOnComboMilliseconds } from "./logic_v2/logicConfig";
+import { PlayerId } from "rune-games-sdk";
+import { CakeLayerType, GoalType, Goals, PlacableIngredient, RecipeBook, isFlavor } from "./logic_v2/cakeTypes";
+import { StartTimeLeftMilliseconds, HintRepeatCount, FlatTimeIncreaseOnComboMilliseconds, FlatTimePenaltyMilliseconds } from "./logic_v2/logicConfig";
 import { Player, GameState } from "./logic_v2/types";
-import { compareArraysAsSets, compareArraysInOrder, chooseRandomIndexOfArray, removeFromArray, checkProgress, matchRecipe, combineLayer, giveAllPlayersRandomly } from "./logic_v2/util";
+import { compareArraysAsSets, compareArraysInOrder, chooseRandomIndexOfArray, removeFromArray, checkProgress, matchRecipe, combineLayer, giveAllPlayersRandomly, getFlavorsInGoal, isInAnyInventory } from "./logic_v2/util";
 
 /*
 random thoughts:
@@ -33,7 +34,8 @@ Rune.initLogic({
         inventory: ingredientInventory,
         hasPlaced: false,
         ready: false,
-        number: playerIndex
+        number: playerIndex,
+        encounteredInventory: ingredientInventory,
       };
       playerIndex++;
     }
@@ -131,9 +133,22 @@ Rune.initLogic({
           game.players[player].hasPlaced = false;
         }
 
-        // if the goal had a flavor, switch that flavor out of the player’s hand
-        // TODO: handle player inventory changes
-        // TODO: make sure that like it's a flavor the player has already encountered?
+        // see what the old goal had
+        const flavorsInOldGoal = getFlavorsInGoal(currentGoal);
+
+        // if there were flavors in the goal that was just completed, remove it out of the respective player's hand
+        if (flavorsInOldGoal.length > 0) {
+          for (const flavor of flavorsInOldGoal) {
+            for (const player in game.players) {
+              const oldPlayerInventory = [...game.players[player].inventory]
+              if (oldPlayerInventory.includes(flavor)) {
+                // remove it
+                const removedInventory = removeFromArray(oldPlayerInventory, flavor);
+                game.players[player].inventory = removedInventory;
+              }
+            }
+          }
+        }
 
         // if the goal was the same as the current recipe hint, increment the count up
         const gameHint = game.hint;
@@ -142,9 +157,9 @@ Rune.initLogic({
         }
 
         // if count exceeded, generate a new not-created recipe and make that the new goal
-        if (game.hint.count >= HintRepeatCount) {
+        const unencounteredRecipes = game.goals.unencountered;
+        if (game.hint.count >= HintRepeatCount && unencounteredRecipes.length > 0) {
           // generate a new non-created goal to make as the new goal
-          const unencounteredRecipes = game.goals.unencountered;
           // FIXME: can we make this logic better without the special hard-coded cases?
           // special case: if the initial goal is the cake_base, make the players do frosting next as part of the tutorial?
           if (game.goals.current === "cake_base" && game.goals.unencountered.includes("cake_frosting")) {
@@ -164,10 +179,30 @@ Rune.initLogic({
             game.players = giveAllPlayersRandomly(game.players, ["chocolate", "strawberry"]);
           } else {
             // choose from the unencountered goals
-            // TODO: make sure it is possible to create the next goal based on the player's hand
-            const randomIndex =
-              chooseRandomIndexOfArray(unencounteredRecipes);
-            game.goals.current = unencounteredRecipes[randomIndex];
+            const randomIndex = chooseRandomIndexOfArray(unencounteredRecipes);
+            const newGoal = unencounteredRecipes[randomIndex]
+            game.goals.current = newGoal;
+            // TODO: give a player the flavor(s) required to complete this goal
+            const flavorsNeeded = getFlavorsInGoal(newGoal);
+            for (const flavor of flavorsNeeded) {
+              // give it to the player with the smaller inventory
+              if (!isInAnyInventory(flavor, game.players)) {
+                let smallestInventoryPlayer: PlayerId | null = null;
+                let smallestInventorySize: number = -1;
+                for (const player in game.players) {
+                  const inventory = game.players[player].inventory
+                  if (smallestInventorySize === -1 || inventory.length < smallestInventorySize) {
+                    smallestInventoryPlayer = player;
+                    smallestInventorySize = inventory.length;
+                  }
+                }
+                // note: if all equal, give it to the first person
+                // smallestInventoryPlayer should always be defined
+                const currentInventory = [...game.players[smallestInventoryPlayer!].inventory];
+                currentInventory.push(flavor);
+                game.players[smallestInventoryPlayer!].inventory = currentInventory;
+              }
+            }
           }
 
           const newGoal = game.goals.current;
@@ -181,11 +216,39 @@ Rune.initLogic({
           let oldEncountered = [...game.goals.encountered];
           oldEncountered.push(newGoal);
           game.goals.encountered = oldEncountered;
+          // remove from unencountered
+          let oldUnencountered = [...game.goals.unencountered];
+          game.goals.unencountered = removeFromArray(oldUnencountered, newGoal);
         } else {
           // else, move to next goal by grabbing another random recipe. It may be one already learned, or the current hint
+
           const encounteredRecipes = game.goals.encountered;
           const randomIndex = chooseRandomIndexOfArray(encounteredRecipes);
-          game.goals.current = encounteredRecipes[randomIndex];
+          const newGoal = encounteredRecipes[randomIndex]
+          game.goals.current = newGoal;
+
+          // give a player the flavor(s) required to complete this goal
+          const flavorsNeeded = getFlavorsInGoal(newGoal);
+          for (const flavor of flavorsNeeded) {
+            // make sure no players already have this ingredient
+            if (!isInAnyInventory(flavor, game.players)) {
+              // give it to the player with the smaller inventory
+              let smallestInventoryPlayer: PlayerId | null = null;
+              let smallestInventorySize: number = -1;
+              for (const player in game.players) {
+                const inventory = game.players[player].inventory
+                if (smallestInventorySize === -1 || inventory.length < smallestInventorySize) {
+                  smallestInventoryPlayer = player;
+                  smallestInventorySize = inventory.length;
+                }
+              }
+              // note: if all equal, give it to the first person
+              // smallestInventoryPlayer should always be defined
+              const currentInventory = [...game.players[smallestInventoryPlayer!].inventory];
+              currentInventory.push(flavor);
+              game.players[smallestInventoryPlayer!].inventory = currentInventory;
+            }
+          }
         }
       } else {
         // if it does not match
@@ -222,6 +285,9 @@ Rune.initLogic({
 
           // reset the current layer
           game.newLayer = [];
+
+          // subtract time
+          game.timeLeft = game.timeLeft - FlatTimePenaltyMilliseconds;
         }
 
         // reset placement for players
@@ -239,7 +305,7 @@ Rune.initLogic({
       // set the phase to be loss
       game.phase = "loss";
       game.timeLeft = 0;
-      // Rune.gameOver(); // TODO: implement this later
+      Rune.gameOver(); // TODO: implement this later
     } else {
       if (game.phase === "playing") {
         const timeDiff = Rune.gameTime() - game.lastCountdown;

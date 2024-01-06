@@ -3,21 +3,39 @@ import React, { useState, useEffect } from "react";
 import { useThree, useFrame } from "@react-three/fiber";
 import { Vector3 } from "three";
 
-//Player Movement
-export default function Camera({ cakes }: { cakes: JSX.Element[] }) {
+export function calculateCurrentCameraY(yPos: number): number {
+  const yPosDivisionFactor = 1.5; // use this for general gameplay
+  // const yPosDivisionFactor = 5; // use this to confirm cake asset positioning
+  return -1 * yPos / yPosDivisionFactor
+}
 
-  const initialPos = [1, 0, 1]
+export default function Camera({ yPos }: { yPos: number | undefined }) {
+  // change this to affect the camera's zoom
+  // larger is more zoomed out
+  const zoomFactor = 0.3 // standard gameplay
+  // const zoomFactor = 3; // good for debugging
+
+  const initialXandZ = 1;
+  const initialPos = [initialXandZ + zoomFactor, 0, initialXandZ + zoomFactor]
   const initialCameraVector = new Vector3(initialPos[0], initialPos[1], initialPos[2]);
   const camera = useThree(state => state.camera);
   const [cameraVector, setCameraVector] = useState<Vector3>(initialCameraVector)
 
+
   useEffect(() => {
-    // recalculate the vector
-    // const newCamPos = new Vector3(initialPos[0], initialPos[1] + cakes.length * 0.25, initialPos[2])
-    const newCamPos = new Vector3(initialPos[0], initialPos[1] + cakes.length * 0.25, initialPos[2])
+    let newCamPos: Vector3;
+    if (yPos === undefined) {
+      // initial position of 0
+      newCamPos = new Vector3(initialPos[0], initialPos[1], initialPos[2]);
+    } else {
+      // recalculate the vector
+
+      const newXandZ = initialXandZ + zoomFactor
+      newCamPos = new Vector3(newXandZ, calculateCurrentCameraY(yPos), newXandZ)
+    }
 
     setCameraVector(newCamPos)
-  }, [cakes])
+  }, [yPos]);
 
   useFrame(() => {
     // move camera to right position

@@ -1,20 +1,15 @@
 // contains cake object and cake logic
-import { useEffect, useRef, useState } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 import { Vector3 } from "three";
 import { RoundedBox, useTexture } from "@react-three/drei";
 import { RapierRigidBody, RigidBody } from "@react-three/rapier";
 import { LayerToAssetMap } from "../../logic_v2/assetMap";
 import useSound from 'use-sound';
-import { useLoader } from "@react-three/fiber";
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
-import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js'
-
 
 import { CakeLayerType } from "../../logic_v2/cakeTypes";
 import CombineSound from "../../assets/blockSound.wav"
 import ObjModel from "./objModel";
-export default function Cake({ texture, position, setBlockInMotion }: { texture: CakeLayerType, position: Vector3, setBlockInMotion: React.Dispatch<React.SetStateAction<boolean>> }) {
+export default function Cake({ texture, index, position, setBlockInMotion, setCakeYPosition, cakeYPos }: { texture: CakeLayerType, index?: number, position: Vector3, setBlockInMotion: React.Dispatch<React.SetStateAction<boolean>>, setCakeYPosition?: React.Dispatch<React.SetStateAction<number[]>>, cakeYPos?: number[] }) {
 
     // make this layer movable by default
     const [dynamic, setDynamic] = useState<boolean>(true);
@@ -37,6 +32,9 @@ export default function Cake({ texture, position, setBlockInMotion }: { texture:
         setBlockInMotion(true);
     }, [])
 
+
+    const rigidBody = useRef<RapierRigidBody>(null);
+
     //* args = arguments (width, height, depth)
     const size: [width?: number | undefined, height?: number | undefined, depth?: number | undefined] = [.7, 0.35, 0.7]
     // trigger audio for combine
@@ -45,10 +43,13 @@ export default function Cake({ texture, position, setBlockInMotion }: { texture:
     // const audioRef= useRef<HTMLAudioElement | null > (null)
     const [play] = useSound(CombineSound, { volume: 0.5, loop: false });
 
-
     return (
-        <RigidBody type={dynamic ? "dynamic" : "fixed"} colliders={isBlenderObj ? "cuboid" : "hull"} onContactForce={() => {
-            if (dynamic) {
+        <RigidBody type={dynamic ? "dynamic" : "fixed"} colliders={isBlenderObj ? "cuboid" : "hull"} ref={rigidBody} onContactForce={(payload) => {
+            // I think things that are colliding with two things are
+            // if (dynamic && payload.target.collider.activeEvents() === 2) {
+            // 0 is the dynamic body type, and 1 is the fixed
+            // only stop if you collide with a fixed body type
+            if (dynamic && payload.other.rigidBody?.bodyType() === 1) {
                 // stop gravity
                 setDynamic(false);
                 // block is stopped
@@ -57,6 +58,25 @@ export default function Cake({ texture, position, setBlockInMotion }: { texture:
                 Rune.actions.combine();
                 // checks that if audioRef is called, then it points to "audio" contained under return
                 play();
+
+                // for tracking y position of cakes in the cake layer
+                if (rigidBody.current) {
+                    // create copy of all objects
+                    if (setCakeYPosition && cakeYPos && index !== undefined) {
+                        const pos = rigidBody.current.translation();
+                        const prevPositions = [...cakeYPos];
+                        // update position
+                        if (prevPositions[index] !== undefined) {
+                            prevPositions[index] = pos.y;
+                        } else {
+                            prevPositions.push(pos.y);
+                        }
+                        // update parent state
+                        setCakeYPosition(prevPositions);
+                    }
+                } else {
+                    console.log("rigidBody.current does not exist")
+                }
             }
         }}>
             {/* contains audio info for block collides */}

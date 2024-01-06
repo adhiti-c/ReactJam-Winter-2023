@@ -79,6 +79,15 @@ export const RecipeBook: Record<GoalType, Recipe> = {
 export type FlavorType = typeof Flavors[number];
 
 /**
+ * flavor typeguard
+ * @param value 
+ * @returns 
+ */
+export function isFlavor(value: any): value is FlavorType {
+    return Flavors.includes(value);
+}
+
+/**
  * these are all the possible things a player can see in their inventory, in an array format. Mostly used in the frontend for the inventory
  */
 export const AllInventory = [...Ingredients, ...Flavors];
