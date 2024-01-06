@@ -56,19 +56,22 @@ export default function Game({ game, player, players }: { game: GameState, playe
     }
 
     useEffect(() => {
-        // only rerender if no block is in motion
-        if (!blockInMotion) {
-            rerenderNewLayer();
-        }
+        // if (!blockInMotion) {
+        rerenderNewLayer();
+        // }
     }, [game.newLayer]);
 
     useEffect(() => {
-        if (!blockInMotion) {
-            // handle putting new things into the cake
+        // handle putting new things into the cake
+        // console.log(`game.cakes changed for ${player.playerId}`, game.cake)
+        rerenderCake();
+    }, [game.cake]);
+
+    useEffect(() => {
+        if (!blockInMotion && newLayer.length === 0) {
             rerenderCake();
         }
-        // we need to process any cake updates after a collision happened... rip
-    }, [game.cake]);
+    }, [blockInMotion])
 
     function rerenderCake() {
         // handle the new layer
@@ -94,6 +97,8 @@ export default function Game({ game, player, players }: { game: GameState, playe
             // now add it into the state
             // TODO: will this create some sort of collision type of race condition?
             setCakes([...cakes, ...additionalBlocks]);
+        } else {
+            // console.log(`${player.playerId} sees ${currentCakeLength} vs game state ${gameStateCakeLength}`)
         }
     }
 
@@ -149,7 +154,7 @@ export default function Game({ game, player, players }: { game: GameState, playe
 
     switch (game.phase) {
         case "lobby":
-            gameTimerHTML = <Lobby game={game} isPlaying={isPlaying} play={play} setPlaying={setPlaying} />;
+            gameTimerHTML = <Lobby game={game} isPlaying={isPlaying} play={play} setPlaying={setPlaying} players={players} />;
             break;
         case "tutorial":
             gameTimerHTML = <TutorialUI />;

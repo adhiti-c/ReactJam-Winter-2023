@@ -21,11 +21,11 @@ function RecipeItem({ img, ingredient, game }: { img: string, ingredient: CakeLa
     <>
       {/* figure out who owns this item, if anyone */}
       {/* rn this is in the success state */}
-      {owner !== null ? <img src={PlayerIndexToCharacterIcon[owner]} /> : null}
+      {owner !== null ? <img src={PlayerIndexToCharacterIcon[owner].gameIcon} /> : null}
       <div className='recipe-item'>
         <img src={img} />
         <div className="check-contain">
-            <FontAwesomeIcon icon={faCheck}/>
+          <FontAwesomeIcon icon={faCheck} />
         </div>
       </div>
     </>
