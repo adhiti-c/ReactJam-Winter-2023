@@ -65,11 +65,13 @@ export default function Cake({ texture, index, position, setBlockInMotion, setCa
                         if (prevPositions[index] !== undefined) {
                             prevPositions[index] = pos.y;
                         } else {
-                            prevPositions.push(pos.y)
+                            prevPositions.push(pos.y);
                         }
                         // update parent state
                         setCakeYPosition(prevPositions);
                     }
+                } else {
+                    console.log("rigidBody.current does not exist")
                 }
             }
         }}>

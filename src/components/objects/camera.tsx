@@ -1,9 +1,14 @@
 // contains player object and player logic
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useThree, useFrame } from "@react-three/fiber";
 import { Vector3 } from "three";
 
-//Player Movement
+export function calculateCurrentCameraY(yPos: number): number {
+  const yPosDivisionFactor = 1.5; // use this for general gameplay
+  // const yPosDivisionFactor = 5; // use this to confirm cake asset positioning
+  return -1 * yPos / yPosDivisionFactor
+}
+
 export default function Camera({ yPos }: { yPos: number | undefined }) {
   // change this to affect the camera's zoom
   const zoomFactor = 0.2;
@@ -22,16 +27,13 @@ export default function Camera({ yPos }: { yPos: number | undefined }) {
       newCamPos = new Vector3(initialPos[0], initialPos[1], initialPos[2]);
     } else {
       // recalculate the vector
-      const yPosDivisionFactor = 1; // use this for general gameplay
-      // const yPosDivisionFactor = 5; // use this to confirm cake asset positioning
+
       const newXandZ = initialXandZ + zoomFactor
-      newCamPos = new Vector3(newXandZ, -1 * yPos / yPosDivisionFactor, newXandZ)
+      newCamPos = new Vector3(newXandZ, calculateCurrentCameraY(yPos), newXandZ)
     }
 
     setCameraVector(newCamPos)
   }, [yPos]);
-
-  const [latestY, setLatestY] = useState<number>(0);
 
   useFrame(() => {
     // move camera to right position

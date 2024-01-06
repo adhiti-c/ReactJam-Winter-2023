@@ -186,20 +186,22 @@ Rune.initLogic({
             const flavorsNeeded = getFlavorsInGoal(newGoal);
             for (const flavor of flavorsNeeded) {
               // give it to the player with the smaller inventory
-              let smallestInventoryPlayer: PlayerId | null = null;
-              let smallestInventorySize: number = -1;
-              for (const player in game.players) {
-                const inventory = game.players[player].inventory
-                if (smallestInventorySize === -1 || inventory.length < smallestInventorySize) {
-                  smallestInventoryPlayer = player;
-                  smallestInventorySize = inventory.length;
+              if (!isInAnyInventory(flavor, game.players)) {
+                let smallestInventoryPlayer: PlayerId | null = null;
+                let smallestInventorySize: number = -1;
+                for (const player in game.players) {
+                  const inventory = game.players[player].inventory
+                  if (smallestInventorySize === -1 || inventory.length < smallestInventorySize) {
+                    smallestInventoryPlayer = player;
+                    smallestInventorySize = inventory.length;
+                  }
                 }
+                // note: if all equal, give it to the first person
+                // smallestInventoryPlayer should always be defined
+                const currentInventory = [...game.players[smallestInventoryPlayer!].inventory];
+                currentInventory.push(flavor);
+                game.players[smallestInventoryPlayer!].inventory = currentInventory;
               }
-              // note: if all equal, give it to the first person
-              // smallestInventoryPlayer should always be defined
-              const currentInventory = [...game.players[smallestInventoryPlayer!].inventory];
-              currentInventory.push(flavor);
-              game.players[smallestInventoryPlayer!].inventory = currentInventory;
             }
           }
 
@@ -225,7 +227,7 @@ Rune.initLogic({
           const newGoal = encounteredRecipes[randomIndex]
           game.goals.current = newGoal;
 
-          // TODO: give a player the flavor(s) required to complete this goal
+          // give a player the flavor(s) required to complete this goal
           const flavorsNeeded = getFlavorsInGoal(newGoal);
           for (const flavor of flavorsNeeded) {
             // make sure no players already have this ingredient
