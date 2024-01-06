@@ -53,6 +53,7 @@ const Lobby = ({ game, isPlaying, setPlaying, play, players, playerId }: { game:
                 profile={profileUrl}
                 username={name}
                 playerIndex={playerIndex}
+                key={name}
               />
             )
           })}
