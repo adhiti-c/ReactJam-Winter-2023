@@ -110,7 +110,8 @@ export const LayerToAssetMap: Record<CakeLayerType, assetInformation> = {
     "choco_cake": {
         icon: ChocolateCake,
         isBlenderObj: true,
-        block: "blender/choco_cake.glb",
+        block: "blender/straw_cake/straw_cake.obj", // TODO: update this
+        mtl: "blender/straw_cake/straw_cake.mtl", // TODO: update this
     },
     "straw_cake": {
         icon: StrawberryCake,
@@ -121,7 +122,8 @@ export const LayerToAssetMap: Record<CakeLayerType, assetInformation> = {
     "carrot_cake": {
         icon: CarrotCake,
         isBlenderObj: true,
-        block: "blender/carrot_cake.glb",
+        block: "blender/straw_cake/straw_cake.obj", // TODO: update this
+        mtl: "blender/straw_cake/straw_cake.mtl", // TODO: update this
     }
 }
 

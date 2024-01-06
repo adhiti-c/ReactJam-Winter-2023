@@ -22,7 +22,7 @@ export default function Camera({ yPos }: { yPos: number | undefined }) {
       newCamPos = new Vector3(initialPos[0], initialPos[1], initialPos[2]);
     } else {
       // recalculate the vector
-      const yPosDivisionFactor = 2.3; // use this for general gameplay
+      const yPosDivisionFactor = 1; // use this for general gameplay
       // const yPosDivisionFactor = 5; // use this to confirm cake asset positioning
       const newXandZ = initialXandZ + zoomFactor
       newCamPos = new Vector3(newXandZ, -1 * yPos / yPosDivisionFactor, newXandZ)

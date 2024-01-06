@@ -4,6 +4,7 @@ import {
   PlacableIngredient,
   GoalType,
   Recipe,
+  FlavorType,
 } from "./cakeTypes";
 
 /**
@@ -19,6 +20,7 @@ export interface Player {
   hasPlaced: boolean;
   ready: boolean;
   number: number;
+  encounteredInventory: PlacableIngredient[];
 }
 
 export interface GameState {
