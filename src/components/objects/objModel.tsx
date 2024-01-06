@@ -1,0 +1,28 @@
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
+import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js'
+import { CakeLayerType } from '../../logic_v2/cakeTypes'
+import { Vector3 } from 'three'
+import { LayerToAssetMap } from "../../logic_v2/assetMap";
+import { useLoader } from '@react-three/fiber';
+
+
+export default function ObjModel({ texture, position }: { texture: CakeLayerType, position: Vector3 }) {
+    const assetMap = LayerToAssetMap[texture];
+    let colorMap;
+    if (assetMap.mtl) {
+        const materials = useLoader(MTLLoader, assetMap.mtl);
+        colorMap = useLoader(OBJLoader, assetMap.block, loader => {
+            materials.preload();
+            loader.setMaterials(materials)
+        });
+    } else {
+        throw Error("no MTL file defined for blender object " + texture);
+    }
+
+    return (
+        <instancedMesh position={position} scale={0.3}>
+            {/* https://discourse.threejs.org/t/duplicate-same-model-in-a-canvas-react-three-fiber/50913/5 */}
+            <primitive object={colorMap.clone()} />
+        </instancedMesh>
+    )
+}

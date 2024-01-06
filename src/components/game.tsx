@@ -16,6 +16,7 @@ import Lobby from "./staticUI/states/lobby";
 import useSound from 'use-sound';
 import cafeSound from '../assets/sweet cafe.mp3'
 import { Player, Players } from "rune-games-sdk";
+import ObjModel from "./objects/objModel";
 
 export default function Game({ game, player, players }: { game: GameState, player: Player, players: Players }) {
 
@@ -83,8 +84,9 @@ export default function Game({ game, player, players }: { game: GameState, playe
             for (let i = currentCakeLength; i < gameStateCakeLength; i++) {
                 // create more blocks
                 const blockType = game.cake[i];
+                console.log("buildling new " + blockType)
                 additionalBlocks.push(
-                    <Cake position={new Vector3(0, 1 + ((cakes.length + currentCakeLength) * 0.5), 0)} texture={blockType} key={"cake-" + i} setBlockInMotion={setBlockInMotion} />
+                    <Cake position={new Vector3(0, 1 + ((cakes.length + currentCakeLength) * 0.5), 0)} texture={blockType} key={"cake-" + blockType + "-" + i} setBlockInMotion={setBlockInMotion} />
                 )
             }
             // now add it into the state
@@ -93,12 +95,12 @@ export default function Game({ game, player, players }: { game: GameState, playe
         }
     }
 
-    useEffect(() => {
-        // if the block is no longer in motion, handle rerenders
-        if (!blockInMotion) {
-            rerenderNewLayer();
-        }
-    }, [blockInMotion]);
+    // useEffect(() => {
+    //     // if the block is no longer in motion, handle rerenders
+    //     if (!blockInMotion) {
+    //         rerenderNewLayer();
+    //     }
+    // }, [blockInMotion]);
 
     function rerenderNewLayer() {
         // handle the new layer
@@ -116,7 +118,7 @@ export default function Game({ game, player, players }: { game: GameState, playe
                 console.log("new block added")
                 const blockType = game.newLayer[i];
                 additionalBlocks.push(
-                    <Cake position={new Vector3(0, 1 + ((cakes.length + currentLayerLength) * 0.5), 0)} texture={blockType} key={"new-layer-" + i} setBlockInMotion={setBlockInMotion} />
+                    <Cake position={new Vector3(0, 1 + ((cakes.length + currentLayerLength) * 0.5), 0)} texture={blockType} key={"new-layer-" + blockType + "-" + i} setBlockInMotion={setBlockInMotion} />
                 )
             }
             // now add it into the state
@@ -128,8 +130,17 @@ export default function Game({ game, player, players }: { game: GameState, playe
                 // wipe it
                 setNewLayer([]);
             } else {
+                // rebuild the whole thing :sob:
+                let additionalBlocks: JSX.Element[] = [];
+                for (let i = 0; i < gameStateLayerLength; i++) {
+                    const blockType = game.newLayer[i];
+                    additionalBlocks.push(
+                        <Cake position={new Vector3(0, 1 + ((cakes.length + currentLayerLength) * 0.5), 0)} texture={blockType} key={"new-layer-" + blockType + "-" + i} setBlockInMotion={setBlockInMotion} />
+                    )
+                }
+                setNewLayer(additionalBlocks);
                 // slice it
-                setNewLayer(newLayer.slice(0, gameStateLayerLength));
+                // setNewLayer(newLayer.slice(0, gameStateLayerLength));
             }
         } else {
             // should be the same thing
@@ -173,9 +184,9 @@ export default function Game({ game, player, players }: { game: GameState, playe
                         {...newLayer}
                         <Platform />
                         {/* illuminates everything uniformily */}
-                       {/* 0 x color */}
-                        <ambientLight args={[0xF8F8F8]} intensity={.5}/>
-                        <directionalLight color={0xF8F8F8} position={[10, 10, 10]} intensity={1.5}/>
+                        {/* 0 x color */}
+                        <ambientLight args={[0xF8F8F8]} intensity={.5} />
+                        <directionalLight color={0xF8F8F8} position={[10, 10, 10]} intensity={1.5} />
                     </Physics>
                 </Suspense>
             </Canvas>

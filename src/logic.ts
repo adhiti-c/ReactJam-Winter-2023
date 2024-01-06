@@ -46,7 +46,7 @@ Rune.initLogic({
     const game: GameState = {
       lastCountdown: 0,
       timeLeft: StartTimeLeftMilliseconds,
-      phase: "lobby",
+      phase: "playing",
       feedback: "waiting",
       players: players,
       cake: [],

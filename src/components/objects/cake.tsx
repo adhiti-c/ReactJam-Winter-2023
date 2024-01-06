@@ -13,6 +13,7 @@ import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js'
 
 import { CakeLayerType } from "../../logic_v2/cakeTypes";
 import CombineSound from "../../assets/blockSound.wav"
+import ObjModel from "./objModel";
 export default function Cake({ texture, position, setBlockInMotion }: { texture: CakeLayerType, position: Vector3, setBlockInMotion: React.Dispatch<React.SetStateAction<boolean>> }) {
 
     // make this layer movable by default
@@ -22,17 +23,7 @@ export default function Cake({ texture, position, setBlockInMotion }: { texture:
     const assetMap = LayerToAssetMap[texture]
     const block = assetMap.block;
     const isBlenderObj = assetMap.isBlenderObj
-    if (isBlenderObj) {
-        if (assetMap.mtl) {
-            const materials = useLoader(MTLLoader, assetMap.mtl);
-            colorMap = useLoader(OBJLoader, block, loader => {
-                materials.preload();
-                loader.setMaterials(materials)
-            });
-        } else {
-            throw Error("no MTL file defined for blender object " + texture);
-        }
-    } else {
+    if (!isBlenderObj) {
         // load the texture using useTexture
         colorMap = useTexture(block);
     }
@@ -70,17 +61,9 @@ export default function Cake({ texture, position, setBlockInMotion }: { texture:
         }}>
             {/* contains audio info for block collides */}
             {/* if dynamic is true, audio is executed */}
-            {/* {dynamic && (
-                <audio ref={audioRef} id="combineSound" preload="auto">
-                    <source src={CombineSound} type="audio/wav" />
-                </audio>
-            )} */}
-
             {
                 isBlenderObj ?
-                    <mesh position={position} scale={0.3}>
-                        <primitive object={colorMap} />
-                    </mesh>
+                    <ObjModel texture={texture} position={position} />
                     :
                     <RoundedBox position={position}
                         args={size} >

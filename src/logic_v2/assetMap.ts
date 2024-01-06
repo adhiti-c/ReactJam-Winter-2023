@@ -104,8 +104,8 @@ export const LayerToAssetMap: Record<CakeLayerType, assetInformation> = {
     "basic_cake": {
         icon: Cake,
         isBlenderObj: true,
-        block: "blender/straw_cake/straw_cake.obj",
-        mtl: "blender/straw_cake/straw_cake.mtl",
+        block: "blender/straw_cake/straw_cake.obj", // TODO: update this
+        mtl: "blender/straw_cake/straw_cake.mtl", // TODO: update this
     },
     "choco_cake": {
         icon: ChocolateCake,
