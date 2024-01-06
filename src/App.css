@@ -122,6 +122,9 @@ button {
   border: var(--border);
   background-color: var(--pink);
 }
+.inventory-slot:hover img, .inventory-slot .selected:hover img {
+  transform: rotate(25deg);
+}
 
 /* top state nav */
 .state-contain {
@@ -273,6 +276,10 @@ animation: Pop 1.5s forwards;
   color: #FF4040;
   text-shadow: -2px 0 #fff, 0 2px #fff, 2px 0 #fff, 0 -2px #fff;
   font-size: 24px;
+}
+.encourage {
+  color: var(--pink);
+  text-shadow: -2px 0 #fff, 0 2px #fff, 2px 0 #fff, 0 -2px #fff;
 }
 
 /** animations */

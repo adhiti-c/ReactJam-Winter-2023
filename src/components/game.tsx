@@ -172,8 +172,10 @@ export default function Game({ game, player, players }: { game: GameState, playe
                         {...cakes}
                         {...newLayer}
                         <Platform />
-                        <ambientLight args={[0x000000]} />
-                        <directionalLight position={[10, 10, 10]} />
+                        {/* illuminates everything uniformily */}
+                       {/* 0 x color */}
+                        <ambientLight args={[0xF8F8F8]} intensity={.5}/>
+                        <directionalLight color={0xF8F8F8} position={[10, 10, 10]} intensity={1.5}/>
                     </Physics>
                 </Suspense>
             </Canvas>
