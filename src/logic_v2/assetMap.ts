@@ -30,8 +30,6 @@ import WheatTexture from "../assets/textures/wheatBlock.svg";
 import FrostingTexture from "../assets/textures/frostingBlock.svg";
 import EggTexture from "../assets/textures/eggBlock.svg";
 
-// blender models
-
 // import types and stuff
 import { CakeLayerType } from "./cakeTypes";
 
@@ -101,23 +99,23 @@ export const LayerToAssetMap: Record<CakeLayerType, assetInformation> = {
     },
     "basic_cake": {
         icon: Cake,
-        isBlenderObj: false, // TODO: make this true
-        block: WheatTexture, // TODO: update this with blender
+        isBlenderObj: true,
+        block: "blender/cake.glb",
     },
     "choco_cake": {
         icon: ChocolateCake,
-        isBlenderObj: false, // TODO: make this true
-        block: WheatTexture, // TODO: update this with blender
+        isBlenderObj: true,
+        block: "blender/choco_cake.glb",
     },
     "straw_cake": {
         icon: StrawberryCake,
-        isBlenderObj: false, // TODO: make true
-        block: WheatTexture, // TODO: update with blender
+        isBlenderObj: true,
+        block: "blender/straw_cake.glb",
     },
     "carrot_cake": {
         icon: CarrotCake,
-        isBlenderObj: false, // TODO: make true,
-        block: WheatTexture, // TODO: update with blender
+        isBlenderObj: true,
+        block: "blender/carrot_cake.glb",
     }
 }
 

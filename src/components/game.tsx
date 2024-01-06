@@ -166,7 +166,8 @@ export default function Game({ game, player, players }: { game: GameState, playe
                 <Camera cakes={cakes} />
                 <Suspense>
                     <Physics gravity={[0, -15, 0]}
-                        colliders="hull"
+                        // colliders="hull"
+                        colliders={false}
                     >
                         {...cakes}
                         {...newLayer}
