@@ -14,6 +14,9 @@ import Sugar from "../assets/icons/sugarIcon.svg";
 import Chicken from "../assets/characters/chicken.svg";
 import Cow from "../assets/characters/cow.svg";
 
+import CowLobby from '../assets/characters/cowLobby.svg'
+import ChickenLobby from '../assets/characters/chickenLobby.svg'
+
 // these are icons for Next Up and recipe hints
 import Cake from "../assets/icons/regularCake.svg";
 import ChocolateCake from "../assets/icons/chocolateCake.svg";
@@ -127,4 +130,21 @@ export const LayerToAssetMap: Record<CakeLayerType, assetInformation> = {
     }
 }
 
-export const PlayerIndexToCharacterIcon = [Chicken, Cow]
+export interface playerAssets {
+    gameIcon: string,
+    lobbyIcon: string,
+    charName: string,
+}
+
+export const PlayerIndexToCharacterIcon: playerAssets[] = [
+    {
+        gameIcon: Chicken,
+        lobbyIcon: ChickenLobby,
+        charName: "Chicken",
+    },
+    {
+        gameIcon: Cow,
+        lobbyIcon: CowLobby,
+        charName: "Cow",
+    },
+]

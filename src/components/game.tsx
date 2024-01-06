@@ -154,7 +154,7 @@ export default function Game({ game, player, players }: { game: GameState, playe
 
     switch (game.phase) {
         case "lobby":
-            gameTimerHTML = <Lobby game={game} isPlaying={isPlaying} play={play} setPlaying={setPlaying} />;
+            gameTimerHTML = <Lobby game={game} isPlaying={isPlaying} play={play} setPlaying={setPlaying} players={players} />;
             break;
         case "tutorial":
             gameTimerHTML = <TutorialUI />;
