@@ -1,9 +1,21 @@
 import React from 'react'
 
 function FinalRecipeItem({img}:{img:string}) {
+    const finalContainerStyle = {
+        
+            backgroundImage: `url(${img})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            width: '60px',
+            height: '60px',
+            // borderRadius: '16px',
+            overflow: 'show',
+  padding: '0',
+        
+    }
   return (
-    <div className='final-recipe-item'>
-      <img src={img} />
+    <div style={finalContainerStyle}>
+      {/* <img src={img} /> */}
     </div>
   )
 }

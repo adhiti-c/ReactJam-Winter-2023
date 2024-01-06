@@ -168,6 +168,10 @@ button {
 .score-contain h2 {
   font-size: 20px;
 }
+/* chng score state to success when success is triggered */
+.score-success {
+  background-color: var(--gold);
+}
 /* recipe items */
 .recipe-section {
   display: flex;
@@ -186,28 +190,27 @@ button {
   border: var(--border);
   padding: 8px;
   width: fit-content;
-  width: 25px;
+  width: 38px;
   border-radius: 16px;
-  height: 25px;
+  height: 38px;
   display: grid;
   place-content: center;
 }
 .recipe-item img {
   max-width: 30px;
 }
-.final-recipe-item {
+/* .final-recipe-item {
   border: var(--border);
-  padding: 8px;
-  width: fit-content;
-  width: 25px;
+  padding: 0;
+  width: 60px;
   border-radius: 16px;
-  height: 25px;
+  height: 60px;
   overflow: hidden;
   background-color: #fff;
 }
 .final-recipe-item img {
- width: 30px;
-}
+ width: 100%;
+} */
 .recipe-contain-step {
   display: flex;
   justify-content: space-between;
