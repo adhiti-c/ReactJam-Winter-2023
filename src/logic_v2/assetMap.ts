@@ -7,7 +7,7 @@ import Butter from "../assets/icons/butterIcon.svg";
 import Egg from "../assets/icons/eggIcon.svg";
 import Wheat from "../assets/icons/wheatIcon.svg";
 import Chocolate from "../assets/icons/chocolateIcon.svg";
-import Straw from "../assets/icons/strawberryCake.svg";
+import Straw from "../assets/icons/strawberryIcon.svg";
 import Carrot from "../assets/icons/carrotIcon.svg";
 import Sugar from "../assets/icons/sugarIcon.svg";
 
