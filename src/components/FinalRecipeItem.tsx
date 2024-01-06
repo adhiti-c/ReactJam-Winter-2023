@@ -8,8 +8,9 @@ function FinalRecipeItem({img}:{img:string}) {
             backgroundPosition: 'center',
             width: '60px',
             height: '60px',
-            // borderRadius: '16px',
-            overflow: 'show',
+            // borderRadius: '22px',
+            overflow: 'visible',
+            // border: '2px solid #fff',
   padding: '0',
         
     }
