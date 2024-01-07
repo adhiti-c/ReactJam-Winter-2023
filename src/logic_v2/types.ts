@@ -105,6 +105,11 @@ export interface GameState {
    * whether all the players are in or not
    */
   ready: boolean;
+
+  /**
+   * a thing for the lobby phase, whether to start the countdown or not
+   */
+  isStartingCountdown: boolean;
 }
 
 type GameActions = {

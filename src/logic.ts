@@ -64,7 +64,8 @@ Rune.initLogic({
         encountered: [initialGoal],
         unencountered: removeFromArray([...Goals], initialGoal),
       },
-      ready: true
+      ready: true,
+      isStartingCountdown: false,
     };
 
     return game;
@@ -308,28 +309,48 @@ Rune.initLogic({
       // if all players are ready, begin countdown
       if ((Object.values(game.players).every((player) => player.ready))) {
         if (game.phase === "lobby") {
-          // TODO: actually, trigger a countdown instead
-
-          // once the players are taken to the playing phase
-          // start the countdown from when we moved over
+          // trigger a countdown to send players to the next screen
+          game.timeLeft = 3000;
           game.lastCountdown = Rune.gameTime();
-          // send the players to the "playing" phase
-          game.phase = "playing";
+          game.isStartingCountdown = true;
         }
       } else {
-        // TODO: stop the countdown
+        game.isStartingCountdown = false;
       }
     }
   },
   update: ({ game }) => {
-    // check if the time is gone
-    if (game.phase === "playing" && game.timeLeft < 0) {
-      // set the phase to be loss
-      game.phase = "loss";
-      game.timeLeft = 0;
-      Rune.gameOver(); // TODO: implement this later
-    } else {
-      if (game.phase === "playing") {
+    // if the players are currently playing
+    if (game.phase === "playing") {
+      if (game.timeLeft < 0) {
+        // game over for players
+        // set the phase to be loss
+        game.phase = "loss";
+        game.timeLeft = 0;
+        Rune.gameOver(); // TODO: implement this later
+      } else {
+        // count down
+        const timeDiff = Rune.gameTime() - game.lastCountdown;
+        // if we counting down, count down every second
+        if (timeDiff >= 1) {
+          // decrement the time left seen by the players by 1 millisecond
+          game.timeLeft = game.timeLeft - timeDiff;
+          // save the last time the countdown ran in the game state
+          game.lastCountdown = Rune.gameTime();
+        }
+      }
+    } else if (game.phase === "lobby") {
+      if (game.timeLeft < 0) {
+        // bring players to the playing screen
+        // start the real game countdown from when we moved over
+        game.lastCountdown = Rune.gameTime();
+        // send the players to the "playing" screen
+        game.phase = "playing";
+        // start the timer for the playing game
+        game.timeLeft = StartTimeLeftMilliseconds;
+      } else if (game.isStartingCountdown && (Object.values(game.players).every((player) => player.ready))) {
+        // if all players are ready, start counting down
+        // count down
         const timeDiff = Rune.gameTime() - game.lastCountdown;
         // if we counting down, count down every second
         if (timeDiff >= 1) {
