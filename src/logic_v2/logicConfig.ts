@@ -25,6 +25,13 @@ export const FlatTimePenaltySeconds = 5;
  */
 export const StreakFeedbackFrequency = 3;
 
+/**
+ * building something gives you 1 score per ingredient (PlacableIngredient). Multiply this amount for bigger numbers
+ * ex: a basic_cake is worth 4 since it's made of [(eggs, flour), (butter, sugar)], or 4 atomic ingredients (PlacableIngredient)
+ * we can multiply this amount by this score multiplier
+ */
+export const ScoreMultiplier = 1;
+
 
 // ----------- Don't touch these ------------
 
