@@ -106,6 +106,7 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
 
                     {/* <div>{layers}</div> */}
 
+                    {/* <div className={`score-contain${game.feedback === "success" ? ' success success-score' : ''}`} > */}
                     <div className="score-contain">
                         <img src={CakeReg} alt="" />
                         <h2>{game.score}</h2>
