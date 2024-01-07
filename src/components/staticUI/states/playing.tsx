@@ -14,7 +14,7 @@ import { Player } from "rune-games-sdk";
  * the props to this UI are: the game state, the ingredient currently selected (passed in from the parent which remembers the state), and a useState function to change this selected ingredient
  * it works identically as if we had the useState in this file.
  */
-export default function PlayingUI({ game, selectedIngredient, setSelectedIngredient, player }: { game: GameState, selectedIngredient: PlacableIngredient[], setSelectedIngredient: React.Dispatch<React.SetStateAction<PlacableIngredient[]>>, player: Player }) {
+export default function PlayingUI({ game, selectedIngredient, setSelectedIngredient, player, dropIngredient }: { game: GameState, selectedIngredient: PlacableIngredient[], setSelectedIngredient: React.Dispatch<React.SetStateAction<PlacableIngredient[]>>, player: Player, dropIngredient: Function }) {
 
     /**
      * this state is true if the player has placed
@@ -41,6 +41,9 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
                 ingredient,
             )}`,
         );
+
+        // actually drop the ingredient
+        dropIngredient(ingredient);
     };
 
     let feedback;
@@ -157,9 +160,9 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
                                     key={index}
                                     icon={ingredientIcon}
                                     onClick={() => handleInventoryClick(ingredient)}
-                                    className={
-                                        selectedIngredient.includes(ingredient) ? "selected" : ""
-                                    }
+                                // className={
+                                //     selectedIngredient.includes(ingredient) ? "selected" : ""
+                                // }
                                 />
                             )
                         }

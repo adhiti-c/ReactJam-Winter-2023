@@ -40,15 +40,16 @@ export default function Game({ game, player, players }: { game: GameState, playe
 
     const [cakeYPositions, setCakeYPositions] = useState<number[]>([]);
 
-    const handleDrop = () => {
-        if (selectedIngredient.length === 0) {
+    const handleDrop = (ingredient?: PlacableIngredient) => {
+        if (ingredient === undefined && selectedIngredient.length === 0) {
             // nothing is selected
             return;
         } else {
             // wait until any blocks falling have stopped
             if (!blockInMotion) {
+                const toDrop = ingredient ?? selectedIngredient[0];
                 // push the action to rune
-                Rune.actions.placeIngredient({ ingredient: selectedIngredient[0] });
+                Rune.actions.placeIngredient({ ingredient: toDrop });
                 // console.log(cakes)
                 // const cakeCount = cakes.length
                 // setCakes([...cakes, <Cake position={new Vector3(0, 1 + cakes.length * 0.5, 0)} texture={"eggs"} key={cakeCount} />]);
@@ -166,7 +167,7 @@ export default function Game({ game, player, players }: { game: GameState, playe
             gameTimerHTML = <TutorialUI />;
             break;
         case "playing":
-            gameTimerHTML = <PlayingUI game={game} selectedIngredient={selectedIngredient} setSelectedIngredient={setSelectedIngredient} player={player} />
+            gameTimerHTML = <PlayingUI game={game} selectedIngredient={selectedIngredient} setSelectedIngredient={setSelectedIngredient} player={player} dropIngredient={handleDrop} />
             break;
         case "loss":
             // gameTimerHTML =
@@ -180,8 +181,9 @@ export default function Game({ game, player, players }: { game: GameState, playe
         <>
             {gameTimerHTML}
             <Canvas
-                // camera={{ position: [1, 0, 1] }}
-                onClick={handleDrop}>
+            // camera={{ position: [1, 0, 1] }}
+            // onClick={handleDrop}
+            >
                 <Camera yPos={cakeYPositions.at(-1)} />
                 <Suspense>
                     <Physics gravity={[0, -15, 0]}
