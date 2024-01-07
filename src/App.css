@@ -1,4 +1,3 @@
-
 :root {
   --pink: #ff8888;
   --pinkLight: #ffcfe0;
@@ -7,6 +6,7 @@
   --brownDark: #413434;
   --border: 4px solid #fff;
 }
+
 html,
 body {
   font-family: "Poppins", sans-serif;
@@ -22,12 +22,15 @@ body {
   position: absolute;
   top: 0;
 }
+
 img {
   margin: 0;
 }
+
 p {
   margin: 0;
 }
+
 h1 {
   font-size: 28px;
   /* -webkit-text-stroke-width: 2px;
@@ -38,12 +41,14 @@ h1 {
   font-weight: 800;
   text-shadow: -2px 0 #fff, 0 2px #fff, 2px 0 #fff, 0 -2px #fff;
 }
+
 /* next up, score count */
 h2 {
   font-size: 14px;
   color: #fff;
   margin: 0;
 }
+
 button {
   outline: none;
   border: none;
@@ -56,6 +61,7 @@ button {
   width: 100%;
   font-size: 24px;
 }
+
 .main-button {
   border-radius: 20px;
   padding: 12px;
@@ -66,17 +72,20 @@ button {
   gap: 4px;
   font-size: 24px;
 }
+
 .main-button:hover {
   background-color: #ff9d9d;
   cursor: pointer;
   box-shadow: 4px 4px 0px var(--pinkDark);
 }
+
 /* disabeled state for main menu button */
 .disable {
   background-color: #B2ABAB;
   border: 4px solid #938F8F;
   color: #ffffff6a;
 }
+
 /* main content */
 .top-section {
   display: flex;
@@ -89,6 +98,7 @@ button {
   z-index: 1000;
   width: calc(100vw - 24px);
 }
+
 /* .static-ui-contain {
   display: grid;
   place-content: center;
@@ -111,6 +121,7 @@ button {
   z-index: 1000;
   width: calc(100vw - 24px);
 }
+
 .inventory-slot {
   background-color: rgba(218, 189, 194, 0.5);
   border-radius: 20px;
@@ -122,16 +133,20 @@ button {
   display: grid;
   margin: 0;
 }
+
 .inventory-slot img {
   max-width: 30px;
 }
+
 .inventory-slot:hover,
 .selected {
   cursor: pointer;
   border: var(--border);
   background-color: var(--pink);
 }
-.inventory-slot:hover img, .inventory-slot .selected:hover img {
+
+.inventory-slot:hover img,
+.inventory-slot .selected:hover img {
   transform: rotate(10deg);
 }
 
@@ -142,6 +157,7 @@ button {
   width: 100%;
   /* box-sizing: border-box; */
 }
+
 .nextup-contain {
   background-color: var(--pink);
   border-radius: 18px;
@@ -154,6 +170,7 @@ button {
   align-items: center;
   justify-items: center;
 }
+
 .nextup-contain img {
   max-width: 40px;
 }
@@ -172,31 +189,37 @@ button {
   height: 20px;
   width: 50px;
   align-items: center;
-  justify-items:center;
+  justify-items: center;
 }
+
 .score-contain img {
   max-width: 22px;
 }
+
 .score-contain h2 {
   font-size: 20px;
 }
+
 /* chng score state to success when success is triggered */
 .score-success {
   background-color: var(--gold);
 }
+
 /* recipe items */
 .recipe-section {
   display: flex;
   width: 100%;
   justify-content: flex-end;
 }
+
 .recipe-contain {
   display: grid;
- grid-template-columns: auto;
- /* max-width: 50px; */
- align-items: flex-end;
- justify-items: end;
+  grid-template-columns: auto;
+  /* max-width: 50px; */
+  align-items: flex-end;
+  justify-items: end;
 }
+
 .recipe-item {
   background-color: var(--pink);
   border: var(--border);
@@ -209,13 +232,16 @@ button {
   place-content: center;
   position: relative;
 }
+
 /* disabeled recipe item (ie not achevied yet) */
 .disabled-recipe-item {
   opacity: .5;
 }
+
 .recipe-item img {
   max-width: 30px;
 }
+
 .check-contain {
   padding: 4px;
   border-radius: 100px;
@@ -225,11 +251,13 @@ button {
   color: var(--pink);
   position: absolute;
   margin-left: 30px;
-  margin-top:38px;
+  margin-top: 38px;
 }
+
 .check-contain i {
   width: 10px;
 }
+
 /* .final-recipe-item {
   border: var(--border);
   padding: 0;
@@ -248,22 +276,26 @@ button {
   gap: 4px;
   align-items: center;
 }
-.recipe-contain-step img{
+
+.recipe-contain-step img {
   max-height: 30px;
-  
+
 }
+
 /* lines between recipe items in the recipe container */
 .line-contain {
   display: flex;
   justify-content: space-between;
   gap: 4px;
-  
+
 }
+
 .line {
   border-left: 6px solid #fff;
-height: 10px;
-margin-right: 27px;
+  height: 10px;
+  margin-right: 27px;
 }
+
 /** lobby */
 .lobby-contain {
   height: 100%;
@@ -277,8 +309,9 @@ margin-right: 27px;
   justify-content: flex-start;
   flex-direction: column;
   padding: 14px 12px 0 12px;
-  
+
 }
+
 .lobby-content {
   gap: 32px;
   display: flex;
@@ -286,13 +319,17 @@ margin-right: 27px;
   padding: auto 22px;
   align-items: center;
 }
+
 .lobby-contain img {
   max-width: 100px;
 }
+
 /** loader when the other player is not ready */
-.waiting-text-contain h2{
+.waiting-text-contain h2 {
   text-align: center;
+  height: 1rem;
 }
+
 /**  store players */
 .players-contain {
   display: flex;
@@ -303,21 +340,24 @@ margin-right: 27px;
   border: 6px solid var(--pink);
   border-radius: 36px;
 }
+
 .player-item {
   background-color: var(--pink);
   color: #fff;
-display: flex;
-flex-direction: row;
-gap: 8px;
-justify-content: flex-start;
-align-items: center;
-border-radius: 20px;
-padding: 12px 16px;
-max-width: 400px;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  justify-content: flex-start;
+  align-items: center;
+  border-radius: 20px;
+  padding: 12px 16px;
+  max-width: 400px;
 }
+
 .player-item p {
   font-size: 14px;
 }
+
 /** checkmark to indicate "ready" button clicked */
 .checkmark {
   border-radius: 100px;
@@ -326,6 +366,7 @@ max-width: 400px;
   display: grid;
   place-content: center;
 }
+
 .player-item .right-contain {
   display: flex;
   flex-direction: column;
@@ -333,9 +374,11 @@ max-width: 400px;
   align-items: flex-start;
   width: 100%;
 }
+
 .player-item h2 {
   font-size: 18px;
 }
+
 .user-type-contain {
   display: flex;
   flex-direction: row;
@@ -343,22 +386,26 @@ max-width: 400px;
   align-items: center;
   justify-content: flex-start;
 }
+
 .player-item .user-type-contain img {
   width: 20px;
   height: 20px;
   border: none;
 }
+
 .player-item img {
   width: 50px;
   height: 50px;
   border: 2px solid #fff;
   border-radius: 100px;
 }
+
 /** current player */
-.current-player{
+.current-player {
   background-color: var(--pink);
   color: #fff;
 }
+
 /* current player checkmark is displayed when the user presses "im ready" */
 .current-player .checkmark {
   background-color: #fff;
@@ -370,16 +417,19 @@ max-width: 400px;
   background-color: #fff;
   color: var(--pink);
 }
+
 /* checkmark for the new player is displayed only when the other player is ready*/
 .new-player .checkmark {
   display: block;
   background-color: var(--pink);
   color: #fff;
 }
+
 /* other player is not ready yet */
 .new-player-not-ready {
   opacity: .5;
 }
+
 /* add player (ie "1 more player" in the mockup)*/
 .play-item-empty {
   border: 4px dashed rgba(178, 171, 171, 0.50);
@@ -387,13 +437,15 @@ max-width: 400px;
   background-color: #fff;
   height: 50px;
 }
+
 .play-item-empty p {
   color: #B2ABAB;
 }
+
 .add-contain {
   background-color: #B2ABAB;
   color: #fff;
-  width:25px;
+  width: 25px;
   height: 25px;
   display: grid;
   place-content: center;
@@ -409,22 +461,25 @@ max-width: 400px;
   display: grid;
   place-content: center;
   background-color: none;
-font-size: 30px;
-pointer-events: none;
-position: absolute;
-z-index: 1000;
-/* forwards = animation stays in the state of the last animation instead of returning to the start */
-animation: Pop 1.5s forwards;
+  font-size: 30px;
+  pointer-events: none;
+  position: absolute;
+  z-index: 1000;
+  /* forwards = animation stays in the state of the last animation instead of returning to the start */
+  animation: Pop 1.5s forwards;
 }
+
 .success {
   color: var(--gold);
   text-shadow: -2px 0 #fff, 0 2px #fff, 2px 0 #fff, 0 -2px #fff;
 }
+
 .failure {
   color: #FF4040;
   text-shadow: -2px 0 #fff, 0 2px #fff, 2px 0 #fff, 0 -2px #fff;
   font-size: 24px;
 }
+
 .encourage {
   color: var(--pink);
   text-shadow: -2px 0 #fff, 0 2px #fff, 2px 0 #fff, 0 -2px #fff;
@@ -437,16 +492,19 @@ animation: Pop 1.5s forwards;
     transform: scale(0);
     opacity: 0;
   }
+
   30% {
     /* fade in */
     transform: scale(1.2);
     opacity: 1;
   }
+
   80% {
     /* fade in */
     transform: scale(1.2);
     opacity: 1;
   }
+
   100% {
     transform: scale(1);
     opacity: 0;
@@ -465,6 +523,7 @@ animation: Pop 1.5s forwards;
   justify-content: center;
   font-size: 18px;
 }
+
 .icon-contain {
   background-color: #fff;
   color: var(--pink);
@@ -476,6 +535,7 @@ animation: Pop 1.5s forwards;
   width: 20px;
   /* border: 3px solid #fff; */
 }
+
 /* button .tutorial-button .icon-contain  {
   font-size: 5px;
 } */
@@ -498,23 +558,26 @@ animation: Pop 1.5s forwards;
   left: 0;
   padding-top: 12px;
 }
+
 .tutorial-inner-contain {
   display: flex;
   gap: 16px;
   align-items: center;
   flex-direction: column;
-  
+
 }
+
 .tutorial-page-contain {
   border: 6px solid var(--pink);
   background-color: #fff;
   border-radius: 36px;
-width: 70vw;
+  width: 70vw;
   padding: 22px;
   gap: 20px;
   display: flex;
   flex-direction: column;
 }
+
 /* general tutorial pages */
 .top-contain {
   display: flex;
@@ -523,6 +586,7 @@ width: 70vw;
   align-items: center;
   justify-content: flex-start;
 }
+
 .number-contain {
   background-color: var(--pink);
   border-radius: 100px;
@@ -537,22 +601,25 @@ width: 70vw;
   padding: 4px;
 }
 
-.tutorial-page-contain img{
-  max-width:80vw;
+.tutorial-page-contain img {
+  max-width: 80vw;
   width: 100%;
   max-height: 70vw;
 }
+
 .tutorial-page-contain h1 {
   font-size: 20px;
   text-align: center;
   white-space: nowrap;
 }
+
 .tutorial-page-contain h2 {
   font-size: 18px;
-  color:#938F8F;
+  color: #938F8F;
 }
+
 .tutorial-page-contain h2 span {
-  color:#555555;
+  color: #555555;
 }
 
 /* first and last pages */
@@ -560,8 +627,9 @@ width: 70vw;
   display: flex;
   flex-direction: row;
   gap: 8px;
-  
+
 }
+
 .top-content-contain img {
   width: 30px;
 }
@@ -573,13 +641,16 @@ width: 70vw;
   margin: 0;
   text-align: center;
 }
+
 .last h2 {
   text-align: center;
 }
+
 /* when tutorial is closed */
 .close-tutorial {
   display: none;
 }
+
 /* button to exit tutorial */
 .exit-tutorial-button {
   background-color: #B2ABAB;
@@ -593,11 +664,13 @@ width: 70vw;
   font-size: 20px;
 
 }
+
 .exit-tutorial-button:hover {
   background-color: #c8c2c2;
   cursor: pointer;
   box-shadow: 4px 4px 0px #938F8F;
 }
+
 .exit-button-contain {
   width: 85vw;
   padding: 30px 0;
@@ -605,6 +678,7 @@ width: 70vw;
   align-items: center;
   justify-content: center;
 }
+
 .buttons-contain {
   display: flex;
   flex-direction: row;
@@ -612,6 +686,7 @@ width: 70vw;
   align-items: center;
   width: fit-content;
 }
+
 .back-button {
   height: 40px;
   width: 40px;
@@ -623,6 +698,7 @@ width: 70vw;
   border: 4px solid #938F8F;
   color: #fff;
 }
+
 .forward-button {
   height: 40px;
   width: 40px;

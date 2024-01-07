@@ -2,7 +2,7 @@ import React from 'react'
 import { PlayerIndexToCharacterIcon, playerAssets } from '../logic_v2/assetMap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
-function PlayerItem({ profile, username, playerIndex }: { profile: string, username: string, playerIndex?: number }) {
+function PlayerItem({ profile, username, playerIndex, isReady }: { profile: string, username: string, playerIndex?: number, isReady: boolean }) {
   let playerIndexAssets: playerAssets | undefined;
   let playerLobbyIcon: string | undefined;
   let playerCharacterName: string | undefined;
@@ -30,7 +30,9 @@ function PlayerItem({ profile, username, playerIndex }: { profile: string, usern
       </div>
       <div>
         <div className="checkmark">
-            <FontAwesomeIcon icon={faCheck}/>
+          {
+            isReady ? <FontAwesomeIcon icon={faCheck} /> : null
+          }
         </div>
       </div>
 

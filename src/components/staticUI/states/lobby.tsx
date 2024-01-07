@@ -30,69 +30,85 @@ const Lobby = ({ game, isPlaying, setPlaying, play, players, playerId }: { game:
   const handleTutorialHover = () => {
     playClickSound();
   }
-//   removes the visibility class inside of tutorial component
-const RemoveTutorialClass = () => {
+  //   removes the visibility class inside of tutorial component
+  const RemoveTutorialClass = () => {
     const tutorialUIElements = document.querySelectorAll('.tutorial-contain')
     tutorialUIElements.forEach((element) => {
-        element.classList.remove('close-tutorial');
-      });
-}
+      element.classList.remove('close-tutorial');
+    });
+  }
+
+  const clientIsReady = game.players[playerId].ready;
 
   // figure out how many players are missing
   const missingNumPlayers = 2 - Object.keys(players).length;
-//TODO: Trigger "waiting for player" in h2 tag, otherwise display none
+  //TODO: Trigger "waiting for player" in h2 tag, otherwise display none
   return (
     <div className='lobby-contain'>
       <div className="lobby-content">
         <img src={Logo} />
         {/* contain waiting for players */}
-        <div style={{alignContent:'center', display: 'flex', gap: '12px', flexDirection: 'column'}}>
-        <div className='waiting-text-contain'>
-<h2>waiting for the other player...</h2>
-        </div>
-        
-        {/* players ready up */}
-        <div className="players-contain">
-            
-          {Object.entries(players).map(([playerId, player]) => {
-            // grab their profile information
-            const profileUrl = player.avatarUrl;
-            const name = player.displayName
-            // check if they have a number index in the game state
-            let playerIndex: number | undefined;
-            if (game.players[playerId]) {
-              playerIndex = game.players[playerId].number;
+        <div style={{ alignContent: 'center', display: 'flex', gap: '12px', flexDirection: 'column' }}>
+          <div className='waiting-text-contain'>
+            <h2>
+              {
+                clientIsReady ?
+                  "waiting for the other player..."
+                  : null
+              }
+            </h2>
+          </div>
+          {/* players ready up */}
+          <div className="players-contain">
+            {Object.entries(players).map(([playerId, player]) => {
+              // grab their profile information
+              const profileUrl = player.avatarUrl;
+              const name = player.displayName
+              // check if they have a number index in the game state
+              let playerIndex: number | undefined;
+              let isReady = false;
+              const playerGameState = game.players[playerId]
+              if (playerGameState) {
+                playerIndex = playerGameState.number;
+                isReady = playerGameState.ready;
+              }
+              return (
+                <PlayerItem
+                  profile={profileUrl}
+                  username={name}
+                  playerIndex={playerIndex}
+                  isReady={isReady}
+                  key={name}
+                />
+              )
+            })}
+            {/* show empty player items if there aren't enough players */}
+            {
+              Array.from(Array(missingNumPlayers).keys()).map((_, index) =>
+                <PlayerItemEmpty key={`empty-player-slot-${index}`} />
+              )
             }
-            return (
-              <PlayerItem
-                profile={profileUrl}
-                username={name}
-                playerIndex={playerIndex}
-                key={name}
-              />
-            )
-          })}
-          {/* show empty player items if there aren't enough players */}
-          {
-            Array.from(Array(missingNumPlayers).keys()).map((_, index) =>
-              <PlayerItemEmpty key={`empty-player-slot-${index}`} />
-            )
-          }
-        </div>
+          </div>
         </div>
         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '14px' }}>
 
 
-          <Music isPlaying={isPlaying} setPlaying={setPlaying} play={play} enableReady={ready} playerIsReady={game.players[playerId].ready}
+          <Music isPlaying={isPlaying} setPlaying={setPlaying} play={play} enableReady={ready} playerIsReady={clientIsReady}
           />
           {/* how to play tutorial */}
-          <button className='tutorial-button' onClick={handleTutorialClick} onMouseEnter={handleTutorialHover}>
-            <div className="icon-contain">
-              <FontAwesomeIcon icon={faQuestion} />
-            </div>
-            How to play
-          </button>
-          {showTutorial && <TutorialIUI RemoveTutorialClass = {RemoveTutorialClass}/>}
+          {
+            clientIsReady ? null :
+              <>
+                <button className='tutorial-button' onClick={handleTutorialClick} onMouseEnter={handleTutorialHover}>
+                  <div className="icon-contain">
+                    <FontAwesomeIcon icon={faQuestion} />
+                  </div>
+                  How to play
+                </button>
+                {showTutorial && <TutorialIUI />}
+              </>
+          }
+
         </div>
       </div>
     </div>
