@@ -2,7 +2,7 @@ import React from 'react'
 import { PlayerIndexToCharacterIcon, playerAssets } from '../logic_v2/assetMap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
-function PlayerItem({ profile, username, playerIndex, isReady }: { profile: string, username: string, playerIndex?: number, isReady: boolean }) {
+function PlayerItem({ profile, username, playerIndex, isReady, isClient }: { profile: string, username: string, playerIndex?: number, isReady: boolean, isClient: boolean }) {
   let playerIndexAssets: playerAssets | undefined;
   let playerLobbyIcon: string | undefined;
   let playerCharacterName: string | undefined;
@@ -15,8 +15,8 @@ function PlayerItem({ profile, username, playerIndex, isReady }: { profile: stri
     }
   }
   return (
-    <div className='player-item'>
-      <img src={profile} alt="" />
+    <div className={`player-item ${!isClient ? 'new-player' : null}`}>
+      <img src={profile} alt="Player Profile Picture" />
       <div className="right-contain">
         <h2>{username}</h2>
         {
@@ -29,11 +29,12 @@ function PlayerItem({ profile, username, playerIndex, isReady }: { profile: stri
         }
       </div>
       <div>
-        <div className="checkmark">
-          {
-            isReady ? <FontAwesomeIcon icon={faCheck} /> : null
-          }
-        </div>
+        {isReady ?
+          <div className={`checkmark`}>
+            <FontAwesomeIcon icon={faCheck} />
+          </div>
+          : null
+        }
       </div>
 
     </div>

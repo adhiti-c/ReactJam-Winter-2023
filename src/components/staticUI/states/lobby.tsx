@@ -62,24 +62,26 @@ const Lobby = ({ game, isPlaying, setPlaying, play, players, playerId }: { game:
           </div>
           {/* players ready up */}
           <div className="players-contain">
-            {Object.entries(players).map(([playerId, player]) => {
+            {Object.entries(players).map(([playerIdEntry, player]) => {
               // grab their profile information
               const profileUrl = player.avatarUrl;
               const name = player.displayName
               // check if they have a number index in the game state
               let playerIndex: number | undefined;
               let isReady = false;
-              const playerGameState = game.players[playerId]
+              const playerGameState = game.players[playerIdEntry]
               if (playerGameState) {
                 playerIndex = playerGameState.number;
                 isReady = playerGameState.ready;
               }
+              const isClient = playerId === playerIdEntry
               return (
                 <PlayerItem
                   profile={profileUrl}
                   username={name}
                   playerIndex={playerIndex}
                   isReady={isReady}
+                  isClient={isClient}
                   key={name}
                 />
               )
