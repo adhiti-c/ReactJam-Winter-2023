@@ -149,6 +149,16 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
 
             {feedback}
 
+            {
+                hasPlaced ?
+                    <span>
+                        Waiting for other players...
+                    </span> :
+                    <span>
+                        Tap on the icon to place!
+                    </span>
+            }
+
             <div className="inventory-contain">
                 {/* maps each ingredient to an inventoryslot */}
                 {game.players[player.playerId].inventory.map((ingredient, index) => {
