@@ -325,8 +325,6 @@ Rune.initLogic({
     // check if the time is gone
     if (game.timeLeft < 0) {
       // set the phase to be loss
-      console.log("dead")
-
       game.phase = "loss";
       game.timeLeft = 0;
       Rune.gameOver(); // TODO: implement this later
@@ -335,7 +333,6 @@ Rune.initLogic({
         const timeDiff = Rune.gameTime() - game.lastCountdown;
         // if we counting down, count down every second
         if (timeDiff >= 1) {
-          console.log("down")
           // decrement the time left seen by the players by 1 millisecond
           game.timeLeft = game.timeLeft - timeDiff;
           // save the last time the countdown ran in the game state
