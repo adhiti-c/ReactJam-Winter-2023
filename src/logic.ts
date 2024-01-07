@@ -2,7 +2,7 @@ import { PlayerId } from "rune-games-sdk";
 import { CakeLayerType, GoalType, Goals, PlacableIngredient, RecipeBook, isFlavor } from "./logic_v2/cakeTypes";
 import { StartTimeLeftMilliseconds, HintRepeatCount, FlatTimeIncreaseOnComboMilliseconds, FlatTimePenaltyMilliseconds, StreakFeedbackFrequency } from "./logic_v2/logicConfig";
 import { Player, GameState } from "./logic_v2/types";
-import { compareArraysAsSets, compareArraysInOrder, chooseRandomIndexOfArray, removeFromArray, checkProgress, matchRecipe, combineLayer, giveAllPlayersRandomly, getFlavorsInGoal, isInAnyInventory } from "./logic_v2/util";
+import { compareArraysAsSets, compareArraysInOrder, chooseRandomIndexOfArray, removeFromArray, checkProgress, matchRecipe, combineLayer, giveAllPlayersRandomly, getFlavorsInGoal, isInAnyInventory, countAtomicIngredients } from "./logic_v2/util";
 
 /*
 random thoughts:
@@ -121,7 +121,8 @@ Rune.initLogic({
         updatedGame.cake.push(updatedGame.goals.current);
 
         // increment the score
-        updatedGame.score = updatedGame.score + 1;
+        // calculate the score by doing a recursive counting of atomic elements search of the current goal
+        updatedGame.score = updatedGame.score + countAtomicIngredients(currentGoal);
 
         // reward by adding time
         updatedGame.timeLeft = updatedGame.timeLeft + FlatTimeIncreaseOnComboMilliseconds;
@@ -274,8 +275,17 @@ Rune.initLogic({
           // no penalty
           penalty = false;
 
-          // only encourage if something was combined
           if (combined) {
+            // figure out what was combined
+            // assume it's the newest thing?
+            const newest = newLayerCombined.at(-1);
+            // TODO: if you do multiple combinations, you don't get points
+            // award points
+            if (newest) {
+              updatedGame.score = updatedGame.score + countAtomicIngredients(newest);
+            }
+
+            // give feedback
             updatedGame.feedback = "encourage";
           }
 

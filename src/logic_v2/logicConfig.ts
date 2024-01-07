@@ -8,7 +8,7 @@ export const StartTimeSeconds = 120;
 /**
  * how many times the players must build the current hint before it leaves
  */
-export const HintRepeatCount = 3;
+export const HintRepeatCount = 1;
 
 /**
  * amount of time to increase in seconds upon a successful combo
