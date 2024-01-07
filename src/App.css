@@ -199,11 +199,12 @@ button {
 .score-contain h2 {
   font-size: 20px;
 }
-
-/* chng score state to success when success is triggered */
-.score-success {
+/** score when cake added */
+.success-score {
   background-color: var(--gold);
+  border: 2px solid #FFC061;
 }
+
 
 /* recipe items */
 .recipe-section {
