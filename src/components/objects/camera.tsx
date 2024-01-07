@@ -4,7 +4,7 @@ import { useThree, useFrame } from "@react-three/fiber";
 import { Vector3 } from "three";
 
 export function calculateCurrentCameraY(yPos: number): number {
-  const yPosDivisionFactor = 1.5; // use this for general gameplay
+  const yPosDivisionFactor = 3; // use this for general gameplay
   // const yPosDivisionFactor = 5; // use this to confirm cake asset positioning
   return -1 * yPos / yPosDivisionFactor
 }
