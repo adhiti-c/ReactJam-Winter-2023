@@ -323,7 +323,7 @@ Rune.initLogic({
   },
   update: ({ game }) => {
     // check if the time is gone
-    if (game.timeLeft < 0) {
+    if (game.phase === "playing" && game.timeLeft < 0) {
       // set the phase to be loss
       game.phase = "loss";
       game.timeLeft = 0;
