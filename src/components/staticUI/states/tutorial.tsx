@@ -36,6 +36,7 @@ export default function TutorialIUI() {
 
     const handleClose = () => {
         setIsVisible(false);
+        setCurrentPage(1);
         playClickSound();
         const TutorialContain = document.querySelector('.tutorial-contain')
         if (TutorialContain) {
