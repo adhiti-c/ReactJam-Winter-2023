@@ -20,6 +20,11 @@ export const FlatTimeIncreaseOnComboSeconds = 5;
  */
 export const FlatTimePenaltySeconds = 5;
 
+/**
+ * show the streak feedback every x successes
+ */
+export const StreakFeedbackFrequency = 3;
+
 
 // ----------- Don't touch these ------------
 

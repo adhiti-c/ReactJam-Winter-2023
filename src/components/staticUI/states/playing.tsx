@@ -46,6 +46,7 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
     let feedback;
     // trigger audio sfx for success
     useEffect(() => {
+        // keep all these sound stuff in the same useEffect for the feedback
         switch (game.feedback) {
             case "success":
                 playSuccessSound();
@@ -54,7 +55,6 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
                 // trigger audio for failure
                 playFailureSound();
                 break;
-
         }
     }, [game.feedback])
     const playSuccessSound = () => {
@@ -98,6 +98,12 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
             feedback =
                 <div className="feedback encourage">
                     Keep Going!
+                </div>
+            break;
+        case "streak":
+            feedback =
+                <div className="feedback encourage">
+                    You're on a {`${game.streak}`} streak!
                 </div>
             break;
     }

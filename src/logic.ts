@@ -1,6 +1,6 @@
 import { PlayerId } from "rune-games-sdk";
 import { CakeLayerType, GoalType, Goals, PlacableIngredient, RecipeBook, isFlavor } from "./logic_v2/cakeTypes";
-import { StartTimeLeftMilliseconds, HintRepeatCount, FlatTimeIncreaseOnComboMilliseconds, FlatTimePenaltyMilliseconds } from "./logic_v2/logicConfig";
+import { StartTimeLeftMilliseconds, HintRepeatCount, FlatTimeIncreaseOnComboMilliseconds, FlatTimePenaltyMilliseconds, StreakFeedbackFrequency } from "./logic_v2/logicConfig";
 import { Player, GameState } from "./logic_v2/types";
 import { compareArraysAsSets, compareArraysInOrder, chooseRandomIndexOfArray, removeFromArray, checkProgress, matchRecipe, combineLayer, giveAllPlayersRandomly, getFlavorsInGoal, isInAnyInventory } from "./logic_v2/util";
 
@@ -66,6 +66,7 @@ Rune.initLogic({
       },
       ready: true,
       isStartingCountdown: false,
+      streak: 0,
     };
 
     return game;
@@ -127,6 +128,14 @@ Rune.initLogic({
 
         // set feedback to be success
         updatedGame.feedback = "success";
+
+        // add one to the streak
+        updatedGame.streak = updatedGame.streak + 1;
+
+        // see if we want the streak feedback
+        if (updatedGame.streak % StreakFeedbackFrequency === 0) {
+          updatedGame.feedback = "streak";
+        }
 
         // reset the current layer
         updatedGame.newLayer = [];
