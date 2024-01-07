@@ -12,7 +12,7 @@ import {
  */
 export type GamePhase = "lobby" | "tutorial" | "playing" | "loss";
 
-export type Feedback = "waiting" | "success" | "failure" | "encourage";
+export type Feedback = "waiting" | "success" | "failure" | "encourage" | "streak";
 
 export interface Player {
   id: PlayerId;
@@ -110,6 +110,11 @@ export interface GameState {
    * a thing for the lobby phase, whether to start the countdown or not
    */
   isStartingCountdown: boolean;
+
+  /**
+   * number of successes in a row
+   */
+  streak: number;
 }
 
 type GameActions = {

@@ -97,7 +97,11 @@ export const AllInventory = [...Ingredients, ...Flavors];
  */
 export type PlacableIngredient = IngredientType | FlavorType
 
-// PlacableIngredient type guard
+/**
+ * PlacableIngredient type guard
+ * @param value thing to check
+ * @returns is it PlacableIngredient
+ */
 export function isPlacableIngredient(value: any): value is PlacableIngredient {
     return AllInventory.includes(value);
 }
@@ -106,6 +110,15 @@ export function isPlacableIngredient(value: any): value is PlacableIngredient {
  * These are non-atomic cake layers that make up PlacableIngredient or other non-atomic cake layers
  */
 export type GoalType = typeof Goals[number];
+
+/**
+ * GoalType typeguard. Also useful for checking if this is in the recipe book.
+ * @param value thing to check
+ * @returns is this a GoalType
+ */
+export function isGoalType(value: any): value is GoalType {
+    return Goals.includes(value);
+}
 
 /**
  * What can be rendered in the cake layers in the game. May be an inventory ingredient or a finished cake

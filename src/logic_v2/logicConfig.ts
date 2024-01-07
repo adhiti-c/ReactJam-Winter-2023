@@ -8,7 +8,7 @@ export const StartTimeSeconds = 120;
 /**
  * how many times the players must build the current hint before it leaves
  */
-export const HintRepeatCount = 3;
+export const HintRepeatCount = 1;
 
 /**
  * amount of time to increase in seconds upon a successful combo
@@ -19,6 +19,11 @@ export const FlatTimeIncreaseOnComboSeconds = 5;
  * number of seconds to decrease when the players place a wrong ingredient
  */
 export const FlatTimePenaltySeconds = 5;
+
+/**
+ * show the streak feedback every x successes
+ */
+export const StreakFeedbackFrequency = 3;
 
 
 // ----------- Don't touch these ------------

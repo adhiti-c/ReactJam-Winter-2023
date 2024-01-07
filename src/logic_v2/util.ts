@@ -1,4 +1,4 @@
-import { CakeLayerType, FlavorType, GoalType, PlacableIngredient, Recipe, RecipeBook, RecipeComponent, isFlavor } from "./cakeTypes";
+import { CakeLayerType, FlavorType, GoalType, PlacableIngredient, Recipe, RecipeBook, RecipeComponent, isFlavor, isPlacableIngredient } from "./cakeTypes";
 import { Player } from "./types";
 
 /**
@@ -253,4 +253,23 @@ export function isInAnyInventory(ingredient: PlacableIngredient, players: Record
         }
     }
     return false;
+}
+
+export function countAtomicIngredients(goal: GoalType | PlacableIngredient): number {
+    let points = 0;
+    if (isPlacableIngredient(goal)) {
+        return 0;
+    }
+    let recipe = RecipeBook[goal].recipe;
+
+    for (const component of recipe) {
+        // if it's an ingredient, add 1 point
+        if (isPlacableIngredient(component)) {
+            points++;
+        } else {
+            // else dive into it
+            points += countAtomicIngredients(component);
+        }
+    }
+    return points;
 }
