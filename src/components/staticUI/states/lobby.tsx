@@ -14,8 +14,8 @@ import { faQuestion } from '@fortawesome/free-solid-svg-icons';
 import useSound from "use-sound";
 import clickSound from '../../../assets/clickSound.wav'
 import TutorialIUI from './tutorial'
-import { Players } from 'rune-games-sdk'
-const Lobby = ({ game, isPlaying, setPlaying, play, players }: { game: GameState, isPlaying: boolean, setPlaying: React.Dispatch<React.SetStateAction<boolean>>, play: Function, players: Players }) => {
+import { PlayerId, Players } from 'rune-games-sdk'
+const Lobby = ({ game, isPlaying, setPlaying, play, players, playerId }: { game: GameState, isPlaying: boolean, setPlaying: React.Dispatch<React.SetStateAction<boolean>>, play: Function, players: Players, playerId: PlayerId }) => {
 
   const [ready, setReady] = useState<boolean>(game.ready);
   const [showTutorial, setShowTutorial] = useState<boolean>(false);
@@ -82,7 +82,7 @@ const RemoveTutorialClass = () => {
         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '14px' }}>
 
 
-          <Music isPlaying={isPlaying} setPlaying={setPlaying} play={play} ready={ready}
+          <Music isPlaying={isPlaying} setPlaying={setPlaying} play={play} enableReady={ready} playerIsReady={game.players[playerId].ready}
           />
           {/* how to play tutorial */}
           <button className='tutorial-button' onClick={handleTutorialClick} onMouseEnter={handleTutorialHover}>

@@ -102,7 +102,7 @@ export interface GameState {
   };
 
   /**
-   * whether all the players are ready or not
+   * whether all the players are in or not
    */
   ready: boolean;
 }
@@ -112,6 +112,7 @@ type GameActions = {
   placeIngredient: (params: { ingredient: PlacableIngredient }) => void;
   setGamePhase: (params: { phase: GamePhase }) => void;
   combine: () => void;
+  toggleReady: () => void;
 };
 
 declare global {
