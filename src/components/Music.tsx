@@ -18,12 +18,16 @@ const Music = ({ isPlaying, setPlaying, play, enableReady, playerIsReady }: { is
 
         }
 
-        // set the current player's ready status as ready
-        Rune.actions.toggleReady();
+        if (enableReady) {
+            // set the current player's ready status as ready
+            Rune.actions.toggleReady();
+        }
     };
 
     const handleButtonHover = () => {
-        playClickSound();
+        if (enableReady) {
+            playClickSound();
+        }
     }
 
     //* start game
@@ -31,7 +35,7 @@ const Music = ({ isPlaying, setPlaying, play, enableReady, playerIsReady }: { is
     // note: "enableReady" shows whether the game has enough people to start
     // playerIsReady is true if the current player is ready to play
     return (
-        <button className={`main-button ${enableReady ? null : "disable"}`} onClick={handleButtonClick} onMouseEnter={handleButtonHover}>
+        <button className={`main-button ${enableReady && !playerIsReady ? null : "disable"}`} onClick={handleButtonClick} onMouseEnter={handleButtonHover}>
             {
                 playerIsReady ?
                     "Not Ready"
