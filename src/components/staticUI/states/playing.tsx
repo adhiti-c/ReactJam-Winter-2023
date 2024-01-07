@@ -9,6 +9,9 @@ import CakeReg from "../../../assets/icons/regularCake.svg";
 import SuccessSound from "../../../assets/successSound.wav";
 import FailureSound from "../../../assets/failureSound.wav";
 import { Player } from "rune-games-sdk";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { useSpring, animated } from '@react-spring/web'
 
 /**
  * the props to this UI are: the game state, the ingredient currently selected (passed in from the parent which remembers the state), and a useState function to change this selected ingredient
@@ -98,7 +101,15 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
     // $ allows you to embed operators in a string
     // minutes:if seconds under 10, add 0 seconds
     const formattedTimer = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`
-
+//* spring animations for text
+const props = useSpring({ total: game.score });
+// useEffect(() => {
+//     handleSpringAnimation()
+//   }, [game.score])
+//   const props = useSpring({ total: number })
+//   const handleSpringAnimation = () => {
+//     <animated.div>{props.total.to(x => x.toFixed(0))}</animated.div>
+//   }
     return (
         <>
             <div className="top-section">
@@ -106,16 +117,16 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
 
                     {/* <div>{layers}</div> */}
 
-                    {/* <div className={`score-contain${game.feedback === "success" ? ' success success-score' : ''}`} > */}
-                    <div className="score-contain">
-                        <img src={CakeReg} alt="" />
-                        <h2>{game.score}</h2>
-                    </div>
-                    <div className="timer-contain">
+                    
+                    <div className={`${game.feedback === "success" ? 'success-time' : ''}`}>
                         <h1>{formattedTimer}</h1>
                     </div>
-
-                    <NextUp layerName={game.goals.current} />
+                    <div className={`score-contain${game.feedback === "success" ? ' success-score' : ''}`} >
+                    {/* <div className="score-contain"> */}
+                        <FontAwesomeIcon icon={faStar}/>
+                        <h2><animated.h2>{props.total.to(x => x.toFixed(0))}</animated.h2></h2>
+                    </div>
+                    {/* <NextUp layerName={game.goals.current} /> */}
                     {/* show all the cake layers */}
                 </div>
                 <div className="recipe-section">

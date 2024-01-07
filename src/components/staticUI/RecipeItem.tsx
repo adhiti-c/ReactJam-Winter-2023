@@ -26,10 +26,10 @@ function RecipeItem({ img, ingredient, game }: { img: string, ingredient: CakeLa
   }, [game.newLayer])
   return (
     <>
-      {/* figure out who owns this item, if anyone */}
-      {/* rn this is in the success state */}
-      {owner !== null ? <img src={PlayerIndexToCharacterIcon[owner].gameIcon} /> : null}
+   
       <div className={`recipe-item ${!isPlaced ? "disabled-recipe-item" : null}`}>
+        
+      <div >
         <img src={img} />
         {
           isPlaced ?
@@ -40,6 +40,11 @@ function RecipeItem({ img, ingredient, game }: { img: string, ingredient: CakeLa
         }
 
       </div>
+      </div>
+         {/* figure out who owns this item, if anyone */}
+      {/* rn this is in the success state */}
+      {owner !== null ? <img src={PlayerIndexToCharacterIcon[owner].gameIcon} /> : null}
+      
     </>
   )
 }

@@ -31,7 +31,6 @@ function Recipe({ game }: Recipe) {
                 />
               </div>
               <div className="line-contain">
-                <div></div>
                 <div className="line"></div>
               </div>
             </Fragment>
@@ -39,7 +38,7 @@ function Recipe({ game }: Recipe) {
         })
       }
       <div className="recipe-contain-step">
-        <div></div>
+    
         <FinalRecipeItem
           img={LayerToAssetMap[goal].icon}
         />
