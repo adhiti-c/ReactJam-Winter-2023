@@ -15,6 +15,19 @@ import { Player } from "rune-games-sdk";
  * it works identically as if we had the useState in this file.
  */
 export default function PlayingUI({ game, selectedIngredient, setSelectedIngredient, player }: { game: GameState, selectedIngredient: PlacableIngredient[], setSelectedIngredient: React.Dispatch<React.SetStateAction<PlacableIngredient[]>>, player: Player }) {
+
+    /**
+     * this state is true if the player has placed
+     */
+    const [hasPlaced, setHasPlaced] = useState(false);
+
+    useEffect(() => {
+        const playerInState = game.players[player.playerId]
+        if (playerInState) {
+            setHasPlaced(playerInState.hasPlaced);
+        }
+    }, [game.players])
+
     const handleInventoryClick = (ingredient: PlacableIngredient) => {
         // if the list of ingredients includes the index
         const newSelectedIngredient = selectedIngredient.includes(ingredient)
@@ -33,8 +46,15 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
     let feedback;
     // trigger audio sfx for success
     useEffect(() => {
-        if (game.feedback === "success") {
-            playSuccessSound();
+        switch (game.feedback) {
+            case "success":
+                playSuccessSound();
+                break;
+            case "failure":
+                // trigger audio for failure
+                playFailureSound();
+                break;
+
         }
     }, [game.feedback])
     const playSuccessSound = () => {
@@ -43,18 +63,13 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
             successSound.play();
         }
     };
-    // trigger audio for failure
-    useEffect(() => {
-        if (game.feedback === "failure") {
-            playFailureSound();
-        }
-    }, [game.feedback])
     const playFailureSound = () => {
         const failureSound = document.getElementById('failureSound') as HTMLAudioElement;
         if (failureSound) {
             failureSound.play();
         }
     }
+
     switch (game.feedback) {
         case "waiting":
             feedback =
