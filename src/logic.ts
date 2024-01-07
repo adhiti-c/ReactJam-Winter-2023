@@ -1,6 +1,6 @@
 import { PlayerId } from "rune-games-sdk";
 import { CakeLayerType, GoalType, Goals, PlacableIngredient, RecipeBook, isFlavor } from "./logic_v2/cakeTypes";
-import { StartTimeLeftMilliseconds, HintRepeatCount, FlatTimeIncreaseOnComboMilliseconds, FlatTimePenaltyMilliseconds, StreakFeedbackFrequency } from "./logic_v2/logicConfig";
+import { StartTimeLeftMilliseconds, HintRepeatCount, FlatTimeIncreaseOnComboMilliseconds, FlatTimePenaltyMilliseconds, StreakFeedbackFrequency, ScoreMultiplier } from "./logic_v2/logicConfig";
 import { Player, GameState } from "./logic_v2/types";
 import { compareArraysAsSets, compareArraysInOrder, chooseRandomIndexOfArray, removeFromArray, checkProgress, matchRecipe, combineLayer, giveAllPlayersRandomly, getFlavorsInGoal, isInAnyInventory, countAtomicIngredients } from "./logic_v2/util";
 
@@ -122,7 +122,7 @@ Rune.initLogic({
 
         // increment the score
         // calculate the score by doing a recursive counting of atomic elements search of the current goal
-        updatedGame.score = updatedGame.score + countAtomicIngredients(currentGoal);
+        updatedGame.score = updatedGame.score + countAtomicIngredients(currentGoal) * ScoreMultiplier;
 
         // reward by adding time
         updatedGame.timeLeft = updatedGame.timeLeft + FlatTimeIncreaseOnComboMilliseconds;
@@ -282,7 +282,7 @@ Rune.initLogic({
             // TODO: if you do multiple combinations, you don't get points
             // award points
             if (newest) {
-              updatedGame.score = updatedGame.score + countAtomicIngredients(newest);
+              updatedGame.score = updatedGame.score + countAtomicIngredients(newest) * ScoreMultiplier;
             }
 
             // give feedback

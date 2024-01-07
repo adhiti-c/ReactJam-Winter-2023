@@ -420,14 +420,14 @@ button {
   border-radius: 100px;
 }
 
-/** current player */
-.current-player {
+
+/* .current-player {
   background-color: var(--pink);
   color: #fff;
-}
+} */
 
 /* current player checkmark is displayed when the user presses "im ready" */
-.current-player .checkmark {
+.player-item .checkmark {
   background-color: #fff;
   color: var(--pink);
 }
@@ -440,9 +440,11 @@ button {
 
 /* checkmark for the new player is displayed only when the other player is ready*/
 .new-player .checkmark {
-  display: block;
   background-color: var(--pink);
   color: #fff;
+}
+.new-player h2 {
+  color: var(--pink);
 }
 
 /* other player is not ready yet */
