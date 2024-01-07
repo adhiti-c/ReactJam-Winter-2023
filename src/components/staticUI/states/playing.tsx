@@ -91,10 +91,10 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
     //   math stuff
     // turn ms into sec
     // since you're using using an if then operator in game: gamestate, you must also use the same operator check in the const
-    const totalSeconds = game ? Math.floor(game.timeLeft / 1000) : 0;
-    const minutes = game ? Math.floor(totalSeconds / 60) : 0;
+    const totalSeconds = game.timeLeft > 0 ? Math.floor(game.timeLeft / 1000) : 0;
+    const minutes = Math.floor(totalSeconds / 60);
     // align seconds relative to minutes. calculates the remainder which is the seconds left (ignoring minutes)
-    const seconds = game ? totalSeconds % 60 : 0;
+    const seconds = totalSeconds % 60;
     // $ allows you to embed operators in a string
     // minutes:if seconds under 10, add 0 seconds
     const formattedTimer = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`

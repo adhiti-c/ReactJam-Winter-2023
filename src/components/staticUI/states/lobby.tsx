@@ -52,9 +52,11 @@ const Lobby = ({ game, isPlaying, setPlaying, play, players, playerId }: { game:
           <div className='waiting-text-contain'>
             <h2>
               {
-                clientIsReady ?
-                  "waiting for the other player..."
-                  : null
+                game.isStartingCountdown ? `starting in ${game.timeLeft > 0 ? (game.timeLeft / 1000).toFixed(0) : 0}`
+                  :
+                  (clientIsReady ?
+                    "waiting for the other player..."
+                    : null)
               }
             </h2>
           </div>
@@ -108,7 +110,6 @@ const Lobby = ({ game, isPlaying, setPlaying, play, players, playerId }: { game:
                 {showTutorial && <TutorialIUI />}
               </>
           }
-
         </div>
       </div>
     </div>
