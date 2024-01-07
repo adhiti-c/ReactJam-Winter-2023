@@ -16,6 +16,7 @@ import Lobby from "./staticUI/states/lobby";
 import useSound from 'use-sound';
 import cafeSound from '../assets/sweet cafe.mp3'
 import { Player, Players } from "rune-games-sdk";
+import Syrup from "./objects/syrup";
 
 export default function Game({ game, player, players }: { game: GameState, player: Player, players: Players }) {
 
@@ -194,6 +195,7 @@ export default function Game({ game, player, players }: { game: GameState, playe
                         {/* 0 x color */}
                         <ambientLight args={[0xF8F8F8]} intensity={.5} />
                         <directionalLight color={0xF8F8F8} position={[10, 10, 10]} intensity={1.5} />
+                        {/* <Syrup yPos={cakeYPositions.at(-1)} /> */}
                     </Physics>
                 </Suspense>
             </Canvas>
