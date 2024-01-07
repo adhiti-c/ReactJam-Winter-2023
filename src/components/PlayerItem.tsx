@@ -1,6 +1,7 @@
 import React from 'react'
 import { PlayerIndexToCharacterIcon, playerAssets } from '../logic_v2/assetMap'
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
 function PlayerItem({ profile, username, playerIndex }: { profile: string, username: string, playerIndex?: number }) {
   let playerIndexAssets: playerAssets | undefined;
   let playerLobbyIcon: string | undefined;
@@ -26,6 +27,11 @@ function PlayerItem({ profile, username, playerIndex }: { profile: string, usern
             </div>
             : null
         }
+      </div>
+      <div>
+        <div className="checkmark">
+            <FontAwesomeIcon icon={faCheck}/>
+        </div>
       </div>
 
     </div>

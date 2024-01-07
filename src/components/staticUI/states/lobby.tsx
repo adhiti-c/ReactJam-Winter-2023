@@ -24,21 +24,36 @@ const Lobby = ({ game, isPlaying, setPlaying, play, players, playerId }: { game:
   const handleTutorialClick = () => {
     playClickSound();
     setShowTutorial(true);
+    RemoveTutorialClass();
   };
 
   const handleTutorialHover = () => {
     playClickSound();
   }
+//   removes the visibility class inside of tutorial component
+const RemoveTutorialClass = () => {
+    const tutorialUIElements = document.querySelectorAll('.tutorial-contain')
+    tutorialUIElements.forEach((element) => {
+        element.classList.remove('close-tutorial');
+      });
+}
 
   // figure out how many players are missing
   const missingNumPlayers = 2 - Object.keys(players).length;
-
+//TODO: Trigger "waiting for player" in h2 tag, otherwise display none
   return (
     <div className='lobby-contain'>
       <div className="lobby-content">
         <img src={Logo} />
+        {/* contain waiting for players */}
+        <div style={{alignContent:'center', display: 'flex', gap: '12px', flexDirection: 'column'}}>
+        <div className='waiting-text-contain'>
+<h2>waiting for the other player...</h2>
+        </div>
+        
         {/* players ready up */}
         <div className="players-contain">
+            
           {Object.entries(players).map(([playerId, player]) => {
             // grab their profile information
             const profileUrl = player.avatarUrl;
@@ -64,7 +79,8 @@ const Lobby = ({ game, isPlaying, setPlaying, play, players, playerId }: { game:
             )
           }
         </div>
-        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        </div>
+        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '14px' }}>
 
 
           <Music isPlaying={isPlaying} setPlaying={setPlaying} play={play} enableReady={ready} playerIsReady={game.players[playerId].ready}
@@ -76,7 +92,7 @@ const Lobby = ({ game, isPlaying, setPlaying, play, players, playerId }: { game:
             </div>
             How to play
           </button>
-          {showTutorial && <TutorialIUI />}
+          {showTutorial && <TutorialIUI RemoveTutorialClass = {RemoveTutorialClass}/>}
         </div>
       </div>
     </div>
