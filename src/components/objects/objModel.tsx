@@ -13,10 +13,14 @@ export default function ObjModel({ texture, position }: { texture: CakeLayerType
         const materials = useLoader(MTLLoader, assetMap.mtl);
         colorMap = useLoader(OBJLoader, assetMap.block, loader => {
             materials.preload();
-            loader.setMaterials(materials)
+            loader.setMaterials(materials);
         });
     } else {
         throw Error("no MTL file defined for blender object " + texture);
+    }
+
+    if (colorMap === undefined) {
+        throw Error(`Error while loading in the obj file for ${texture}`)
     }
 
     return (
@@ -29,4 +33,17 @@ export default function ObjModel({ texture, position }: { texture: CakeLayerType
             <primitive object={colorMap.clone()} />
         </instancedMesh>
     )
+}
+
+/**
+ * component to preload all the obj files
+ */
+export function ObjPreloader() {
+    for (const entry in LayerToAssetMap) {
+        const entryLayer = entry as CakeLayerType
+        const asset = LayerToAssetMap[entryLayer];
+        if (asset.isBlenderObj) {
+
+        }
+    }
 }
