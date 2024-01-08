@@ -357,15 +357,27 @@ Rune.initLogic({
       }
     }
   },
-  update: ({ game }) => {
+  update: ({ game, allPlayerIds }) => {
     // if the players are currently playing
     if (game.phase === "playing") {
       if (game.timeLeft < 0) {
         // game over for players
         // set the phase to be loss
-        game.phase = "loss";
         game.timeLeft = 0;
-        Rune.gameOver(); // TODO: implement this later
+        game.phase = "loss";
+
+        // make everyone lose
+        let playerStatus: { [playerId: string]: number | "WON" | "LOST"; } = {}
+        // add all players to the game over screen with the score
+        allPlayerIds.forEach(playerId => {
+          playerStatus[playerId] = game.score;
+        });
+        Rune.gameOver({
+          players: playerStatus,
+          delayPopUp: true
+        });
+        game.timeLeft = 3000;
+        game.lastCountdown = Rune.gameTime();
       } else {
         // count down
         const timeDiff = Rune.gameTime() - game.lastCountdown;
@@ -391,6 +403,21 @@ Rune.initLogic({
       } else if (game.isStartingCountdown && (Object.values(game.players).every((player) => player.ready))) {
         // if all players are ready, start counting down
         // count down
+        const timeDiff = Rune.gameTime() - game.lastCountdown;
+        // if we counting down, count down every second
+        if (timeDiff >= 1) {
+          // decrement the time left seen by the players by 1 millisecond
+          game.timeLeft = game.timeLeft - timeDiff;
+          // save the last time the countdown ran in the game state
+          game.lastCountdown = Rune.gameTime();
+        }
+      }
+    } else if (game.phase === "loss") {
+      // TODO: process counting down on the next update to prevent players from seeing the new timer when transitioning from the playing to loss screen
+
+      if (game.timeLeft < 0) {
+        Rune.showGameOverPopUp();
+      } else {
         const timeDiff = Rune.gameTime() - game.lastCountdown;
         // if we counting down, count down every second
         if (timeDiff >= 1) {
