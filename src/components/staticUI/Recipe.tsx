@@ -35,11 +35,14 @@ function Recipe({ game, feedbackState }: Recipe) {
                   game={game}
                   ingredient={component}
                 />
-
-                <div className="recipe-operator-contain">
-                  <h2>+</h2>
-                </div>
-
+                {/* only show + on not the last recipe box */}
+                {
+                  index !== recipe.recipe.length - 1 ?
+                    <div className="recipe-operator-contain">
+                      <h2>+</h2>
+                    </div>
+                    : null
+                }
               </Fragment>
             )
           })
