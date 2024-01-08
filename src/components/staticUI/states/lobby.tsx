@@ -15,7 +15,7 @@ import useSound from "use-sound";
 import clickSound from '../../../assets/clickSound.wav'
 import TutorialIUI from './tutorial'
 import { PlayerId, Players } from 'rune-games-sdk'
-const Lobby = ({ game, isPlaying, setPlaying, play, players, playerId }: { game: GameState, isPlaying: boolean, setPlaying: React.Dispatch<React.SetStateAction<boolean>>, play: Function, players: Players, playerId: PlayerId }) => {
+const Lobby = ({ game, isPlaying, setPlaying, play, players, playerId }: { game: GameState, isPlaying: boolean, setPlaying: React.Dispatch<React.SetStateAction<boolean>>, play: any, players: Players, playerId: PlayerId }) => {
 
   const [ready, setReady] = useState<boolean>(game.ready);
   const [showTutorial, setShowTutorial] = useState<boolean>(false);
@@ -49,22 +49,22 @@ const Lobby = ({ game, isPlaying, setPlaying, play, players, playerId }: { game:
         <img src={Logo} />
         {/* contain waiting for players */}
         <div style={{ alignContent: 'center', display: 'flex', gap: '12px', flexDirection: 'column' }}>
-         
-              {
-                game.isStartingCountdown ? (
-                    <div className='waiting-contain'>
-                        <h1>starting in {game.timeLeft > 0 ? (game.timeLeft / 1000).toFixed(0) : 0}</h1>
-                    </div>
-                    
-                 ) :
-                  (clientIsReady ?
-                    (<div className='waiting-contain'>
-                    <h1>"waiting for the other player..."</h1>
 
-                    </div>)
-                    : null)
-              }
-           
+          {
+            game.isStartingCountdown ? (
+              <div className='waiting-contain'>
+                <h1>starting in {game.timeLeft > 0 ? (game.timeLeft / 1000).toFixed(0) : 0}</h1>
+              </div>
+
+            ) :
+              (clientIsReady ?
+                (<div className='waiting-contain'>
+                  <h1>"waiting for the other player..."</h1>
+
+                </div>)
+                : null)
+          }
+
           {/* players ready up */}
           <div className="players-contain">
             {Object.entries(players).map(([playerIdEntry, player]) => {

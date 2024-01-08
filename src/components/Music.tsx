@@ -4,7 +4,7 @@ import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import useSound from "use-sound";
 import clickSound from '../assets/clickSound.wav'
 
-const Music = ({ isPlaying, setPlaying, play, enableReady, playerIsReady }: { isPlaying: boolean, setPlaying: React.Dispatch<React.SetStateAction<boolean>>, play: Function, enableReady: boolean, playerIsReady: boolean }) => {
+const Music = ({ isPlaying, setPlaying, play, enableReady, playerIsReady }: { isPlaying: boolean, setPlaying: React.Dispatch<React.SetStateAction<boolean>>, play: any, enableReady: boolean, playerIsReady: boolean }) => {
     //* sound trigger
     const [playClickSound] = useSound(clickSound, { volume: 0.5 })
     //* when button clicked, run toggleLobby function

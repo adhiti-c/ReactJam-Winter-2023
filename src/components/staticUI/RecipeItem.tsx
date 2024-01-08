@@ -20,7 +20,7 @@ export function generateFinalContainerStyle(img: string) {
 function RecipeItem({ img, ingredient, game, clientPlayerId }: { img: string, ingredient: CakeLayerType, game: GameState, clientPlayerId: string }) {
   // loop through the inventory to find out who owns what
   let owner: number | null = null;
-  let ownerIsClient: boolean = false;
+  let ownerIsClient = false;
   let index = 0;
   for (const player of Object.values(game.players)) {
     const inventory = player.inventory;
@@ -56,10 +56,10 @@ function RecipeItem({ img, ingredient, game, clientPlayerId }: { img: string, in
 
           </div>
         </div>
-        <div className= {` ${!isPlaced && !ownerIsClient ? "owner-icon-contain" : null} `}>
+        <div className={` ${!isPlaced && !ownerIsClient ? "owner-icon-contain" : null} `}>
           {owner !== null ? <img src={ownerIsClient ? PlayerIndexToCharacterIcon[owner].highlightGameIcon : PlayerIndexToCharacterIcon[owner].gameIcon} /> : null}
         </div>
-        
+
       </div>
       {/* figure out who owns this item, if anyone */}
       {/* rn this is in the success state */}

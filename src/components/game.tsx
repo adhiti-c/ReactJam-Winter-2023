@@ -86,7 +86,7 @@ export default function Game({ game, player, players }: { game: GameState, playe
         if (gameStateCakeLength > currentCakeLength) {
             // something new has been added
             // create more blocks in the new layer
-            let additionalBlocks: JSX.Element[] = [];
+            const additionalBlocks: JSX.Element[] = [];
             let latestCake;
             // TODO: instead, can we iterate through each and only spawn in new blocks?
             for (let i = currentCakeLength; i < gameStateCakeLength; i++) {
@@ -121,7 +121,7 @@ export default function Game({ game, player, players }: { game: GameState, playe
         if (gameStateLayerLength > currentLayerLength) {
             // something new has been added
             // create more blocks in the new layer
-            let additionalBlocks: JSX.Element[] = [];
+            const additionalBlocks: JSX.Element[] = [];
             // TODO: instead, can we iterate through each and only spawn in new blocks?
             for (let i = currentLayerLength; i < gameStateLayerLength; i++) {
                 // create more blocks
@@ -141,7 +141,7 @@ export default function Game({ game, player, players }: { game: GameState, playe
                 setNewLayer([]);
             } else {
                 // rebuild the whole thing :sob:
-                let additionalBlocks: JSX.Element[] = [];
+                const additionalBlocks: JSX.Element[] = [];
                 for (let i = 0; i < gameStateLayerLength; i++) {
                     const blockType = game.newLayer[i];
                     const spawnY = cakes.length === 0 || cakeYPositions.length === 0 ? 1 : cakeYPositions.at(-1)! + cakeOffset + i + currentLayerLength;

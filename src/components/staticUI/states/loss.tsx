@@ -4,7 +4,7 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { GameState } from '../../../logic_v2/types';
 import LossSound from "../../../assets/lossSound.wav";
 //* component for high score screen
-function loss({ game }: { game: GameState }) {
+function Loss({ game }: { game: GameState }) {
 
   useEffect(() => {
     playSound("lossSound")
@@ -40,4 +40,4 @@ function loss({ game }: { game: GameState }) {
   )
 }
 
-export default loss
+export default Loss

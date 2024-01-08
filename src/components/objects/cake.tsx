@@ -18,10 +18,7 @@ export default function Cake({ texture, index, position, setBlockInMotion, setCa
     const assetMap = LayerToAssetMap[texture]
     const block = assetMap.block;
     const isBlenderObj = assetMap.isBlenderObj
-    if (!isBlenderObj) {
-        // load the texture using useTexture
-        colorMap = useTexture(block);
-    }
+    colorMap = useTexture(block);
 
     // if (texture === "eggs") {
     //     colorMap = useTexture("/src/assets/textures/wheatBlock.svg")

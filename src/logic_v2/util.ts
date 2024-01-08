@@ -168,16 +168,16 @@ export function matchRecipe(layers: CakeLayerType[]) {
  * @returns 
  */
 export function combineLayer(layer: CakeLayerType[]): CakeLayerType[] {
-    let combinedLayer = [...layer];
+    const combinedLayer = [...layer];
     let r = combinedLayer.length - 1
     let l = r - 1
 
     while (l >= 0) {
         // create an array that is just layer[l] and layer[r] to put into matchRecipe
-        let matchArray: CakeLayerType[] = combinedLayer.slice(l, r + 1)
+        const matchArray: CakeLayerType[] = combinedLayer.slice(l, r + 1)
 
         // parameter to put into matchRecipe
-        let match = matchRecipe(matchArray)
+        const match = matchRecipe(matchArray)
         // if the match array gets a valid match
         // get rid of the current l,r pointer we are on and add the match
         if (match !== null) {
@@ -235,7 +235,7 @@ export function giveAllPlayersRandomly(players: Record<string, Player>, ingredie
  */
 export function getFlavorsInGoal(goal: GoalType): FlavorType[] {
     // if the goal had a flavor
-    let flavorsInGoal: FlavorType[] = [];
+    const flavorsInGoal: FlavorType[] = [];
     for (const ingredient of RecipeBook[goal].recipe) {
         if (isFlavor(ingredient)) {
             flavorsInGoal.push(ingredient)
@@ -260,7 +260,7 @@ export function countAtomicIngredients(goal: GoalType | PlacableIngredient): num
     if (isPlacableIngredient(goal)) {
         return 0;
     }
-    let recipe = RecipeBook[goal].recipe;
+    const recipe = RecipeBook[goal].recipe;
 
     for (const component of recipe) {
         // if it's an ingredient, add 1 point

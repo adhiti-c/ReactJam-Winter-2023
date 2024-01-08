@@ -7,11 +7,11 @@ function InventorySlot({
   className,
 }: {
   icon: string;
-  onClick: Function;
+  onClick: any;
   className?: string;
 }) {
   // sound trigger
-  const [playClickSound] = useSound(clickSound, {volume: 0.5})
+  const [playClickSound] = useSound(clickSound, { volume: 0.5 })
   const handleClick = () => {
     if (onClick) {
       onClick();
@@ -23,7 +23,7 @@ function InventorySlot({
   }
   return (
     <div style={{ width: "fit-content" }}>
-      <button className={`inventory-slot ${className}`} onClick={handleClick} onMouseEnter = {handleEnter}>
+      <button className={`inventory-slot ${className}`} onClick={handleClick} onMouseEnter={handleEnter}>
         <img src={icon} />
       </button>
     </div>

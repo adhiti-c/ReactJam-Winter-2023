@@ -21,7 +21,7 @@ import ArrowDown from '../../../assets/tutorial/arrowDownTutorial.svg'
  * the props to this UI are: the game state, the ingredient currently selected (passed in from the parent which remembers the state), and a useState function to change this selected ingredient
  * it works identically as if we had the useState in this file.
  */
-export default function PlayingUI({ game, selectedIngredient, setSelectedIngredient, player, dropIngredient }: { game: GameState, selectedIngredient: PlacableIngredient[], setSelectedIngredient: React.Dispatch<React.SetStateAction<PlacableIngredient[]>>, player: Player, dropIngredient: Function }) {
+export default function PlayingUI({ game, selectedIngredient, setSelectedIngredient, player, dropIngredient }: { game: GameState, selectedIngredient: PlacableIngredient[], setSelectedIngredient: React.Dispatch<React.SetStateAction<PlacableIngredient[]>>, player: Player, dropIngredient: any }) {
 
     /**
      * this state is true if the player has placed

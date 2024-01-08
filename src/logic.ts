@@ -85,7 +85,7 @@ Rune.initLogic({
   },
   actions: {
     placeIngredient({ ingredient }, { allPlayerIds, game, playerId }) {
-      let updatedGame = game;
+      const updatedGame = game;
       // make sure the player has not already placed
       if (updatedGame.players[playerId].hasPlaced) {
         throw Rune.invalidAction();
@@ -109,7 +109,7 @@ Rune.initLogic({
     },
     combine(_, { game, playerId }) {
       // this is the worst piece of code i've written but there's no time LEFT :skull:
-      let updatedGame = game;
+      const updatedGame = game;
       const currentGoal = updatedGame.goals.current;
 
       let success = false;
@@ -117,7 +117,7 @@ Rune.initLogic({
 
       // try to combine
       let combined = false;
-      let newLayerCombined = combineLayer(currentLayerArray);
+      const newLayerCombined = combineLayer(currentLayerArray);
       // if these are different, something was combined
       if (!compareArraysInOrder(currentLayerArray, newLayerCombined)) {
         combined = true;
@@ -178,9 +178,10 @@ Rune.initLogic({
 
         // find a new cake as the goal
         let newGoal: GoalType | undefined = undefined;
+        const goalMutable = [...Goals]
         while (newGoal === undefined || !RecipeBook[newGoal].isCake) {
-          const randomIndex = chooseRandomIndexOfArray([...Goals]);
-          newGoal = Goals[randomIndex]
+          const randomIndex = chooseRandomIndexOfArray(goalMutable);
+          newGoal = goalMutable[randomIndex]
         }
 
         // set it as the goal
@@ -219,7 +220,7 @@ Rune.initLogic({
           if (!isInAnyInventory(flavor, updatedGame.players)) {
             // give it to the player with the smaller inventory
             let smallestInventoryPlayer: PlayerId | null = null;
-            let smallestInventorySize: number = -1;
+            let smallestInventorySize = -1;
             for (const player in updatedGame.players) {
               const inventory = updatedGame.players[player].inventory
               if (smallestInventorySize === -1 || inventory.length < smallestInventorySize) {
@@ -240,7 +241,7 @@ Rune.initLogic({
         let penalty = true;
 
         // now we figure out if we are making true progress toward the goal
-        let isPartOfCurrentGoal = checkProgress(currentGoal, newLayerCombined);
+        const isPartOfCurrentGoal = checkProgress(currentGoal, newLayerCombined);
 
         // bring game state up to date
         updatedGame.newLayer = newLayerCombined;
@@ -333,7 +334,7 @@ Rune.initLogic({
 
           // reset the hint
           // set it as the goal
-          let newGoal = updatedGame.goals.current;
+          const newGoal = updatedGame.goals.current;
 
           // reset the hint
 
@@ -451,7 +452,7 @@ Rune.initLogic({
     } else if (game.phase === "loss") {
       if (game.timeLeft < 0) {
         // make everyone lose
-        let playerStatus: { [playerId: string]: number | "WON" | "LOST"; } = {}
+        const playerStatus: { [playerId: string]: number | "WON" | "LOST"; } = {}
         // add all players to the game over screen with the score
         allPlayerIds.forEach(playerId => {
           playerStatus[playerId] = game.score;

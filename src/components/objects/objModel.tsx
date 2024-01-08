@@ -34,16 +34,3 @@ export default function ObjModel({ texture }: { texture: CakeLayerType, }) {
         </instancedMesh>
     )
 }
-
-/**
- * component to preload all the obj files
- */
-export function ObjPreloader() {
-    for (const entry in LayerToAssetMap) {
-        const entryLayer = entry as CakeLayerType
-        const asset = LayerToAssetMap[entryLayer];
-        if (asset.isBlenderObj) {
-
-        }
-    }
-}
