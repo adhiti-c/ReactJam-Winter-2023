@@ -49,17 +49,22 @@ const Lobby = ({ game, isPlaying, setPlaying, play, players, playerId }: { game:
         <img src={Logo} />
         {/* contain waiting for players */}
         <div style={{ alignContent: 'center', display: 'flex', gap: '12px', flexDirection: 'column' }}>
-          <div className='waiting-text-contain'>
-            <h2>
+         
               {
-                game.isStartingCountdown ? `starting in ${game.timeLeft > 0 ? (game.timeLeft / 1000).toFixed(0) : 0}`
-                  :
+                game.isStartingCountdown ? (
+                    <div className='waiting-contain'>
+                        <h1>starting in {game.timeLeft > 0 ? (game.timeLeft / 1000).toFixed(0) : 0}</h1>
+                    </div>
+                    
+                 ) :
                   (clientIsReady ?
-                    "waiting for the other player..."
+                    (<div className='waiting-contain'>
+                    <h1>"waiting for the other player..."</h1>
+
+                    </div>)
                     : null)
               }
-            </h2>
-          </div>
+           
           {/* players ready up */}
           <div className="players-contain">
             {Object.entries(players).map(([playerIdEntry, player]) => {
