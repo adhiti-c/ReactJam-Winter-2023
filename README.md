@@ -1,0 +1,1 @@
+How to use obj files in three if they are gray: https://discourse.threejs.org/t/object-is-rendered-as-wireframe/4507/6
