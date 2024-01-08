@@ -17,7 +17,7 @@ import useSound from "use-sound";
 import clickSound from '../../../assets/clickSound.wav'
 
 export default function TutorialIUI() {
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(0);
     console.log('page number', currentPage)
     const handleBack = () => {
         // decrements page by decreasing by 1
@@ -56,6 +56,14 @@ export default function TutorialIUI() {
         playClickSound();
     }
 
+    const pages = [
+        <TutorialPageFirst />,
+        <TutorialPage currentPage={currentPage} title={<h2>you and your teammate are given <span>2 ingredients</span></h2>} img={Ingredients} />,
+        <TutorialPage currentPage={currentPage} title={<h2> <span>combine </span>them to create the base and frosting</h2>} img={Blocks} />,
+        <TutorialPage currentPage={currentPage} title={<h2><span>tap</span> to build layers!</h2>} img={Stack} />,
+        <TutorialPage currentPage={currentPage} title={<h2>and... a <span>secret flavor</span></h2>} img={Flavors} />
+    ]
+
     return (
         <>
 
@@ -66,20 +74,14 @@ export default function TutorialIUI() {
                 <div className="tutorial-inner-contain">
 
                     {/* renders diff popups based on state */}
-                    {currentPage === 1 && <TutorialPageFirst />}
-                    {currentPage === 2 && (<TutorialPage currentPage={currentPage} title={<h2>you and your teammate are given <span>2 ingredients</span></h2>} img={Ingredients} />)}
-                    {currentPage === 3 && (<TutorialPage currentPage={currentPage} title={<h2> <span>combine </span>them to create the base and frosting</h2>} img={Blocks} />)}
-                    {currentPage === 4 && (<TutorialPage currentPage={currentPage} title={<h2><span>tap</span> to build layers!</h2>} img={Stack} />)}
-                    {currentPage === 5 && (<TutorialPage currentPage={currentPage} title={<h2>and... a <span>secret flavor</span></h2>} img={Flavors} />)}
-                    {currentPage === 6 && <TutorialPageLast />}
-
+                    {pages[currentPage]}
                     {/* back and forth buttons */}
                     <div className="buttons-contain">
                         {/* disabled means users cant access it */}
-                        <button onClick={handleBack} onMouseEnter={handleHover} className='back-button' disabled={currentPage === 1}>
+                        <button onClick={handleBack} onMouseEnter={handleHover} className='back-button' disabled={currentPage === 0}>
                             <FontAwesomeIcon icon={faArrowLeft} />
                         </button>
-                        <button onClick={handleForward} onMouseEnter={handleHover} className='forward-button' disabled={currentPage === 6}>
+                        <button onClick={handleForward} onMouseEnter={handleHover} className='forward-button' disabled={currentPage === pages.length - 1}>
                             <FontAwesomeIcon icon={faArrowRight} />
                         </button>
                     </div>
@@ -115,9 +117,9 @@ const TutorialPageFirst = () =>
         <img src={Cakes} alt="" />
     </div>
 
-const TutorialPageLast = () =>
-    <div className="tutorial-page-contain last" style={{ padding: '22px 0px 0px 0px;' }}>
-        <p>but be careful..</p>
-        <h2><span>syrup </span>will be rising the entire time! Make sure your cake <span>doesn’t get engulfed</span></h2>
-        <img src={Lava} alt="" />
-    </div>
+// const TutorialPageLast = () =>
+//     <div className="tutorial-page-contain last" style={{ padding: '22px 0px 0px 0px;' }}>
+//         <p>but be careful..</p>
+//         <h2><span>syrup </span>will be rising the entire time! Make sure your cake <span>doesn’t get engulfed</span></h2>
+//         <img src={Lava} alt="" />
+//     </div>
