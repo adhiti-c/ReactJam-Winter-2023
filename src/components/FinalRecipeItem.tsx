@@ -1,21 +1,24 @@
 import React from 'react'
+import { GameState } from '../logic_v2/types'
 
-function FinalRecipeItem({img}:{img:string}) {
+function FinalRecipeItem({img,feedbackState}:{img:string, feedbackState:string}) {
     const finalContainerStyle = {
         
             backgroundImage: `url(${img})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
-            width: '60px',
-            height: '60px',
+           
             // borderRadius: '22px',
-            overflow: 'visible',
-            // border: '2px solid #fff',
+            overflow: 'hide',
+            border: '4px solid #fff',
   padding: '0',
         
     }
-  return (
-    <div style={finalContainerStyle}>
+
+// const isSuccess = game && game.feedback === 'success';
+
+return (
+    <div style= {finalContainerStyle} className={`final-recipe-item${feedbackState ? ' final-recipe-success' : ''}`}>
       {/* <img src={img} /> */}
     </div>
   )

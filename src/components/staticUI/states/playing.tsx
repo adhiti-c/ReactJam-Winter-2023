@@ -17,7 +17,7 @@ import { useSpring, animated } from '@react-spring/web'
  * the props to this UI are: the game state, the ingredient currently selected (passed in from the parent which remembers the state), and a useState function to change this selected ingredient
  * it works identically as if we had the useState in this file.
  */
-export default function PlayingUI({ game, selectedIngredient, setSelectedIngredient, player }: { game: GameState, selectedIngredient: PlacableIngredient[], setSelectedIngredient: React.Dispatch<React.SetStateAction<PlacableIngredient[]>>, player: Player }) {
+export default function PlayingUI({ game, selectedIngredient, setSelectedIngredient, player, dropIngredient }: { game: GameState, selectedIngredient: PlacableIngredient[], setSelectedIngredient: React.Dispatch<React.SetStateAction<PlacableIngredient[]>>, player: Player, dropIngredient: Function }) {
 
     /**
      * this state is true if the player has placed
@@ -44,6 +44,9 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
                 ingredient,
             )}`,
         );
+
+        // actually drop the ingredient
+        dropIngredient(ingredient);
     };
 
     let feedback;
@@ -105,7 +108,7 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
             break;
         case "streak":
             feedback =
-                <div className="feedback encourage">
+                <div className="feedback success">
                     You're on a {`${game.streak}`} streak!
                 </div>
             break;
@@ -133,6 +136,21 @@ const props = useSpring({ total: game.score });
 //   }
     return (
         <>
+        {
+                hasPlaced ? (
+                    
+                        <div className="waiting-contain">
+                            <h1>Waiting for the other player</h1>
+                        </div>
+                        
+                   ) :(
+                    <span>
+                        {/* <div className="feedback encourage-animate">
+                            <h1 className="encourage">Your turn!</h1>
+                        </div> */}
+                        
+                    </span>)
+            }
             <div className="top-section">
                 <div className="state-contain">
 
@@ -151,11 +169,13 @@ const props = useSpring({ total: game.score });
                     {/* show all the cake layers */}
                 </div>
                 <div className="recipe-section">
-                    <Recipe game={game} />
+                    <Recipe game={game} feedbackState = {game.feedback === "success"}/>
                 </div>
             </div>
 
             {feedback}
+
+            
 
             <div className="inventory-contain">
                 {/* maps each ingredient to an inventoryslot */}
@@ -168,9 +188,9 @@ const props = useSpring({ total: game.score });
                                     key={index}
                                     icon={ingredientIcon}
                                     onClick={() => handleInventoryClick(ingredient)}
-                                    className={
-                                        selectedIngredient.includes(ingredient) ? "selected" : ""
-                                    }
+                                // className={
+                                //     selectedIngredient.includes(ingredient) ? "selected" : ""
+                                // }
                                 />
                             )
                         }

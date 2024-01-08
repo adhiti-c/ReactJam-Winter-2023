@@ -7,9 +7,10 @@ import { Fragment } from 'react'
 
 type Recipe = {
   game: GameState
+  feedbackState: string
   // ingredient: string[]; 
 };
-function Recipe({ game }: Recipe) {
+function Recipe({ game, feedbackState }: Recipe) {
 
 
   // parse the current hint
@@ -30,19 +31,18 @@ function Recipe({ game }: Recipe) {
                   ingredient={component}
                 />
               </div>
-              <div className="line-contain">
-                <div className="line"></div>
-              </div>
+              
             </Fragment>
           )
         })
       }
-      <div className="recipe-contain-step">
+      {/* <div className="recipe-contain-step"> */}
     
         <FinalRecipeItem
           img={LayerToAssetMap[goal].icon}
+          feedbackState = {feedbackState}
         />
-      </div>
+      {/* </div> */}
 
     </div>
   )
