@@ -1,8 +1,8 @@
 import { PlayerId } from "rune-games-sdk";
-import { CakeLayerType, GoalType, Goals, PlacableIngredient, RecipeBook, isFlavor } from "./logic_v2/cakeTypes";
+import { CakeLayerType, GoalType, Goals, PlacableIngredient, RecipeBook, isFlavor, isGoalType, isPlacableIngredient } from "./logic_v2/cakeTypes";
 import { StartTimeLeftMilliseconds, HintRepeatCount, FlatTimeIncreaseOnComboMilliseconds, FlatTimePenaltyMilliseconds, StreakFeedbackFrequency, ScoreMultiplier } from "./logic_v2/logicConfig";
 import { Player, GameState } from "./logic_v2/types";
-import { compareArraysAsSets, compareArraysInOrder, chooseRandomIndexOfArray, removeFromArray, checkProgress, matchRecipe, combineLayer, giveAllPlayersRandomly, getFlavorsInGoal, isInAnyInventory, countAtomicIngredients } from "./logic_v2/util";
+import { compareArraysAsSets, compareArraysInOrder, chooseRandomIndexOfArray, removeFromArray, checkProgress, matchRecipe, combineLayer, giveAllPlayersRandomly, getFlavorsInGoal, isInAnyInventory, countAtomicIngredients, turnRecipeIntoNonCakeParts } from "./logic_v2/util";
 
 /*
 random thoughts:
@@ -17,16 +17,28 @@ Rune.initLogic({
   setup: (allPlayerIds): GameState => {
 
     // define initial starting ingredients that will be spread out across all players
-    const startingIngredients: PlacableIngredient[] = ["eggs", "flour"];
+    const startingIngredientsBase: PlacableIngredient[] = ["eggs", "flour"];
+    const startingIngredientsFrosting: PlacableIngredient[] = ["sugar", "butter"];
+
 
     // create all players
     const players: Record<string, Player> = {};
     let playerIndex = 0;
     for (const playerId of allPlayerIds) {
+      // TODO: this only works for 2 players
       // choose random
-      const index = chooseRandomIndexOfArray(startingIngredients);
+      const indexBase = chooseRandomIndexOfArray(startingIngredientsBase);
       // get the ingredient
-      const ingredientInventory = startingIngredients.splice(index, 1);
+      const ingredientInventoryBase = startingIngredientsBase.splice(indexBase, 1);
+
+      // do the same for the frosting ingredients
+      const indexFrosting = chooseRandomIndexOfArray(startingIngredientsFrosting);
+      // get the ingredient
+      const ingredientInventoryFrosting = startingIngredientsFrosting.splice(indexFrosting, 1);
+
+      // concat
+      const ingredientInventory = ingredientInventoryBase.concat(ingredientInventoryFrosting);
+
 
       // create player
       players[playerId] = {
@@ -40,7 +52,8 @@ Rune.initLogic({
       playerIndex++;
     }
 
-    const initialGoal: CakeLayerType = "cake_base";
+    const initialGoal: GoalType = "basic_cake";
+    const initialHint: GoalType = "cake_base"
     const initialUnencountered = new Set(Goals);
     initialUnencountered.delete(initialGoal);
 
@@ -55,9 +68,8 @@ Rune.initLogic({
       score: 0,
       newLayer: [],
       hint: {
-        name: initialGoal,
-        recipe: RecipeBook[initialGoal],
-        count: 0,
+        name: initialHint,
+        recipe: RecipeBook[initialHint],
       },
       goals: {
         current: initialGoal,
@@ -163,112 +175,74 @@ Rune.initLogic({
           }
         }
 
-        // if the goal was the same as the current recipe hint, increment the count up
-        const gameHint = updatedGame.hint;
-        if (currentGoal === gameHint.name) {
-          updatedGame.hint.count = gameHint.count + 1;
+        // find a new cake as the goal
+        let newGoal: GoalType | undefined = undefined;
+        while (newGoal === undefined || !RecipeBook[newGoal].isCake) {
+          const randomIndex = chooseRandomIndexOfArray([...Goals]);
+          newGoal = Goals[randomIndex]
         }
 
-        // if count exceeded, generate a new not-created recipe and make that the new goal
-        const unencounteredRecipes = updatedGame.goals.unencountered;
-        if (updatedGame.hint.count >= HintRepeatCount && unencounteredRecipes.length > 0) {
-          // generate a new non-created goal to make as the new goal
-          // FIXME: can we make this logic better without the special hard-coded cases?
-          // special case: if the initial goal is the cake_base, make the players do frosting next as part of the tutorial?
-          if (updatedGame.goals.current === "cake_base" && updatedGame.goals.unencountered.includes("cake_frosting")) {
-            updatedGame.goals.current = "cake_frosting";
-            // give players butter and sugar
-            updatedGame.players = giveAllPlayersRandomly(updatedGame.players, ["butter", "sugar"]);
-          } else if (updatedGame.goals.current === "cake_frosting" && updatedGame.goals.unencountered.includes("basic_cake")) {
-            // special case: if the goal is cake_frosting, make it a basic cake as part of the tutorial
-            updatedGame.goals.current = "basic_cake";
-          } else if (updatedGame.goals.current === "basic_cake" && updatedGame.goals.unencountered.includes("choco_cake")) {
-            // special case: if the goal is basic_cake, make it a chocolate cake as part of the tutorial
-            updatedGame.goals.current = "choco_cake";
-            // give players some ingredients
-            // remove chocolate from ingredients, and give players something random
+        // set it as the goal
+        updatedGame.goals.current = newGoal;
 
-            // now given the players the ingredients
-            updatedGame.players = giveAllPlayersRandomly(updatedGame.players, ["chocolate", "strawberry"]);
-          } else {
-            // choose from the unencountered goals
-            const randomIndex = chooseRandomIndexOfArray(unencounteredRecipes);
-            const newGoal = unencounteredRecipes[randomIndex]
-            updatedGame.goals.current = newGoal;
-            // TODO: give a player the flavor(s) required to complete this goal
-            const flavorsNeeded = getFlavorsInGoal(newGoal);
-            for (const flavor of flavorsNeeded) {
-              // give it to the player with the smaller inventory
-              if (!isInAnyInventory(flavor, updatedGame.players)) {
-                let smallestInventoryPlayer: PlayerId | null = null;
-                let smallestInventorySize: number = -1;
-                for (const player in updatedGame.players) {
-                  const inventory = updatedGame.players[player].inventory
-                  if (smallestInventorySize === -1 || inventory.length < smallestInventorySize) {
-                    smallestInventoryPlayer = player;
-                    smallestInventorySize = inventory.length;
-                  }
-                }
-                // note: if all equal, give it to the first person
-                // smallestInventoryPlayer should always be defined
-                const currentInventory = [...updatedGame.players[smallestInventoryPlayer!].inventory];
-                currentInventory.push(flavor);
-                updatedGame.players[smallestInventoryPlayer!].inventory = currentInventory;
-              }
-            }
-          }
+        // set the hint
+        updatedGame.hint.name = newGoal;
 
-          const newGoal = updatedGame.goals.current;
-
-          // reset the hint information and grab the new one
-          updatedGame.hint.count = 0;
-          updatedGame.hint.name = newGoal;
-          updatedGame.hint.recipe = RecipeBook[newGoal];
-
-          // move the new goal to be encountered
-          let oldEncountered = [...updatedGame.goals.encountered];
-          oldEncountered.push(newGoal);
-          updatedGame.goals.encountered = oldEncountered;
-          // remove from unencountered
-          let oldUnencountered = [...updatedGame.goals.unencountered];
-          updatedGame.goals.unencountered = removeFromArray(oldUnencountered, newGoal);
+        const firstComponent = RecipeBook[newGoal].recipe[0];
+        console.log("First component", firstComponent)
+        // TODO: this breaks for chocolate cake
+        if (isGoalType(firstComponent) && RecipeBook[firstComponent].isCake) {
+          // go deeper
+          // this is basically when a basic_cake is the first component (like for chocolate cakes)
+          const firstComponentRecipe = RecipeBook[firstComponent];
+          // break it down more
+          // this will always be a GoalType, we are hard coding it I guess
+          const firstPart = firstComponentRecipe.recipe[0] as GoalType;
+          updatedGame.hint.recipe = RecipeBook[firstPart];
+          updatedGame.hint.name = firstPart;
+        } else if (isGoalType(firstComponent) && !RecipeBook[firstComponent].isCake) {
+          // mainly this is 
+          // show it
+          updatedGame.hint.recipe = RecipeBook[firstComponent];
+          updatedGame.hint.name = firstComponent;
         } else {
-          // else, move to next goal by grabbing another random recipe. It may be one already learned, or the current hint
+          // this is a fallback
+          console.log("fallback hint")
+          updatedGame.hint.recipe = RecipeBook[newGoal];
+        }
 
-          const encounteredRecipes = updatedGame.goals.encountered;
-          const randomIndex = chooseRandomIndexOfArray(encounteredRecipes);
-          const newGoal = encounteredRecipes[randomIndex]
-          updatedGame.goals.current = newGoal;
-
-          // give a player the flavor(s) required to complete this goal
-          const flavorsNeeded = getFlavorsInGoal(newGoal);
-          for (const flavor of flavorsNeeded) {
-            // make sure no players already have this ingredient
-            if (!isInAnyInventory(flavor, updatedGame.players)) {
-              // give it to the player with the smaller inventory
-              let smallestInventoryPlayer: PlayerId | null = null;
-              let smallestInventorySize: number = -1;
-              for (const player in updatedGame.players) {
-                const inventory = updatedGame.players[player].inventory
-                if (smallestInventorySize === -1 || inventory.length < smallestInventorySize) {
-                  smallestInventoryPlayer = player;
-                  smallestInventorySize = inventory.length;
-                }
+        // give a player the flavor(s) required to complete this goal
+        const flavorsNeeded = getFlavorsInGoal(newGoal);
+        for (const flavor of flavorsNeeded) {
+          // make sure no players already have this ingredient
+          if (!isInAnyInventory(flavor, updatedGame.players)) {
+            // give it to the player with the smaller inventory
+            let smallestInventoryPlayer: PlayerId | null = null;
+            let smallestInventorySize: number = -1;
+            for (const player in updatedGame.players) {
+              const inventory = updatedGame.players[player].inventory
+              if (smallestInventorySize === -1 || inventory.length < smallestInventorySize) {
+                smallestInventoryPlayer = player;
+                smallestInventorySize = inventory.length;
               }
-              // note: if all equal, give it to the first person
-              // smallestInventoryPlayer should always be defined
-              const currentInventory = [...updatedGame.players[smallestInventoryPlayer!].inventory];
-              currentInventory.push(flavor);
-              updatedGame.players[smallestInventoryPlayer!].inventory = currentInventory;
             }
+            // note: if all equal, give it to the first person
+            // smallestInventoryPlayer should always be defined
+            const currentInventory = [...updatedGame.players[smallestInventoryPlayer!].inventory];
+            currentInventory.push(flavor);
+            updatedGame.players[smallestInventoryPlayer!].inventory = currentInventory;
           }
         }
+        // }
       } else {
         // if it does not match
         let penalty = true;
 
         // now we figure out if we are making true progress toward the goal
         let isPartOfCurrentGoal = checkProgress(currentGoal, newLayerCombined);
+
+        // bring game state up to date
+        updatedGame.newLayer = newLayerCombined;
 
         // if it is part of the current recipe
         if (isPartOfCurrentGoal) {
@@ -279,18 +253,63 @@ Rune.initLogic({
             // figure out what was combined
             // assume it's the newest thing?
             const newest = newLayerCombined.at(-1);
-            // TODO: if you do multiple combinations, you don't get points
+            // FIXME: if you do multiple combinations, you don't get points
             // award points
             if (newest) {
               updatedGame.score = updatedGame.score + countAtomicIngredients(newest) * ScoreMultiplier;
             }
 
+            // the hint should change to be the next thing
+            // get the recipe
+            const recipe = RecipeBook[currentGoal];
+            const brokenUpRecipe = turnRecipeIntoNonCakeParts(currentGoal);
+
+            // break it down into all non-cake components
+
+            // FIXME: this logic only works for the current game
+            // figure out where we are
+            let recipeIndex = 0;
+            for (const item of updatedGame.newLayer) {
+              // do a comparison
+              // FIXME: this logic only works for ordered stuff. As all cakes are ordered, this is good enough for now
+              if (recipe.ordered) {
+                // element by element comparison
+                if (item !== brokenUpRecipe.at(recipeIndex)) {
+                  break;
+                }
+                recipeIndex++;
+              } else {
+                console.error(`functionality to generate the next hint for the unordered recipe ${currentGoal} is not implemented yet`)
+              }
+            }
+
+            // special case: see if the first thing is the cake
+            // this is for the cake flavors whose logic breaks this code
+            if (updatedGame.newLayer[0] === recipe.recipe[0] && updatedGame.newLayer[0] === "basic_cake" && recipe.recipe[0] === "basic_cake") {
+              // show the whole recipe
+              updatedGame.hint.name = currentGoal;
+              updatedGame.hint.recipe = RecipeBook[currentGoal];
+            } else if (recipeIndex < brokenUpRecipe.length) {
+              // check the length to make sure it's not out of bounds
+              // grab the thing and assign it as the hint, if it is a goal
+              const nextHint = brokenUpRecipe.at(recipeIndex);
+              if (isGoalType(nextHint)) {
+                // reset the hint information and grab the new one
+                updatedGame.hint.name = nextHint;
+                updatedGame.hint.recipe = RecipeBook[nextHint];
+              } else if (isPlacableIngredient(nextHint)) {
+                // this might be an ingredient? I don't think this code runs though
+                updatedGame.hint.name = currentGoal;
+                updatedGame.hint.recipe = RecipeBook[currentGoal];
+              }
+            } else {
+              console.error(`Something is off when generating the new hint, with the indices`)
+            }
+
+
             // give feedback
             updatedGame.feedback = "encourage";
           }
-
-          // bring game state up to date
-          updatedGame.newLayer = newLayerCombined;
 
           // side note: we keep the current thing in the layer
         } else {

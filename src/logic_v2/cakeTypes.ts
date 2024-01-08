@@ -47,27 +47,33 @@ export const Goals = [
 export const RecipeBook: Record<GoalType, Recipe> = {
     "cake_base": {
         recipe: ["eggs", "flour"],
-        ordered: false
+        ordered: false,
+        isCake: false,
     },
     "cake_frosting": {
         recipe: ["butter", "sugar"],
-        ordered: false
+        ordered: false,
+        isCake: false,
     },
     "basic_cake": {
         recipe: ["cake_base", "cake_frosting"],
         ordered: true,
+        isCake: true,
     },
     "choco_cake": {
         recipe: ["basic_cake", "chocolate"],
         ordered: true,
+        isCake: true,
     },
     "straw_cake": {
         recipe: ["basic_cake", "strawberry"],
         ordered: true,
+        isCake: true,
     },
     "carrot_cake": {
         recipe: ["basic_cake", "carrot"],
         ordered: true,
+        isCake: true,
     }
 }
 
@@ -132,5 +138,6 @@ export type RecipeComponent = CakeLayerType
 
 export interface Recipe {
     recipe: RecipeComponent[],
-    ordered: boolean
+    ordered: boolean,
+    isCake: boolean,
 }
