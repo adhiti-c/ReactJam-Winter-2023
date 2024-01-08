@@ -17,6 +17,7 @@ import useSound from 'use-sound';
 import cafeSound from '../assets/sweet cafe.mp3'
 import { Player, Players } from "rune-games-sdk";
 import Syrup from "./objects/syrup";
+import Loss from "./staticUI/states/loss";
 
 export default function Game({ game, player, players }: { game: GameState, player: Player, players: Players }) {
 
@@ -170,10 +171,7 @@ export default function Game({ game, player, players }: { game: GameState, playe
             gameTimerHTML = <PlayingUI game={game} selectedIngredient={selectedIngredient} setSelectedIngredient={setSelectedIngredient} player={player} dropIngredient={handleDrop} />
             break;
         case "loss":
-            // gameTimerHTML =
-            //     <div className="time-left">
-            //         Game Over
-            //     </div>
+            gameTimerHTML = <Loss score={game.score}/>
             break;
     }
 
