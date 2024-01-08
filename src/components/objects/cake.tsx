@@ -5,6 +5,7 @@ import { RoundedBox, useTexture } from "@react-three/drei";
 import { RapierRigidBody, RigidBody } from "@react-three/rapier";
 import { LayerToAssetMap } from "../../logic_v2/assetMap";
 import useSound from 'use-sound';
+import Wheat from "../../assets/textures/wheatBlock.svg"
 
 import { CakeLayerType } from "../../logic_v2/cakeTypes";
 import CombineSound from "../../assets/blockSound.wav"
@@ -18,7 +19,10 @@ export default function Cake({ texture, index, position, setBlockInMotion, setCa
     const assetMap = LayerToAssetMap[texture]
     const block = assetMap.block;
     const isBlenderObj = assetMap.isBlenderObj
-    colorMap = useTexture(block);
+    // if (!isBlenderObj) {
+    //     colorMap = useTexture(block);
+    // }
+    colorMap = useTexture(isBlenderObj ? Wheat : block);
 
     // if (texture === "eggs") {
     //     colorMap = useTexture("/src/assets/textures/wheatBlock.svg")
