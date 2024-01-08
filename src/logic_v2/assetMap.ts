@@ -33,6 +33,12 @@ import WheatTexture from "../assets/textures/wheatBlock.svg";
 import FrostingTexture from "../assets/textures/frostingBlock.svg";
 import EggTexture from "../assets/textures/eggBlock.svg";
 
+// flavor textures
+import StrawTexture from "../assets/textures/strawBlock.svg";
+import ChocoTexture from "../assets/textures/chocoBlock.svg";
+import CarrotTexture from "../assets/textures/carrotBlock.svg";
+
+
 // import types and stuff
 import { CakeLayerType } from "./cakeTypes";
 
@@ -59,39 +65,39 @@ interface assetInformation {
 export const LayerToAssetMap: Record<CakeLayerType, assetInformation> = {
     // fill the stuff in here
     "eggs": {
-        icon: Egg,
+        icon: EggTexture,
         isBlenderObj: false,
         block: EggTexture,
     },
     "flour": {
-        icon: Wheat,
+        icon: WheatTexture,
         isBlenderObj: false,
         block: WheatTexture,
     },
     "butter": {
-        icon: Butter,
+        icon: ButterTexture,
         isBlenderObj: false,
         block: ButterTexture,
     },
     "sugar": {
-        icon: Sugar,
+        icon: SugarTexture,
         isBlenderObj: false,
         block: SugarTexture,
     },
     "strawberry": {
         icon: Straw,
         isBlenderObj: false, // TODO: make this true
-        block: WheatTexture, // TODO: update with strawberry blender model
+        block: StrawTexture, // TODO: update with strawberry blender model
     },
     "chocolate": {
         icon: Chocolate,
         isBlenderObj: false, // TODO: make this true
-        block: WheatTexture, // TODO: update with chocolate blender model
+        block: ChocoTexture, // TODO: update with chocolate blender model
     },
     "carrot": {
         icon: Carrot,
         isBlenderObj: false, // TODO: make this true
-        block: WheatTexture, // TODO: update with carrot blender model
+        block: CarrotTexture, // TODO: update with carrot blender model
     },
     // do all the combos now
     "cake_base": {

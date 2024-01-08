@@ -1,8 +1,8 @@
 import React from 'react'
 import { GameState } from '../logic_v2/types'
 
-function FinalRecipeItem({ img, feedbackState }: { img: string, feedbackState: boolean }) {
-  const finalContainerStyle = {
+export function generateFinalContainerStyle(img: string) {
+  return {
     backgroundImage: `url(${img})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
@@ -11,8 +11,11 @@ function FinalRecipeItem({ img, feedbackState }: { img: string, feedbackState: b
     overflow: 'hide',
     border: '4px solid #fff',
     padding: '0',
-
   }
+}
+
+function FinalRecipeItem({ img, feedbackState }: { img: string, feedbackState: boolean }) {
+  const finalContainerStyle = generateFinalContainerStyle(img);
 
   // const isSuccess = game && game.feedback === 'success';
 
