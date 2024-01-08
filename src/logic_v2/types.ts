@@ -12,7 +12,7 @@ import {
  */
 export type GamePhase = "lobby" | "tutorial" | "playing" | "loss";
 
-export type Feedback = "waiting" | "success" | "failure" | "encourage" | "streak";
+export type Feedback = "waiting" | "success" | "failure" | "encourage" | "streak" | "start";
 
 export interface Player {
   id: PlayerId;

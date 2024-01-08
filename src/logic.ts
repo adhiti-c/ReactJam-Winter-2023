@@ -384,6 +384,8 @@ Rune.initLogic({
         game.lastCountdown = Rune.gameTime();
         // send the players to the "playing" screen
         game.phase = "playing";
+        // set feedback to be go
+        game.feedback = "start";
         // start the timer for the playing game
         game.timeLeft = StartTimeLeftMilliseconds;
       } else if (game.isStartingCountdown && (Object.values(game.players).every((player) => player.ready))) {

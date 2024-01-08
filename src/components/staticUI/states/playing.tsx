@@ -117,6 +117,11 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
                     You're on a {`${game.streak}`} streak!
                 </div>
             break;
+        case "start":
+            feedback =
+                <div className="feedback success">
+                    Go!
+                </div>
     }
 
     // timer calculations
