@@ -56,7 +56,10 @@ function RecipeItem({ img, ingredient, game, clientPlayerId }: { img: string, in
 
           </div>
         </div>
-        {owner !== null ? <img src={ownerIsClient ? PlayerIndexToCharacterIcon[owner].highlightGameIcon : PlayerIndexToCharacterIcon[owner].gameIcon} /> : null}
+        <div className= {` ${!isPlaced && !ownerIsClient ? "owner-icon-contain" : null} `}>
+          {owner !== null ? <img src={ownerIsClient ? PlayerIndexToCharacterIcon[owner].highlightGameIcon : PlayerIndexToCharacterIcon[owner].gameIcon} /> : null}
+        </div>
+        
       </div>
       {/* figure out who owns this item, if anyone */}
       {/* rn this is in the success state */}

@@ -22,21 +22,25 @@ export default function TutorialIUI() {
     const handleBack = () => {
         // decrements page by decreasing by 1
         // 1 is set as the minimum index (first page)
-        setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+
+        // setCurrentPage((prevPage) => Math.max(prevPage - 1, 0));
+        setCurrentPage((currentPage - 1) % pages.length)
     }
     const handleForward = () => {
 
         const totalPages = 6;
         playClickSound();
         // increments pages by 1 but ensures the max at total pages
-        setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages))
+
+        // setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages))
+        setCurrentPage((currentPage + 1) % pages.length)
     }
     //* sets visibility of the page
     const [isVisible, setIsVisible] = useState(true);
 
     const handleClose = () => {
         setIsVisible(false);
-        setCurrentPage(1);
+        setCurrentPage(0);
         playClickSound();
         const TutorialContain = document.querySelector('.tutorial-contain')
         if (TutorialContain) {
@@ -78,10 +82,10 @@ export default function TutorialIUI() {
                     {/* back and forth buttons */}
                     <div className="buttons-contain">
                         {/* disabled means users cant access it */}
-                        <button onClick={handleBack} onMouseEnter={handleHover} className='back-button' disabled={currentPage === 0}>
+                        <button onClick={handleBack} onMouseEnter={handleHover} className='backforward-button'>
                             <FontAwesomeIcon icon={faArrowLeft} />
                         </button>
-                        <button onClick={handleForward} onMouseEnter={handleHover} className='forward-button' disabled={currentPage === pages.length - 1}>
+                        <button onClick={handleForward} onMouseEnter={handleHover} className='backforward-button' >
                             <FontAwesomeIcon icon={faArrowRight} />
                         </button>
                     </div>
