@@ -4,6 +4,7 @@ import { CakeLayerType, isPlacableIngredient } from '../../logic_v2/cakeTypes';
 import { PlayerIndexToCharacterIcon } from '../../logic_v2/assetMap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { generateFinalContainerStyle } from '../FinalRecipeItem';
 
 function RecipeItem({ img, ingredient, game }: { img: string, ingredient: CakeLayerType, game: GameState }) {
   // loop through the inventory to find out who owns what
@@ -26,27 +27,27 @@ function RecipeItem({ img, ingredient, game }: { img: string, ingredient: CakeLa
   }, [game.newLayer])
   return (
     <>
-   <div className={`recipe-step-contain ${!isPlaced ? "disabled-recipe-item" : null}`} >
-      <div className="recipe-item">
-        
-      <div >
-        <img src={img} />
-        {
-          isPlaced ?
-            <div className="check-contain">
-              <FontAwesomeIcon icon={faCheck} />
-            </div>
-            : null
-        }
+      <div className={`recipe-step-contain ${!isPlaced ? "disabled-recipe-item" : null}`} >
+        <div style={generateFinalContainerStyle(img)} className="recipe-item">
 
+          <div >
+            {/* <img src={img} /> */}
+            {
+              isPlaced ?
+                <div className="check-contain">
+                  <FontAwesomeIcon icon={faCheck} />
+                </div>
+                : null
+            }
+
+          </div>
+        </div>
+        {owner !== null ? <img src={PlayerIndexToCharacterIcon[owner].gameIcon} /> : null}
       </div>
-      </div>
-      {owner !== null ? <img src={PlayerIndexToCharacterIcon[owner].gameIcon} /> : null}
-      </div>
-         {/* figure out who owns this item, if anyone */}
+      {/* figure out who owns this item, if anyone */}
       {/* rn this is in the success state */}
-      
-      
+
+
     </>
   )
 }

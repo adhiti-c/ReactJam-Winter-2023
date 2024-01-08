@@ -65,22 +65,22 @@ interface assetInformation {
 export const LayerToAssetMap: Record<CakeLayerType, assetInformation> = {
     // fill the stuff in here
     "eggs": {
-        icon: Egg,
+        icon: EggTexture,
         isBlenderObj: false,
         block: EggTexture,
     },
     "flour": {
-        icon: Wheat,
+        icon: WheatTexture,
         isBlenderObj: false,
         block: WheatTexture,
     },
     "butter": {
-        icon: Butter,
+        icon: ButterTexture,
         isBlenderObj: false,
         block: ButterTexture,
     },
     "sugar": {
-        icon: Sugar,
+        icon: SugarTexture,
         isBlenderObj: false,
         block: SugarTexture,
     },
