@@ -184,7 +184,7 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
                     {/* show all the cake layers */}
                 </div>
                 <div className="recipe-section">
-                    <Recipe game={game} feedbackState={game.feedback === "success"} />
+                    <Recipe game={game} feedbackState={game.feedback === "success"} clientPlayerId={player.playerId} />
                 </div>
             </div>
 

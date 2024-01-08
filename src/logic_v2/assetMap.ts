@@ -17,6 +17,9 @@ import Cow from "../assets/characters/cow.svg";
 import CowLobby from '../assets/characters/cowLobby.svg'
 import ChickenLobby from '../assets/characters/chickenLobby.svg'
 
+import CowHighlight from '../assets/characters/cowIconHighlight.svg'
+import ChickenHighlight from '../assets/characters/chickIconHighlight.svg'
+
 // these are icons for Next Up and recipe hints
 import Cake from "../assets/icons/regularCake.svg";
 import ChocolateCake from "../assets/icons/chocolateCake.svg";
@@ -142,6 +145,7 @@ export interface playerAssets {
     gameIcon: string,
     lobbyIcon: string,
     charName: string,
+    highlightGameIcon: string,
 }
 
 export const PlayerIndexToCharacterIcon: playerAssets[] = [
@@ -149,10 +153,12 @@ export const PlayerIndexToCharacterIcon: playerAssets[] = [
         gameIcon: Chicken,
         lobbyIcon: ChickenLobby,
         charName: "Chicken",
+        highlightGameIcon: ChickenHighlight
     },
     {
         gameIcon: Cow,
         lobbyIcon: CowLobby,
         charName: "Cow",
+        highlightGameIcon: CowHighlight
     },
 ]

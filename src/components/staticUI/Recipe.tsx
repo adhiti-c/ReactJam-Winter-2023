@@ -6,11 +6,12 @@ import { GamePhase, GameState } from '../../logic_v2/types'
 import { Fragment } from 'react'
 
 type Recipe = {
-  game: GameState
-  feedbackState: boolean
+  game: GameState,
+  feedbackState: boolean,
+  clientPlayerId: string,
   // ingredient: string[]; 
 };
-function Recipe({ game, feedbackState }: Recipe) {
+function Recipe({ game, feedbackState, clientPlayerId }: Recipe) {
 
 
   // parse the current hint
@@ -34,6 +35,7 @@ function Recipe({ game, feedbackState }: Recipe) {
                   img={LayerToAssetMap[component].icon}
                   game={game}
                   ingredient={component}
+                  clientPlayerId={clientPlayerId}
                 />
                 {/* only show + on not the last recipe box */}
                 {
