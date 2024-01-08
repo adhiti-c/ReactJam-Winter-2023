@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import NextUp from "../NextUp";
 import Recipe from "../Recipe";
 import InventorySlot from "../InventorySlot";
-import { LayerToAssetMap } from "../../../logic_v2/assetMap";
+import { LayerToAssetMap, PlayerIndexToCharacterIcon } from "../../../logic_v2/assetMap";
 import { GameState } from "../../../logic_v2/types";
 import { PlacableIngredient } from "../../../logic_v2/cakeTypes";
 import CakeReg from "../../../assets/icons/regularCake.svg";
@@ -13,7 +13,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { useSpring, animated } from '@react-spring/web'
 import Arrow from '../../../assets/tutorial/arrowTutorial.svg'
-import { PlayerIndexToCharacterIcon } from "../../../logic_v2/assetMap";
 /**
  * the props to this UI are: the game state, the ingredient currently selected (passed in from the parent which remembers the state), and a useState function to change this selected ingredient
  * it works identically as if we had the useState in this file.
@@ -98,8 +97,8 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
                         <img src={Arrow} alt="" />
                         <h1>Follow the Recipe!</h1>
                     </div>
-                    
-                    
+
+
                     <audio id="failureSound" preload="auto">
                         <source src={FailureSound} type="audio/wav" />
                     </audio>
@@ -131,30 +130,30 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
     // $ allows you to embed operators in a string
     // minutes:if seconds under 10, add 0 seconds
     const formattedTimer = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`
-//* spring animations for text
-const props = useSpring({ total: game.score });
-// useEffect(() => {
-//     handleSpringAnimation()
-//   }, [game.score])
-//   const props = useSpring({ total: number })
-//   const handleSpringAnimation = () => {
-//     <animated.div>{props.total.to(x => x.toFixed(0))}</animated.div>
-//   }
+    //* spring animations for text
+    const props = useSpring({ total: game.score });
+    // useEffect(() => {
+    //     handleSpringAnimation()
+    //   }, [game.score])
+    //   const props = useSpring({ total: number })
+    //   const handleSpringAnimation = () => {
+    //     <animated.div>{props.total.to(x => x.toFixed(0))}</animated.div>
+    //   }
     return (
         <>
-        {
+            {
                 hasPlaced ? (
-                    
-                        <div className="waiting-contain">
-                            <h1>Waiting for the other player</h1>
-                        </div>
-                        
-                   ) :(
+
+                    <div className="waiting-contain">
+                        <h1>Waiting for the other player</h1>
+                    </div>
+
+                ) : (
                     <span>
                         {/* <div className="feedback encourage-animate">
                             <h1 className="encourage">Your turn!</h1>
                         </div> */}
-                        
+
                     </span>)
             }
             <div className="top-section">
@@ -163,30 +162,30 @@ const props = useSpring({ total: game.score });
                     {/* <div>{layers}</div> */}
                     {/* player icons */}
                     <div className="player-icon-contain">
-                        <img src={PlayerIndexToCharacterIcon[game.players[player.playerId].number].gameIcon}/>
+                        <img src={PlayerIndexToCharacterIcon[game.players[player.playerId].number].gameIcon} />
                     </div>
-                    
 
-                    
+
+
                     <div className={`${game.feedback === "success" ? 'success-time' : ''}`}>
                         <h1>{formattedTimer}</h1>
                     </div>
                     <div className={`score-contain${game.feedback === "success" ? ' success-score' : ''}`} >
-                    {/* <div className="score-contain"> */}
-                        <FontAwesomeIcon icon={faStar}/>
+                        {/* <div className="score-contain"> */}
+                        <FontAwesomeIcon icon={faStar} />
                         <h2><animated.h2>{props.total.to(x => x.toFixed(0))}</animated.h2></h2>
                     </div>
                     {/* <NextUp layerName={game.goals.current} /> */}
                     {/* show all the cake layers */}
                 </div>
                 <div className="recipe-section">
-                    <Recipe game={game} feedbackState = {game.feedback === "success"}/>
+                    <Recipe game={game} feedbackState={game.feedback === "success"} />
                 </div>
             </div>
 
             {feedback}
 
-            
+
 
             <div className="inventory-contain">
                 {/* maps each ingredient to an inventoryslot */}

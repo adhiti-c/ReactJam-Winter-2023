@@ -9,6 +9,8 @@ export function calculateCurrentCameraY(yPos: number): number {
   return -1 * yPos / yPosDivisionFactor
 }
 
+export const cakeOffset = 1.4;
+
 export default function Camera({ yPos }: { yPos: number | undefined }) {
   // change this to affect the camera's zoom
   // larger is more zoomed out
@@ -30,8 +32,10 @@ export default function Camera({ yPos }: { yPos: number | undefined }) {
     } else {
       // recalculate the vector
 
-      const newXandZ = initialXandZ + zoomFactor
-      newCamPos = new Vector3(newXandZ, calculateCurrentCameraY(yPos), newXandZ)
+      const newXandZ = initialXandZ + zoomFactor;
+      // const newY = calculateCurrentCameraY(yPos)
+      // console.log(newY)
+      newCamPos = new Vector3(newXandZ, yPos + cakeOffset, newXandZ)
     }
 
     setCameraVector(newCamPos)

@@ -1,4 +1,4 @@
-import { CakeLayerType, FlavorType, GoalType, PlacableIngredient, Recipe, RecipeBook, RecipeComponent, isFlavor, isPlacableIngredient } from "./cakeTypes";
+import { CakeLayerType, FlavorType, GoalType, PlacableIngredient, Recipe, RecipeBook, RecipeComponent, isFlavor, isGoalType, isPlacableIngredient } from "./cakeTypes";
 import { Player } from "./types";
 
 /**
@@ -272,4 +272,25 @@ export function countAtomicIngredients(goal: GoalType | PlacableIngredient): num
         }
     }
     return points;
+}
+
+export function turnRecipeIntoNonCakeParts(goal: GoalType | PlacableIngredient): CakeLayerType[] {
+    // base case: an ingredient
+    if (isPlacableIngredient(goal)) {
+        return [goal];
+    }
+    // recursion
+
+    // get the recipe
+    const goalRecipe = RecipeBook[goal];
+    let nonCake: CakeLayerType[] = []
+    for (const component of goalRecipe.recipe) {
+        if (isGoalType(component) && RecipeBook[component].isCake) {
+            // recursive
+            nonCake = nonCake.concat(turnRecipeIntoNonCakeParts(component));
+        } else {
+            nonCake.push(component);
+        }
+    }
+    return nonCake;
 }

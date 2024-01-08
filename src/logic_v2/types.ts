@@ -77,11 +77,6 @@ export interface GameState {
      * recipe for the GoalType
      */
     recipe: Recipe;
-
-    /**
-     * number of times this hint has been baked. Once it reaches a certain threshold, the players should have it memorized
-     */
-    count: number;
   };
 
   goals: {

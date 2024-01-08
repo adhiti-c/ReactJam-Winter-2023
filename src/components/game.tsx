@@ -10,7 +10,7 @@ import { Physics, RigidBody } from "@react-three/rapier";
 import { Vector3 } from "three";
 import PlayingUI from "../components/staticUI/states/playing";
 import TutorialUI from "../components/staticUI/states/tutorial";
-import Camera, { calculateCurrentCameraY } from "./objects/camera";
+import Camera, { calculateCurrentCameraY, cakeOffset } from "./objects/camera";
 import Lobby from "./staticUI/states/lobby";
 // fix the typing error: https://github.com/joshwcomeau/use-sound/issues/135#issuecomment-1723305858
 import useSound from 'use-sound';
@@ -90,7 +90,7 @@ export default function Game({ game, player, players }: { game: GameState, playe
             for (let i = currentCakeLength; i < gameStateCakeLength; i++) {
                 // create more blocks
                 const blockType = game.cake[i];
-                const spawnY = cakes.length === 0 || cakeYPositions.length === 0 ? 1 : calculateCurrentCameraY(cakeYPositions.at(-1)!) + i;
+                const spawnY = cakes.length === 0 || cakeYPositions.length === 0 ? 1 : cakeYPositions.at(-1)! + cakeOffset + i * 1.5;
                 console.log(`Spawning at: ${spawnY}`)
                 // old calculation: 1 + ((cakes.length + currentCakeLength) * 0.5)
                 latestCake = <Cake position={new Vector3(0, spawnY, 0)} index={i} texture={blockType} key={"cake-" + blockType + "-" + i} setBlockInMotion={setBlockInMotion} setCakeYPosition={setCakeYPositions} cakeYPos={cakeYPositions} />
@@ -124,7 +124,7 @@ export default function Game({ game, player, players }: { game: GameState, playe
             for (let i = currentLayerLength; i < gameStateLayerLength; i++) {
                 // create more blocks
                 const blockType = game.newLayer[i];
-                const spawnY = cakes.length === 0 || cakeYPositions.length === 0 ? 1 : calculateCurrentCameraY(cakeYPositions.at(-1)!) + i * 1.5;
+                const spawnY = cakes.length === 0 || cakeYPositions.length === 0 ? 1 : cakeYPositions.at(-1)! + cakeOffset + i * 1.5;
                 additionalBlocks.push(
                     <Cake position={new Vector3(0, spawnY, 0)} texture={blockType} key={"new-layer-" + blockType + "-" + i} setBlockInMotion={setBlockInMotion} />
                 )
@@ -142,7 +142,7 @@ export default function Game({ game, player, players }: { game: GameState, playe
                 let additionalBlocks: JSX.Element[] = [];
                 for (let i = 0; i < gameStateLayerLength; i++) {
                     const blockType = game.newLayer[i];
-                    const spawnY = cakes.length === 0 || cakeYPositions.length === 0 ? 1 : calculateCurrentCameraY(cakeYPositions.at(-1)!) + currentLayerLength;
+                    const spawnY = cakes.length === 0 || cakeYPositions.length === 0 ? 1 : cakeYPositions.at(-1)! + cakeOffset + i + currentLayerLength;
                     additionalBlocks.push(
                         <Cake position={new Vector3(0, spawnY, 0)} texture={blockType} key={"new-layer-" + blockType + "-" + i} setBlockInMotion={setBlockInMotion} />
                     )
