@@ -167,7 +167,7 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
                     {/* <div>{layers}</div> */}
                     {/* player icons */}
                     <div className="player-icon-contain">
-                        <img src={PlayerIndexToCharacterIcon[game.players[player.playerId].number].gameIcon} />
+                        <img src={PlayerIndexToCharacterIcon[game.players[player.playerId].number].highlightGameIcon} />
                     </div>
 
 

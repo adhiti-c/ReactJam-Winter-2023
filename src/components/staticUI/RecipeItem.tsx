@@ -43,7 +43,7 @@ function RecipeItem({ img, ingredient, game, clientPlayerId }: { img: string, in
   }, [game.newLayer])
   return (
     <>
-      <div className={`recipe-step-contain ${!isPlaced ? "disabled-recipe-item" : null}`} >
+      <div className={`recipe-step-contain ${!isPlaced && !ownerIsClient ? "disabled-recipe-item" : null} `} >
         <div style={generateFinalContainerStyle(img)} className={`recipe-item ${ownerIsClient ? "current-player-recipe-hint" : null}`}>
           <div>
             {
