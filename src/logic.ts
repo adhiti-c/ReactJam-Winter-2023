@@ -180,7 +180,7 @@ Rune.initLogic({
         const goalMutable = [...Goals]
 
         const notCakes = goalMutable.filter((goal) =>
-          !RecipeBook[goal].isCake
+          RecipeBook[goal].isCake
         )
 
         const randomIndex = chooseRandomIndexOfArray(notCakes);
@@ -211,7 +211,7 @@ Rune.initLogic({
           updatedGame.hint.name = firstComponent;
         } else {
           // this is a fallback
-          console.log("fallback hint")
+          console.log("fallback hint 2")
           updatedGame.hint.recipe = RecipeBook[newGoal];
         }
 
@@ -359,7 +359,7 @@ Rune.initLogic({
             updatedGame.hint.name = firstComponent;
           } else {
             // this is a fallback
-            console.log("fallback hint")
+            console.log("fallback hint 1")
             updatedGame.hint.recipe = RecipeBook[newGoal];
           }
         }

@@ -88,14 +88,20 @@ export const LayerToAssetMap: Record<CakeLayerType, assetInformation> = {
         block: SugarTexture,
     },
     "strawberry": {
-        icon: Straw,
+        // icon: Straw,
+        // isBlenderObj: false, // TODO: make this true
+        // block: StrawTexture, // TODO: update with strawberry blender model
+        icon: Carrot,
         isBlenderObj: false, // TODO: make this true
-        block: StrawTexture, // TODO: update with strawberry blender model
+        block: CarrotTexture, // TODO: update with carrot blender model
     },
     "chocolate": {
-        icon: Chocolate,
+        // icon: Chocolate,
+        // isBlenderObj: false, // TODO: make this true
+        // block: ChocoTexture, // TODO: update with chocolate blender model
+        icon: Carrot,
         isBlenderObj: false, // TODO: make this true
-        block: ChocoTexture, // TODO: update with chocolate blender model
+        block: CarrotTexture, // TODO: update with carrot blender model
     },
     "carrot": {
         icon: Carrot,
@@ -116,22 +122,28 @@ export const LayerToAssetMap: Record<CakeLayerType, assetInformation> = {
     "basic_cake": {
         icon: Cake,
         isBlenderObj: true,
-        block: "blender/cake/cake.obj",
-        mtl: "blender/cake/cake.mtl",
+        block: "blender/carrot_cake/carrot_cake.obj",
+        mtl: "blender/carrot_cake/carrot_cake.mtl",
+        // block: "blender/cake/cake.obj",
+        // mtl: "blender/cake/cake.mtl",
         // block: "blender/straw_cake/straw_cake.obj",
         // mtl: "blender/straw_cake/straw_cake.mtl",
     },
     "choco_cake": {
         icon: ChocolateCake,
         isBlenderObj: true,
-        block: "blender/cake/cake.obj",
-        mtl: "blender/cake/cake.mtl",
+        // block: "blender/cake/cake.obj",
+        // mtl: "blender/choco_cake/choco_cake.mtl",
+        block: "blender/carrot_cake/carrot_cake.obj",
+        mtl: "blender/carrot_cake/carrot_cake.mtl",
     },
     "straw_cake": {
         icon: StrawberryCake,
         isBlenderObj: true,
-        block: "blender/cake/cake.obj",
-        mtl: "blender/cake/cake.mtl",
+        // block: "blender/cake/cake.obj",
+        // mtl: "blender/straw_cake/straw_cake.mtl",
+        block: "blender/carrot_cake/carrot_cake.obj",
+        mtl: "blender/carrot_cake/carrot_cake.mtl",
     },
     "carrot_cake": {
         icon: CarrotCake,
