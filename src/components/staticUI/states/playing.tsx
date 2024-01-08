@@ -163,8 +163,8 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
             break;
         case "start":
             feedback =
-                <div className="feedback success">
-                    Go!
+                <div className="feedback success go">
+                    <h1>Go!</h1>
                     <audio id="goSound" preload="auto">
                         <source src={GoSound} type="audio/wav" />
                     </audio>
