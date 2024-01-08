@@ -95,7 +95,7 @@ button {
 .top-section {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 4px;
   padding: 12px;
   align-items: flex-start;
   top: 0;
@@ -272,6 +272,7 @@ button {
 .final-recipe-success {
   animation: finalRecipeAnimate 1s ease-in-out forwards
 }
+
 @keyframes finalRecipeAnimate {
   0% {
     opacity: .5;
@@ -285,13 +286,44 @@ button {
     opacity: .5;
   }
 }
+.recipe-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 8px;
+}
+.make-contain {
+  display: flex;
+  flex-direction: row;
+  background-color: #fff;
+  padding: 6px 8px;
+  width: fit-content;
+  gap: 8px;
+  border-radius: 22px;
+  justify-content: center;
+  align-items: center;
+}
+.make-contain h2 {
+  color: var(--pink);
+  font-size: 18px;
+}
+.make-contain img {
+  width: 30px;
+}
 /* disabeled recipe item (ie not achevied yet by the CURRENT user) */
 .disabled-recipe-item {
   opacity: .5;
 }
-
-.recipe-item img {
-  max-width: 30px;
+.recipe-step-contain {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.recipe-step-contain img {
+  max-width: 45px;
 }
 
 .check-contain {
@@ -606,6 +638,10 @@ button {
 }
 
 /** tutorial page */
+/* playing section */
+.tutorial-text-contain img{
+  width: 60px;
+}
 /* lobby section */
 .tutorial-button {
   background-color: transparent;
@@ -818,4 +854,19 @@ button {
   100%{
     color: var(--pink);
   }
+}
+/* player indicator */
+.player-icon-contain img{
+  height: 60px;
+  /* outline: 4px solid var(--pink); */
+}
+.recipe-operator-contain {
+  height: 57px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 4px;
+}
+.recipe-operator-contain h2 {
+  font-size: 28px;
 }
