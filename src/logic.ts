@@ -1,6 +1,6 @@
 import { PlayerId } from "rune-games-sdk";
 import { CakeLayerType, GoalType, Goals, PlacableIngredient, RecipeBook, isFlavor, isGoalType, isPlacableIngredient } from "./logic_v2/cakeTypes";
-import { StartTimeLeftMilliseconds, HintRepeatCount, FlatTimeIncreaseOnComboMilliseconds, FlatTimePenaltyMilliseconds, StreakFeedbackFrequency, ScoreMultiplier } from "./logic_v2/logicConfig";
+import { StartTimeLeftMilliseconds, HintRepeatCount, FlatTimeIncreaseOnComboMilliseconds, FlatTimePenaltyMilliseconds, StreakFeedbackFrequency, ScoreMultiplier, LossScreenWaitTimeMilliseconds } from "./logic_v2/logicConfig";
 import { Player, GameState } from "./logic_v2/types";
 import { compareArraysAsSets, compareArraysInOrder, chooseRandomIndexOfArray, removeFromArray, checkProgress, matchRecipe, combineLayer, giveAllPlayersRandomly, getFlavorsInGoal, isInAnyInventory, countAtomicIngredients, turnRecipeIntoNonCakeParts } from "./logic_v2/util";
 
@@ -359,37 +359,7 @@ Rune.initLogic({
   },
   update: ({ game, allPlayerIds }) => {
     // if the players are currently playing
-    if (game.phase === "playing") {
-      if (game.timeLeft < 0) {
-        // game over for players
-        // set the phase to be loss
-        game.timeLeft = 0;
-        game.phase = "loss";
-
-        // make everyone lose
-        let playerStatus: { [playerId: string]: number | "WON" | "LOST"; } = {}
-        // add all players to the game over screen with the score
-        allPlayerIds.forEach(playerId => {
-          playerStatus[playerId] = game.score;
-        });
-        Rune.gameOver({
-          players: playerStatus,
-          delayPopUp: true
-        });
-        game.timeLeft = 3000;
-        game.lastCountdown = Rune.gameTime();
-      } else {
-        // count down
-        const timeDiff = Rune.gameTime() - game.lastCountdown;
-        // if we counting down, count down every second
-        if (timeDiff >= 1) {
-          // decrement the time left seen by the players by 1 millisecond
-          game.timeLeft = game.timeLeft - timeDiff;
-          // save the last time the countdown ran in the game state
-          game.lastCountdown = Rune.gameTime();
-        }
-      }
-    } else if (game.phase === "lobby") {
+    if (game.phase === "lobby") {
       if (game.timeLeft < 0) {
         // bring players to the playing screen
         // start the real game countdown from when we moved over
@@ -412,11 +382,37 @@ Rune.initLogic({
           game.lastCountdown = Rune.gameTime();
         }
       }
-    } else if (game.phase === "loss") {
-      // TODO: process counting down on the next update to prevent players from seeing the new timer when transitioning from the playing to loss screen
+    } else if (game.phase === "playing") {
+      if (game.timeLeft > 0) {
+        // count down
+        const timeDiff = Rune.gameTime() - game.lastCountdown;
+        // if we counting down, count down every second
+        if (timeDiff >= 1) {
+          // decrement the time left seen by the players by 1 millisecond
+          game.timeLeft = game.timeLeft - timeDiff;
+          // save the last time the countdown ran in the game state
+          game.lastCountdown = Rune.gameTime();
+        }
+      } else {
+        // game over for players
+        // set the phase to be loss
+        game.timeLeft = 0;
+        game.phase = "loss";
 
+        game.timeLeft = LossScreenWaitTimeMilliseconds;
+        game.lastCountdown = Rune.gameTime();
+      }
+    } else if (game.phase === "loss") {
       if (game.timeLeft < 0) {
-        Rune.showGameOverPopUp();
+        // make everyone lose
+        let playerStatus: { [playerId: string]: number | "WON" | "LOST"; } = {}
+        // add all players to the game over screen with the score
+        allPlayerIds.forEach(playerId => {
+          playerStatus[playerId] = game.score;
+        });
+        Rune.gameOver({
+          players: playerStatus,
+        });
       } else {
         const timeDiff = Rune.gameTime() - game.lastCountdown;
         // if we counting down, count down every second
