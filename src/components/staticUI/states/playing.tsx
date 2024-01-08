@@ -9,6 +9,7 @@ import CakeReg from "../../../assets/icons/regularCake.svg";
 import SuccessSound from "../../../assets/successSound.wav";
 import FailureSound from "../../../assets/failureSound.wav";
 import GoSound from "../../../assets/goSound.wav"
+import ScoreSound from "../../../assets/scoreSound.wav"
 import { Player } from "rune-games-sdk";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar } from '@fortawesome/free-solid-svg-icons';
@@ -91,26 +92,17 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
         // keep all these sound stuff in the same useEffect for the feedback
         switch (game.feedback) {
             case "success":
-                playSuccessSound();
+                playSound('successSound');
                 break;
             case "failure":
                 // trigger audio for failure
-                playFailureSound();
+                playSound('failureSound');
                 break;
             case "start":
-                playGoSound();
+                playSound('goSound');
                 break;
         }
     }, [game.feedback])
-    const playSuccessSound = () => {
-        playSound('successSound')
-    };
-    const playFailureSound = () => {
-        playSound('failureSound')
-    }
-    const playGoSound = () => {
-        playSound('goSound')
-    }
 
     function playSound(soundId: string) {
         const sound = document.getElementById(soundId) as HTMLAudioElement;
@@ -152,7 +144,7 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
             feedback =
                 <div className="feedback encourage">
                     <h1> Keep Going!</h1>
-                   
+
                 </div>
             break;
         case "streak":
@@ -184,13 +176,11 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
     const formattedTimer = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`
     //* spring animations for text
     const props = useSpring({ total: game.score });
-    // useEffect(() => {
-    //     handleSpringAnimation()
-    //   }, [game.score])
-    //   const props = useSpring({ total: number })
-    //   const handleSpringAnimation = () => {
-    //     <animated.div>{props.total.to(x => x.toFixed(0))}</animated.div>
-    //   }
+
+    useEffect(() => {
+        playSound("scoreSound")
+    }, [game.score])
+
     return (
         <>
             {
@@ -224,10 +214,13 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
                     </div>
                     <div className={`score-contain${game.feedback === "success" ? ' success-score' : ''}`} >
                         {/* <div className="score-contain"> */}
-                        
+
                         <FontAwesomeIcon icon={faStar} />
                         <h2><animated.h2>{props.total.to(x => x.toFixed(0))}</animated.h2></h2>
                     </div>
+                    <audio id="scoreSound" preload="auto">
+                        <source src={ScoreSound} type="audio/wav" />
+                    </audio>
                     {/* <NextUp layerName={game.goals.current} /> */}
                     {/* show all the cake layers */}
                 </div>
