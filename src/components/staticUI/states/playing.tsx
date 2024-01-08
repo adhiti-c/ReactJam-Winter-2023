@@ -125,7 +125,7 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
         case "success":
             feedback =
                 <div className="feedback success">
-                    Success!
+                    <h1>Success!</h1>
                     <audio id="successSound" preload="auto">
                         <source src={SuccessSound} type="audio/wav" />
                     </audio>
@@ -149,13 +149,14 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
         case "encourage":
             feedback =
                 <div className="feedback encourage">
-                    Keep Going!
+                    <h1> Keep Going!</h1>
+                   
                 </div>
             break;
         case "streak":
             feedback =
                 <div className="feedback success">
-                    You're on a {`${game.streak}`} streak!
+                    <h1>You're on a {game.streak} streak!</h1>
                 </div>
             break;
         case "start":
