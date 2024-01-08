@@ -10,7 +10,7 @@ import { Physics, RigidBody } from "@react-three/rapier";
 import { Vector3 } from "three";
 import PlayingUI from "../components/staticUI/states/playing";
 import TutorialUI from "../components/staticUI/states/tutorial";
-import Camera, { calculateCurrentCameraY } from "./objects/camera";
+import Camera, { calculateCurrentCameraY, cakeOffset } from "./objects/camera";
 import Lobby from "./staticUI/states/lobby";
 // fix the typing error: https://github.com/joshwcomeau/use-sound/issues/135#issuecomment-1723305858
 import useSound from 'use-sound';
@@ -124,7 +124,7 @@ export default function Game({ game, player, players }: { game: GameState, playe
             for (let i = currentLayerLength; i < gameStateLayerLength; i++) {
                 // create more blocks
                 const blockType = game.newLayer[i];
-                const spawnY = cakes.length === 0 || cakeYPositions.length === 0 ? 1 : calculateCurrentCameraY(cakeYPositions.at(-1)!) + i * 1.5;
+                const spawnY = cakes.length === 0 || cakeYPositions.length === 0 ? 1 : calculateCurrentCameraY(cakeYPositions.at(-1)!) + cakeOffset + i * 1.5;
                 additionalBlocks.push(
                     <Cake position={new Vector3(0, spawnY, 0)} texture={blockType} key={"new-layer-" + blockType + "-" + i} setBlockInMotion={setBlockInMotion} />
                 )

@@ -44,7 +44,7 @@ export default function Cake({ texture, index, position, setBlockInMotion, setCa
     const [play] = useSound(CombineSound, { volume: 0.5, loop: false });
 
     return (
-        <RigidBody type={dynamic ? "dynamic" : "fixed"} colliders={isBlenderObj ? "cuboid" : "hull"} ref={rigidBody} onContactForce={(payload) => {
+        <RigidBody type={dynamic ? "dynamic" : "fixed"} position={position} colliders={isBlenderObj ? "cuboid" : "hull"} ref={rigidBody} onContactForce={(payload) => {
             // I think things that are colliding with two things are
             // if (dynamic && payload.target.collider.activeEvents() === 2) {
             // 0 is the dynamic body type, and 1 is the fixed
@@ -70,6 +70,7 @@ export default function Cake({ texture, index, position, setBlockInMotion, setCa
                             prevPositions[index] = pos.y;
                         } else {
                             prevPositions.push(pos.y);
+                            console.log(pos.y)
                         }
                         // update parent state
                         setCakeYPosition(prevPositions);
@@ -83,9 +84,9 @@ export default function Cake({ texture, index, position, setBlockInMotion, setCa
             {/* if dynamic is true, audio is executed */}
             {
                 isBlenderObj ?
-                    <ObjModel texture={texture} position={position} />
+                    <ObjModel texture={texture} />
                     :
-                    <RoundedBox position={position}
+                    <RoundedBox
                         args={size} >
                         <meshStandardMaterial map={colorMap} />
                     </RoundedBox >
