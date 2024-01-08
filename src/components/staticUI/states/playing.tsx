@@ -12,7 +12,8 @@ import { Player } from "rune-games-sdk";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { useSpring, animated } from '@react-spring/web'
-
+import Arrow from '../../../assets/tutorial/arrowTutorial.svg'
+import { PlayerIndexToCharacterIcon } from "../../../logic_v2/assetMap";
 /**
  * the props to this UI are: the game state, the ingredient currently selected (passed in from the parent which remembers the state), and a useState function to change this selected ingredient
  * it works identically as if we had the useState in this file.
@@ -93,7 +94,12 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
         case "failure":
             feedback =
                 <div className="feedback failure">
-                    Wrong Ingredient!
+                    <div className="tutorial-text-contain">
+                        <img src={Arrow} alt="" />
+                        <h1>Follow the Recipe!</h1>
+                    </div>
+                    
+                    
                     <audio id="failureSound" preload="auto">
                         <source src={FailureSound} type="audio/wav" />
                     </audio>
@@ -155,6 +161,11 @@ const props = useSpring({ total: game.score });
                 <div className="state-contain">
 
                     {/* <div>{layers}</div> */}
+                    {/* player icons */}
+                    <div className="player-icon-contain">
+                        <img src={PlayerIndexToCharacterIcon[game.players[player.playerId].number].gameIcon}/>
+                    </div>
+                    
 
                     
                     <div className={`${game.feedback === "success" ? 'success-time' : ''}`}>

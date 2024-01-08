@@ -19,17 +19,25 @@ function Recipe({ game, feedbackState }: Recipe) {
   const goal = hint.name
 
   return (
+    <div className="recipe-wrapper">
+        <div className="make-contain">
+            <h2>create</h2>
+            <img src={LayerToAssetMap[goal].icon} alt="" />
+        </div>
     <div className='recipe-contain'>
       {
         recipe.recipe.map((component, index) => {
           return (
             <Fragment key={`recipe-step-${index}`}>
-              <div className="recipe-contain-step" >
+              
                 <RecipeItem
                   img={LayerToAssetMap[component].icon}
                   game={game}
                   ingredient={component}
                 />
+              
+              <div className="recipe-operator-contain">
+                <h2>+</h2>
               </div>
               
             </Fragment>
@@ -37,14 +45,16 @@ function Recipe({ game, feedbackState }: Recipe) {
         })
       }
       {/* <div className="recipe-contain-step"> */}
-    
+      <div className="recipe-operator-contain">
+                <h2>=</h2>
+              </div>
         <FinalRecipeItem
           img={LayerToAssetMap[goal].icon}
           feedbackState = {feedbackState}
         />
       {/* </div> */}
 
-    </div>
+    </div></div>
   )
 }
 
