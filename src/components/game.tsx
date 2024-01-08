@@ -18,6 +18,7 @@ import cafeSound from '../assets/sweet cafe.mp3'
 import { Player, Players } from "rune-games-sdk";
 import Syrup from "./objects/syrup";
 import Loss from "./staticUI/states/loss";
+import StopUI from "./staticUI/states/stop";
 
 export default function Game({ game, player, players }: { game: GameState, player: Player, players: Players }) {
 
@@ -172,6 +173,9 @@ export default function Game({ game, player, players }: { game: GameState, playe
             break;
         case "loss":
             gameTimerHTML = <Loss game={game} />
+            break;
+        case "stop":
+            gameTimerHTML = <StopUI />
             break;
     }
 

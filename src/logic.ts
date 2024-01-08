@@ -108,6 +108,7 @@ Rune.initLogic({
       }
     },
     combine(_, { game, playerId }) {
+      // this is the worst piece of code i've written but there's no time LEFT :skull:
       let updatedGame = game;
       const currentGoal = updatedGame.goals.current;
 
@@ -426,8 +427,24 @@ Rune.initLogic({
         // game over for players
         // set the phase to be loss
         game.timeLeft = 0;
-        game.phase = "loss";
+        game.phase = "stop";
 
+        game.timeLeft = 3000;
+        game.lastCountdown = Rune.gameTime();
+      }
+    } else if (game.phase === "stop") {
+      if (game.timeLeft > 0) {
+        const timeDiff = Rune.gameTime() - game.lastCountdown;
+        // if we counting down, count down every second
+        if (timeDiff >= 1) {
+          // decrement the time left seen by the players by 1 millisecond
+          game.timeLeft = game.timeLeft - timeDiff;
+          // save the last time the countdown ran in the game state
+          game.lastCountdown = Rune.gameTime();
+        }
+      } else {
+        // bring to see high score
+        game.phase = "loss"
         game.timeLeft = LossScreenWaitTimeMilliseconds;
         game.lastCountdown = Rune.gameTime();
       }
