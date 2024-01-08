@@ -177,12 +177,14 @@ Rune.initLogic({
         }
 
         // find a new cake as the goal
-        let newGoal: GoalType | undefined = undefined;
         const goalMutable = [...Goals]
-        while (newGoal === undefined || !RecipeBook[newGoal].isCake) {
-          const randomIndex = chooseRandomIndexOfArray(goalMutable);
-          newGoal = goalMutable[randomIndex]
-        }
+
+        const notCakes = goalMutable.filter((goal) =>
+          !RecipeBook[goal].isCake
+        )
+
+        const randomIndex = chooseRandomIndexOfArray(notCakes);
+        const newGoal = notCakes[randomIndex]; // 
 
         // set it as the goal
         updatedGame.goals.current = newGoal;
