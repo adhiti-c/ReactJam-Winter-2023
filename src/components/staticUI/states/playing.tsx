@@ -25,15 +25,48 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
      */
     const [hasPlaced, setHasPlaced] = useState(false);
 
+    const [afk, setAfk] = useState(false);
+
+    const [timer, setTimer] = useState(0);
+    const afkThreshold = 5; // in seconds
+
     useEffect(() => {
         const playerInState = game.players[player.playerId]
         if (playerInState) {
             setHasPlaced(playerInState.hasPlaced);
         }
-    }, [game.players])
+    }, [game.players]);
+
+    // handle afk
+
+    useEffect(() => {
+        const checkAfkStatus = () => {
+            if (timer >= afkThreshold) {
+                setAfk(true);
+            }
+        };
+
+        // increment the afk timer every second
+        const intervalId = setInterval(() => {
+            setTimer((prevTimer) => prevTimer + 1);
+            checkAfkStatus();
+        }, 1000);
+
+        // clear interval on unmount
+        return () => {
+            clearInterval(intervalId);
+        };
+    }, [timer]);
+
+    const resetTimer = () => {
+        setTimer(0);
+        // If you want to track whether the user is currently AFK, you can update the state here.
+        setAfk(false);
+    };
 
     const handleInventoryClick = (ingredient: PlacableIngredient) => {
-        // if the list of ingredients includes the index
+        // reset AFK timer
+        resetTimer();
         const newSelectedIngredient = selectedIngredient.includes(ingredient)
             ? // then only include elements not equal to the ingredient
             selectedIngredient.filter((i) => i !== ingredient)
@@ -200,7 +233,13 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
             </div>
 
             {feedback}
-
+            {
+                afk ?
+                    <span>
+                        AFK
+                    </span>
+                    : null
+            }
 
 
             <div className="inventory-contain">
