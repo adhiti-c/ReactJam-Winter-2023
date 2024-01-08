@@ -14,6 +14,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { useSpring, animated } from '@react-spring/web'
 import Arrow from '../../../assets/tutorial/arrowTutorial.svg'
+import ArrowDown from '../../../assets/tutorial/arrowDownTutorial.svg'
+
 /**
  * the props to this UI are: the game state, the ingredient currently selected (passed in from the parent which remembers the state), and a useState function to change this selected ingredient
  * it works identically as if we had the useState in this file.
@@ -222,6 +224,7 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
                     </div>
                     <div className={`score-contain${game.feedback === "success" ? ' success-score' : ''}`} >
                         {/* <div className="score-contain"> */}
+                        
                         <FontAwesomeIcon icon={faStar} />
                         <h2><animated.h2>{props.total.to(x => x.toFixed(0))}</animated.h2></h2>
                     </div>
@@ -236,9 +239,12 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
             {feedback}
             {
                 afk ?
-                    <span>
-                        AFK
-                    </span>
+                    <div className="feedback">
+                        <div className="tutorial-text-contain">
+                            <h1>Tap to drop</h1>
+                            <img src={ArrowDown} alt="" />
+                        </div>
+                    </div>
                     : null
             }
 

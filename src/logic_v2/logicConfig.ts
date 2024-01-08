@@ -30,7 +30,7 @@ export const StreakFeedbackFrequency = 3;
  * ex: a basic_cake is worth 4 since it's made of [(eggs, flour), (butter, sugar)], or 4 atomic ingredients (PlacableIngredient)
  * we can multiply this amount by this score multiplier
  */
-export const ScoreMultiplier = 1;
+export const ScoreMultiplier = 12;
 
 
 // ----------- Don't touch these ------------

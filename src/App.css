@@ -304,6 +304,7 @@ button {
   justify-content: center;
   flex-direction: column;
   gap: 12px;
+  margin-top: -10px;
 }
 
 .make-contain {
@@ -687,6 +688,7 @@ button {
   justify-content: center;
   flex-direction: column;
   width: 70vw;
+  gap: 4px;
 }
 
 /* lobby section */
@@ -909,7 +911,8 @@ button {
 
 /* player indicator */
 .player-icon-contain img {
-  height: 50px;
+  height: 70px;
+  margin-top: -10px;
   /* outline: 4px solid var(--pink); */
 }
 
@@ -941,6 +944,10 @@ button {
 .high-score-contain {
   height: 100%;
   background-color: #413434bd;
+  background-image: url(./assets/lobbyBackground.svg);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
   display: flex;
   align-items: center;
 justify-content: center;
@@ -950,25 +957,31 @@ justify-content: center;
 .high-score-item {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 16px;
+  gap: 18px;
+  padding: 28px;
   background-color: #fff;
-  border: 6px solid var(--pink);
+  border: 7px solid var(--pink);
   border-radius: 36px;
+  align-items: center;
+  justify-content: center;
 }
 .high-score-item h2 span {
   background-color: var(--pink);
   padding: 12px;
-  border-radius: 12px;
+  border-radius: 14px;
+  width: fit-content;
   color: #fff;
-  font-size: 28px;
+  font-size: 22px;
 }
 .score-item {
   display: flex;
   flex-direction: row;
   gap: 8px;
   font-size: 48px;
-}
-.score-item i {
   color: var(--gold);
+  align-items: center;
+  justify-content: center;
+}
+.score-item h1{
+  font-size: 56px;
 }
