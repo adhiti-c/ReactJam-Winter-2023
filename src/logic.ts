@@ -329,6 +329,35 @@ Rune.initLogic({
 
           // subtract time
           updatedGame.timeLeft = updatedGame.timeLeft - FlatTimePenaltyMilliseconds;
+
+          // reset the hint
+          // set it as the goal
+          let newGoal = updatedGame.goals.current;
+
+          // reset the hint
+
+          const firstComponent = RecipeBook[newGoal].recipe[0];
+          console.log("First component", firstComponent)
+          // TODO: this breaks for chocolate cake
+          if (isGoalType(firstComponent) && RecipeBook[firstComponent].isCake) {
+            // go deeper
+            // this is basically when a basic_cake is the first component (like for chocolate cakes)
+            const firstComponentRecipe = RecipeBook[firstComponent];
+            // break it down more
+            // this will always be a GoalType, we are hard coding it I guess
+            const firstPart = firstComponentRecipe.recipe[0] as GoalType;
+            updatedGame.hint.recipe = RecipeBook[firstPart];
+            updatedGame.hint.name = firstPart;
+          } else if (isGoalType(firstComponent) && !RecipeBook[firstComponent].isCake) {
+            // mainly this is 
+            // show it
+            updatedGame.hint.recipe = RecipeBook[firstComponent];
+            updatedGame.hint.name = firstComponent;
+          } else {
+            // this is a fallback
+            console.log("fallback hint")
+            updatedGame.hint.recipe = RecipeBook[newGoal];
+          }
         }
 
         // reset placement for players
