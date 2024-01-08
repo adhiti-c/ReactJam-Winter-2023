@@ -2,8 +2,12 @@
 /**
  * amount of time starting out before players lose
  */
-export const StartTimeSeconds = 5;
+export const StartTimeSeconds = 120;
 
+/**
+ * How long the player is stuck in the loss wait screen for
+ */
+export const LossScreenWaitTimeSeconds = 5;
 
 /**
  * how many times the players must build the current hint before it leaves
@@ -43,3 +47,5 @@ export const StartTimeLeftMilliseconds = StartTimeSeconds * 1000;
 export const FlatTimeIncreaseOnComboMilliseconds = FlatTimeIncreaseOnComboSeconds * 1000;
 
 export const FlatTimePenaltyMilliseconds = FlatTimePenaltySeconds * 1000;
+
+export const LossScreenWaitTimeMilliseconds = LossScreenWaitTimeSeconds * 1000;

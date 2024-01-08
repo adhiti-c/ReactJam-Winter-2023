@@ -171,7 +171,7 @@ export default function Game({ game, player, players }: { game: GameState, playe
             gameTimerHTML = <PlayingUI game={game} selectedIngredient={selectedIngredient} setSelectedIngredient={setSelectedIngredient} player={player} dropIngredient={handleDrop} />
             break;
         case "loss":
-            gameTimerHTML = <Loss score={game.score}/>
+            gameTimerHTML = <Loss game={game} />
             break;
     }
 
