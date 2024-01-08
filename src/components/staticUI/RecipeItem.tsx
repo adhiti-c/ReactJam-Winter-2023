@@ -4,7 +4,18 @@ import { CakeLayerType, isPlacableIngredient } from '../../logic_v2/cakeTypes';
 import { PlayerIndexToCharacterIcon } from '../../logic_v2/assetMap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
-import { generateFinalContainerStyle } from '../FinalRecipeItem';
+
+export function generateFinalContainerStyle(img: string) {
+  return {
+    backgroundImage: `url(${img})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+
+    // borderRadius: '22px',
+    overflow: 'hide',
+    padding: '0',
+  }
+}
 
 function RecipeItem({ img, ingredient, game, clientPlayerId }: { img: string, ingredient: CakeLayerType, game: GameState, clientPlayerId: string }) {
   // loop through the inventory to find out who owns what
