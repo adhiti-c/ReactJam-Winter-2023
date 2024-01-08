@@ -2,12 +2,12 @@ import RecipeItem from './RecipeItem'
 import FinalRecipeItem from '../FinalRecipeItem'
 
 import { LayerToAssetMap } from '../../logic_v2/assetMap'
-import { GameState } from '../../logic_v2/types'
+import { GamePhase, GameState } from '../../logic_v2/types'
 import { Fragment } from 'react'
 
 type Recipe = {
   game: GameState
-  feedbackState: string
+  feedbackState: boolean
   // ingredient: string[]; 
 };
 function Recipe({ game, feedbackState }: Recipe) {
@@ -31,17 +31,17 @@ function Recipe({ game, feedbackState }: Recipe) {
                   ingredient={component}
                 />
               </div>
-              
+
             </Fragment>
           )
         })
       }
       {/* <div className="recipe-contain-step"> */}
-    
-        <FinalRecipeItem
-          img={LayerToAssetMap[goal].icon}
-          feedbackState = {feedbackState}
-        />
+
+      <FinalRecipeItem
+        img={LayerToAssetMap[goal].icon}
+        feedbackState={feedbackState}
+      />
       {/* </div> */}
 
     </div>
