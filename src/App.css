@@ -251,6 +251,7 @@ button {
   display: grid;
   place-content: center;
   position: relative;
+  background-color: #fff;
 }
 /** final recipe goal */
 .final-recipe-item {
@@ -409,9 +410,16 @@ button {
 }
 
 /** loader when the other player is not ready */
-.waiting-text-contain h2 {
-  text-align: center;
-  height: 1rem;
+
+.waiting-contain {
+  height: 100%;
+  background-color: #413434bd;
+  display: flex;
+  align-items: center;
+justify-content: center;
+  flex-direction: column;
+  padding: 14px 12px 0 12px;
+
 }
 
 /**  store players */
@@ -586,7 +594,7 @@ button {
   width: 100vw;
   display: grid;
   place-content: center;
-  background-color: rgba(65, 52, 52, 0.60);
+  background-color: rgba(65, 52, 52, 0.70);
   z-index: 8000;
   position: absolute;
   top: 0;
@@ -594,6 +602,10 @@ button {
 }
 .waiting-contain h1 {
   text-align: center;
+  font-size: 32px;
+  width: 70vw;
+  color: var(--pink);
+  text-shadow: -2px 0 #fff, 0 2px #fff, 2px 0 #fff, 0 -2px #fff;
 }
 /** animations */
 /* use for text feedback animation*/
@@ -868,4 +880,14 @@ button {
 }
 .recipe-operator-contain h2 {
   font-size: 28px;
+}
+
+/** current player (you) for recipe hint */
+/* add this to  */
+.current-player-recipe-hint {
+  opacity: 1;
+}
+.current-player-checkmark {
+  background-color: var(--pink);
+  color: #fff;
 }
