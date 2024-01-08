@@ -8,6 +8,7 @@ import { PlacableIngredient } from "../../../logic_v2/cakeTypes";
 import CakeReg from "../../../assets/icons/regularCake.svg";
 import SuccessSound from "../../../assets/successSound.wav";
 import FailureSound from "../../../assets/failureSound.wav";
+import GoSound from "../../../assets/goSound.wav"
 import { Player } from "rune-games-sdk";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar } from '@fortawesome/free-solid-svg-icons';
@@ -61,18 +62,25 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
                 // trigger audio for failure
                 playFailureSound();
                 break;
+            case "start":
+                playGoSound();
+                break;
         }
     }, [game.feedback])
     const playSuccessSound = () => {
-        const successSound = document.getElementById('successSound') as HTMLAudioElement;
-        if (successSound) {
-            successSound.play();
-        }
+        playSound('successSound')
     };
     const playFailureSound = () => {
-        const failureSound = document.getElementById('failureSound') as HTMLAudioElement;
-        if (failureSound) {
-            failureSound.play();
+        playSound('failureSound')
+    }
+    const playGoSound = () => {
+        playSound('goSound')
+    }
+
+    function playSound(soundId: string) {
+        const sound = document.getElementById(soundId) as HTMLAudioElement;
+        if (sound) {
+            sound.play();
         }
     }
 
@@ -121,6 +129,9 @@ export default function PlayingUI({ game, selectedIngredient, setSelectedIngredi
             feedback =
                 <div className="feedback success">
                     Go!
+                    <audio id="goSound" preload="auto">
+                        <source src={GoSound} type="audio/wav" />
+                    </audio>
                 </div>
     }
 
